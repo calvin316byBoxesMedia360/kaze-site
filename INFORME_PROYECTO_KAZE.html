@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informe del Proyecto KAZE</title>
+  <style>
+    :root {
+      --ink: #181818;
+      --muted: #666a73;
+      --paper: #f6f4ef;
+      --white: #ffffff;
+      --gold: #d4a843;
+      --red: #c8333f;
+      --green: #22a06b;
+      --blue: #2563eb;
+      --line: #dfddd7;
+      --dark: #101820;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.5;
+    }
+
+    header {
+      background: var(--dark);
+      color: var(--white);
+      padding: 44px 7vw 34px;
+      border-bottom: 6px solid var(--gold);
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 28px auto 64px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { font-size: clamp(34px, 5vw, 56px); line-height: 1.02; margin-bottom: 14px; }
+    h2 { font-size: 26px; margin-bottom: 16px; }
+    h3 { font-size: 18px; margin-bottom: 8px; }
+    p { color: var(--muted); }
+
+    code {
+      background: #f0eee8;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 2px 6px;
+      color: #222;
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      color: #d9dde5;
+      font-size: 18px;
+      margin-bottom: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 22px;
+      box-shadow: 0 8px 28px rgba(16, 24, 32, .06);
+    }
+
+    .span-4 { grid-column: span 4; }
+    .span-5 { grid-column: span 5; }
+    .span-6 { grid-column: span 6; }
+    .span-7 { grid-column: span 7; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-height: 120px;
+    }
+
+    .metric strong {
+      font-size: 31px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-weight: 700;
+      font-size: 13px;
+      background: #eaf7f0;
+      color: #0b6b43;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .table th,
+    .table td {
+      border-bottom: 1px solid var(--line);
+      padding: 11px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .table th {
+      color: #353943;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .browser-shot {
+      overflow: hidden;
+      border: 1px solid #cfd2d7;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .browser-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      border-bottom: 1px solid #dfe3e8;
+      background: #f8fafc;
+    }
+
+    .browser-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #ff5f57;
+    }
+
+    .browser-dot:nth-child(2) { background: #ffbd2e; }
+    .browser-dot:nth-child(3) { background: #28c840; }
+
+    .url {
+      margin-left: 8px;
+      background: #eef2f6;
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: #44515f;
+      font-size: 13px;
+      width: 100%;
+    }
+
+    .hero-preview {
+      min-height: 360px;
+      padding: 26px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(16, 24, 32, .88), rgba(16, 24, 32, .56)),
+        linear-gradient(120deg, #101820, #c8333f 52%, #d4a843);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-preview img {
+      width: min(260px, 100%);
+      border-radius: 50%;
+      border: 4px solid var(--gold);
+      justify-self: center;
+      background: #000;
+    }
+
+    .hero-preview h2 {
+      color: #fff;
+      font-size: clamp(34px, 5vw, 54px);
+      line-height: 1.02;
+      margin-bottom: 12px;
+    }
+
+    .hero-preview p {
+      color: #f2f5f8;
+      font-size: 17px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: 999px;
+      padding: 8px 10px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+      background: var(--gold);
+    }
+
+    .legend span:nth-child(2)::before { background: var(--red); }
+    .legend span:nth-child(3)::before { background: var(--blue); }
+    .legend span:nth-child(4)::before { background: var(--green); }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .step-num {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--dark);
+      color: var(--gold);
+      font-weight: 900;
+    }
+
+    .path {
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    footer {
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+      margin-top: 28px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      .span-4, .span-5, .span-6, .span-7, .span-8 { grid-column: span 12; }
+      .hero-preview { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Informe operativo · 17 mayo 2026</div>
+    <h1>Proyecto KAZE</h1>
+    <p class="subtitle">Resumen documentado de la copia nueva en Documents, estado Git, servidores locales, estructura de archivos y continuidad para abrir el proyecto desde otro editor.</p>
+  </header>
+
+  <main>
+    <section class="grid" aria-label="Resumen">
+      <article class="panel span-4 metric">
+        <span class="status"><i class="dot"></i> Sitio nuevo activo</span>
+        <strong>4178</strong>
+        <span>La copia de trabajo responde en <code>http://127.0.0.1:4178/</code>.</span>
+      </article>
+      <article class="panel span-4 metric">
+        <span class="status"><i class="dot"></i> Git limpio</span>
+        <strong>2 commits</strong>
+        <span>Importacion base + documentacion de memoria.</span>
+      </article>
+      <article class="panel span-4 metric">
+        <span class="status"><i class="dot"></i> Proyecto copiado</span>
+        <strong>Documents</strong>
+        <span>Nueva ubicacion oficial: <code>C:\Users\boxes\Documents\Kaze</code>.</span>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel span-7">
+        <h2>Vista Del Sitio</h2>
+        <p>Representacion visual del sitio local verificado. El titulo real detectado fue <strong>KAZE Custom Apparel & Signs | Watsonville, CA</strong>.</p>
+        <div class="browser-shot" role="img" aria-label="Vista previa grafica del sitio KAZE en navegador local">
+          <div class="browser-bar">
+            <span class="browser-dot"></span>
+            <span class="browser-dot"></span>
+            <span class="browser-dot"></span>
+            <span class="url">http://127.0.0.1:4178/</span>
+          </div>
+          <div class="hero-preview">
+            <div>
+              <div class="eyebrow">Watsonville, CA · Desde 2014</div>
+              <h2>Tu marca,<br>hecha realidad.</h2>
+              <p>Letreros luminosos, uniformes personalizados y mas, disenados con precision por un taller local.</p>
+              <div class="badge-row">
+                <span class="badge">Mockup gratis</span>
+                <span class="badge">+10 anos</span>
+                <span class="badge">30-50 pedidos/semana</span>
+              </div>
+            </div>
+            <img src="kaze-site-local/kaze-logo.jpg" alt="Logo KAZE">
+          </div>
+        </div>
+      </article>
+
+      <article class="panel span-5">
+        <h2>Estado De URLs</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>URL</th>
+              <th>Uso</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>127.0.0.1:4178</code></td>
+              <td>Copia nueva en Documents</td>
+              <td>Activo, HTTP 200</td>
+            </tr>
+            <tr>
+              <td><code>127.0.0.1:4177</code></td>
+              <td>Copia original en Downloads</td>
+              <td>Activo, no usar como fuente nueva</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="margin-top: 22px;">Comandos Utiles</h3>
+        <p>Levantar la copia nueva desde PowerShell:</p>
+        <code>$env:PORT='4178'; node kaze-site-local\server.js</code>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel span-6">
+        <h2>Grafico De Distribucion Documental</h2>
+        <svg viewBox="0 0 560 260" width="100%" height="260" role="img" aria-label="Grafico de barras por tipo de documento">
+          <rect x="0" y="0" width="560" height="260" rx="8" fill="#fbfaf7"></rect>
+          <line x1="70" y1="210" x2="520" y2="210" stroke="#d7d3cb"></line>
+          <line x1="70" y1="40" x2="70" y2="210" stroke="#d7d3cb"></line>
+          <rect x="105" y="78" width="58" height="132" rx="4" fill="#d4a843"></rect>
+          <rect x="195" y="112" width="58" height="98" rx="4" fill="#c8333f"></rect>
+          <rect x="285" y="126" width="58" height="84" rx="4" fill="#2563eb"></rect>
+          <rect x="375" y="92" width="58" height="118" rx="4" fill="#22a06b"></rect>
+          <text x="134" y="232" text-anchor="middle" font-size="13" fill="#50545c">Sitio</text>
+          <text x="224" y="232" text-anchor="middle" font-size="13" fill="#50545c">Diseno</text>
+          <text x="314" y="232" text-anchor="middle" font-size="13" fill="#50545c">Copys</text>
+          <text x="404" y="232" text-anchor="middle" font-size="13" fill="#50545c">Briefs</text>
+          <text x="134" y="68" text-anchor="middle" font-size="13" font-weight="700" fill="#2a2e35">HTML + assets</text>
+          <text x="224" y="102" text-anchor="middle" font-size="13" font-weight="700" fill="#2a2e35">Preferencias</text>
+          <text x="314" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#2a2e35">Voz</text>
+          <text x="404" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#2a2e35">Produccion</text>
+        </svg>
+        <div class="legend">
+          <span>Sitio local</span>
+          <span>Diseno</span>
+          <span>Copy</span>
+          <span>Briefs</span>
+        </div>
+      </article>
+
+      <article class="panel span-6">
+        <h2>Flujo De Trabajo</h2>
+        <svg viewBox="0 0 620 260" width="100%" height="260" role="img" aria-label="Diagrama de flujo de trabajo del proyecto">
+          <defs>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L9,3 z" fill="#6d7280"></path>
+            </marker>
+          </defs>
+          <rect width="620" height="260" rx="8" fill="#fbfaf7"></rect>
+          <g font-family="Arial, Helvetica, sans-serif">
+            <rect x="30" y="86" width="130" height="76" rx="8" fill="#101820"></rect>
+            <text x="95" y="118" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">Original</text>
+            <text x="95" y="140" text-anchor="middle" font-size="12" fill="#d4a843">Downloads</text>
+            <line x1="168" y1="124" x2="252" y2="124" stroke="#6d7280" stroke-width="2" marker-end="url(#arrow)"></line>
+            <rect x="260" y="86" width="130" height="76" rx="8" fill="#d4a843"></rect>
+            <text x="325" y="118" text-anchor="middle" font-size="15" font-weight="700" fill="#101820">Copia nueva</text>
+            <text x="325" y="140" text-anchor="middle" font-size="12" fill="#101820">Documents</text>
+            <line x1="398" y1="124" x2="482" y2="124" stroke="#6d7280" stroke-width="2" marker-end="url(#arrow)"></line>
+            <rect x="490" y="86" width="100" height="76" rx="8" fill="#22a06b"></rect>
+            <text x="540" y="118" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">Git</text>
+            <text x="540" y="140" text-anchor="middle" font-size="12" fill="#fff">main</text>
+            <text x="95" y="198" text-anchor="middle" font-size="12" fill="#50545c">4177</text>
+            <text x="325" y="198" text-anchor="middle" font-size="12" fill="#50545c">4178</text>
+            <text x="540" y="198" text-anchor="middle" font-size="12" fill="#50545c">2 commits</text>
+          </g>
+        </svg>
+      </article>
+    </section>
+
+    <section class="grid">
+      <article class="panel span-8">
+        <h2>Estructura Documentada</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Ruta</th>
+              <th>Funcion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="path"><code>kaze-site-local/</code></td>
+              <td>Sitio HTML estatico, logo y servidor Node local.</td>
+            </tr>
+            <tr>
+              <td class="path"><code>MEMORY.md</code></td>
+              <td>Memoria viva, estado actual, reglas, decisiones y pendientes.</td>
+            </tr>
+            <tr>
+              <td class="path"><code>NEXT_SESSION.md</code></td>
+              <td>Instrucciones para retomar desde otro editor o sesion.</td>
+            </tr>
+            <tr>
+              <td class="path"><code>preferencias-diseno.md</code></td>
+              <td>Inspiraciones visuales, prioridades MVP y roadmap de experiencia.</td>
+            </tr>
+            <tr>
+              <td class="path"><code>copys/</code></td>
+              <td>Voz de marca, textos oficiales, estructura de paginas y SEO.</td>
+            </tr>
+            <tr>
+              <td class="path"><code>briefs/</code></td>
+              <td>Briefs de produccion para hero/video y piezas futuras.</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="panel span-4">
+        <h2>Git</h2>
+        <div class="timeline">
+          <div class="step">
+            <div class="step-num">1</div>
+            <div>
+              <h3><code>af56eed</code></h3>
+              <p>Importacion inicial del proyecto Kaze a Documents.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-num">2</div>
+            <div>
+              <h3><code>85953ca</code></h3>
+              <p>Documentacion de memoria viva, siguiente sesion y README.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <h2>Conclusiones</h2>
+      <p>El proyecto KAZE ya puede trabajarse desde <code>C:\Users\boxes\Documents\Kaze</code> con historial Git local. La copia original se conserva como respaldo. Para evitar confusion entre servidores, la copia nueva debe revisarse en <code>http://127.0.0.1:4178/</code>.</p>
+      <p>Los siguientes pasos recomendados son normalizar encoding de documentos heredados, decidir si el sitio seguira como HTML estatico o migrara a un framework, y crear un remote en GitHub si se necesita colaboracion externa.</p>
+    </section>
+
+    <footer>
+      Informe generado localmente para el proyecto KAZE. Archivo: <code>INFORME_PROYECTO_KAZE.html</code>.
+    </footer>
+  </main>
+</body>
+</html>
