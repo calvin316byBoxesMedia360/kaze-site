@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Planeacion MVP | Kaze Designs</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172026;
+      --muted: #5f6b73;
+      --line: #d9e0e4;
+      --paper: #f7f8f5;
+      --panel: #ffffff;
+      --accent: #c8333f;
+      --accent-2: #1f7a8c;
+      --dark: #101820;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.55;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    header {
+      background: var(--dark);
+      color: #fff;
+      padding: 44px 24px 36px;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 28px auto 56px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      line-height: 1.15;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 4rem);
+      max-width: 900px;
+    }
+
+    h2 {
+      font-size: 1.45rem;
+      margin-bottom: 14px;
+    }
+
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin: 0 0 12px;
+    }
+
+    ul,
+    ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    .eyebrow {
+      color: #ffcf66;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+      margin-bottom: 14px;
+    }
+
+    .lead {
+      max-width: 880px;
+      color: #dce6ea;
+      font-size: 1.08rem;
+      margin-top: 18px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .pill {
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 999px;
+      padding: 7px 12px;
+      color: #eef5f6;
+      font-size: 0.86rem;
+    }
+
+    section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 24px;
+      margin-top: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .callout {
+      border-left: 4px solid var(--accent);
+      padding: 14px 16px;
+      background: #fff4f5;
+      margin-top: 14px;
+    }
+
+    .note {
+      border-left-color: var(--accent-2);
+      background: #eef8fa;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #edf1f2;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin: 4px 6px 0 0;
+      padding: 4px 9px;
+      text-transform: uppercase;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #edf1f2;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    @media (max-width: 780px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        padding: 34px 18px 28px;
+      }
+
+      section {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Documento vivo de planeacion</div>
+    <h1>Kaze Designs: MVP para tienda virtual, cotizaciones y experiencia de personalizacion</h1>
+    <p class="lead">
+      Este archivo concentra la planeacion refinada para convertir informacion inicial, ideas del departamento de planeacion y referencias de mercado en un flujo de trabajo accionable para Codex.
+    </p>
+    <div class="meta">
+      <span class="pill">Fecha base: 14 mayo 2026</span>
+      <span class="pill">Estado: borrador inicial auditado</span>
+      <span class="pill">Fase: descubrimiento + MVP</span>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. Resumen Ejecutivo</h2>
+      <p>
+        Kaze Designs necesita una plataforma tipo tienda virtual para presentar productos personalizados, capturar solicitudes de cotizacion, mostrar servicios de produccion grafica y permitir que el visitante visualice ideas de personalizacion antes de hablar con el negocio.
+      </p>
+      <p>
+        La primera version no incluira pasarela de pago. El objetivo del MVP es generar prospectos calificados, organizar el catalogo de productos y servicios, reducir friccion en cotizaciones y validar si el mockup virtual y el chatbot aumentan conversiones.
+      </p>
+      <div class="callout">
+        <strong>Decision inicial:</strong> tratar el sitio como una plataforma de cotizacion asistida, no como ecommerce tradicional. El negocio vende productos con variables de tecnica, volumen, arte, tiempos y materiales, asi que el flujo principal debe llevar a una solicitud clara y no a un checkout prematuro.
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Alcance Comprendido</h2>
+      <div class="grid">
+        <div>
+          <h3>Incluido en MVP</h3>
+          <ul>
+            <li>Pagina web dinamica tipo virtual store.</li>
+            <li>Catalogo de productos y servicios por categorias.</li>
+            <li>Formulario de contacto y cotizaciones.</li>
+            <li>Area de producto con mockup virtual basico en tiempo real.</li>
+            <li>Chatbot con AI para orientar al visitante y recopilar datos.</li>
+            <li>Panel o estructura editable para alimentar productos, aunque sea mediante archivos JSON al inicio.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Fuera del MVP</h3>
+          <ul>
+            <li>Pasarela de pago y checkout transaccional.</li>
+            <li>Inventario en tiempo real.</li>
+            <li>Calculo perfecto de precios para todos los procesos productivos.</li>
+            <li>Integracion completa con ERP, CRM o contabilidad.</li>
+            <li>Editor profesional complejo tipo Adobe Illustrator en navegador.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Servicios y Categorias de Kaze Designs</h2>
+      <p>La oferta debe organizarse para que el cliente entienda rapido que puede resolver en un solo lugar.</p>
+      <div>
+        <span class="tag">Ropa personalizada</span>
+        <span class="tag">Uniformes</span>
+        <span class="tag">Bordado</span>
+        <span class="tag">Estampado</span>
+        <span class="tag">Productos promocionales</span>
+        <span class="tag">Regalos exclusivos</span>
+        <span class="tag">Diseno grafico</span>
+        <span class="tag">Logos</span>
+        <span class="tag">Rotulos luminosos</span>
+        <span class="tag">Grabado laser</span>
+        <span class="tag">Vinil para ventanas y puertas</span>
+        <span class="tag">Wrap comercial para autos</span>
+      </div>
+      <div class="callout note">
+        <strong>Mejora de posicionamiento:</strong> evitar comunicar una lista larga sin jerarquia. La narrativa debe ser: marca tu negocio, viste a tu equipo, promociona tus productos y transforma tus espacios o vehiculos con soluciones visuales personalizadas.
+      </div>
+    </section>
+
+    <section>
+      <h2>4. Flujo Principal del Usuario</h2>
+      <ol>
+        <li>El visitante llega al inicio y entiende en segundos que Kaze personaliza ropa, promocionales, rotulos, grabados y wraps.</li>
+        <li>Explora categorias o usa busqueda/filtros para encontrar producto o servicio.</li>
+        <li>Abre una ficha de producto o servicio con ejemplos, tecnicas disponibles y llamada a cotizar.</li>
+        <li>Si aplica, usa el mockup basico para cargar logo, escribir texto, elegir color y ubicar el arte sobre una prenda o producto.</li>
+        <li>Completa una cotizacion con datos clave: producto, cantidad, tecnica, fecha requerida, archivo/logo, notas y contacto.</li>
+        <li>El chatbot ayuda a resolver dudas, recomendar tecnica y recopilar datos antes de enviar el lead.</li>
+        <li>El equipo de Kaze recibe la solicitud estructurada y responde por email, telefono o WhatsApp.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>5. Modulos Funcionales Propuestos</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Modulo</th>
+            <th>Objetivo</th>
+            <th>Prioridad</th>
+            <th>Notas para Codex</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Inicio</td>
+            <td>Comunicar propuesta de valor y rutas principales.</td>
+            <td>Alta</td>
+            <td>Debe mostrar categorias, servicios destacados, prueba social y CTA de cotizacion.</td>
+          </tr>
+          <tr>
+            <td>Catalogo</td>
+            <td>Permitir exploracion de productos y servicios.</td>
+            <td>Alta</td>
+            <td>Usar datos estructurados; separar productos fisicos de servicios de instalacion.</td>
+          </tr>
+          <tr>
+            <td>Ficha de producto</td>
+            <td>Explicar opciones, tecnicas y requisitos de arte.</td>
+            <td>Alta</td>
+            <td>Incluir mockup si el producto es personalizable visualmente.</td>
+          </tr>
+          <tr>
+            <td>Formulario de cotizacion</td>
+            <td>Capturar leads con informacion suficiente para responder bien.</td>
+            <td>Alta</td>
+            <td>Debe aceptar archivo o enlace de arte en fase posterior; en MVP puede simular carga.</td>
+          </tr>
+          <tr>
+            <td>Mockup virtual</td>
+            <td>Ayudar al visitante a visualizar su idea.</td>
+            <td>Media-Alta</td>
+            <td>Empezar con canvas 2D: color de producto, texto, imagen/logo, mover, escalar y rotar.</td>
+          </tr>
+          <tr>
+            <td>Chatbot AI</td>
+            <td>Orientar, calificar y guiar a cotizacion.</td>
+            <td>Media</td>
+            <td>Primera version puede ser widget conectado a instrucciones y FAQs; luego integrar base de conocimiento.</td>
+          </tr>
+          <tr>
+            <td>Admin ligero</td>
+            <td>Facilitar carga de catalogo.</td>
+            <td>Media</td>
+            <td>Para MVP puede ser archivo JSON versionado antes de crear CMS.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>6. Auditoria de Supuestos Iniciales</h2>
+      <div class="grid">
+        <div>
+          <h3>Supuestos utiles</h3>
+          <ul>
+            <li>El visitante necesita inspiracion visual antes de cotizar.</li>
+            <li>La compra directa no es prioritaria porque la personalizacion cambia precio y tiempos.</li>
+            <li>El negocio se beneficia mas de leads ordenados que de carritos abandonados.</li>
+            <li>El mockup puede aumentar confianza aunque no sea produccion final exacta.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Supuestos a validar</h3>
+          <ul>
+            <li>Que categorias generan mas demanda y merecen pantalla principal.</li>
+            <li>Que tecnicas ofrece Kaze exactamente: serigrafia, DTF, sublimacion, vinil textil, bordado, laser u otras.</li>
+            <li>Que datos necesita el equipo para cotizar sin volver a pedir informacion basica.</li>
+            <li>Si WhatsApp sera canal principal de conversion.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>7. Referencias de Mercado a Investigar</h2>
+      <p>
+        Pendiente de busqueda y comparacion formal. Se deben revisar sitios de ropa personalizada, productos promocionales, rotulacion, wraps y regalos corporativos para detectar patrones de navegacion, argumentos de venta y formularios de cotizacion.
+      </p>
+      <ul>
+        <li>Como estructuran categorias y filtros.</li>
+        <li>Que informacion piden antes de cotizar.</li>
+        <li>Como muestran tecnicas de personalizacion y restricciones.</li>
+        <li>Como usan galerias, casos de exito y testimonios.</li>
+        <li>Que herramientas de mockup o disenador online ofrecen.</li>
+      </ul>
+      <div class="callout">
+        <strong>Criterio de auditoria:</strong> no copiar contenido ni diseno. Usar referencias para identificar buenas practicas y decidir que conviene adaptar a Kaze Designs.
+      </div>
+    </section>
+
+    <section>
+      <h2>8. Backlog Inicial para Codex</h2>
+      <ol>
+        <li>Definir stack del MVP: Next.js o app web equivalente, componentes reutilizables, datos de catalogo estructurados.</li>
+        <li>Crear mapa de sitio: inicio, catalogo, categoria, producto, servicios, cotizacion, contacto.</li>
+        <li>Modelar datos: categorias, productos, tecnicas, servicios, preguntas frecuentes y solicitudes.</li>
+        <li>Construir UI base con identidad visual sobria, comercial y adaptable a negocios B2B/B2C.</li>
+        <li>Implementar catalogo navegable con filtros por categoria, tecnica y tipo de producto.</li>
+        <li>Implementar ficha de producto con configurador/mockup basico.</li>
+        <li>Crear formulario de cotizacion validado y con resumen de solicitud.</li>
+        <li>Agregar chatbot inicial con respuestas guiadas y transferencia a cotizacion.</li>
+        <li>Preparar estructura para futura pasarela de pago sin activarla.</li>
+        <li>Verificar responsive, accesibilidad basica y claridad de conversion.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>9. Informacion Pendiente por Solicitar</h2>
+      <ul>
+        <li>Logo, colores, tipografias o referencias visuales de Kaze Designs.</li>
+        <li>Ubicacion, telefono, email, WhatsApp, horarios y areas de servicio.</li>
+        <li>Lista inicial de productos, servicios, precios orientativos si existen y cantidades minimas.</li>
+        <li>Fotos reales de trabajos, productos, tienda, taller o equipo.</li>
+        <li>Tecnicas disponibles y limitaciones por material.</li>
+        <li>Proceso interno de cotizacion y tiempos promedio de respuesta.</li>
+        <li>Idiomas requeridos: solo espanol, bilingue espanol/ingles o ambos.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>10. Criterios de Exito del MVP</h2>
+      <ul>
+        <li>El usuario entiende la oferta principal en menos de 10 segundos.</li>
+        <li>El catalogo permite llegar a una solicitud de cotizacion en pocos clics.</li>
+        <li>El formulario captura datos suficientes para que Kaze responda sin ida y vuelta innecesaria.</li>
+        <li>El mockup virtual genera una vista util que puede adjuntarse o resumirse en la cotizacion.</li>
+        <li>El chatbot guia sin bloquear; siempre debe ofrecer contacto humano o cotizacion.</li>
+        <li>La arquitectura permite agregar pagos, CMS, inventario o CRM en una fase posterior.</li>
+      </ul>
+    </section>
+
+    <footer>
+      Kaze Designs | Planeacion refinada para MVP funcional
+    </footer>
+  </main>
+</body>
+</html>

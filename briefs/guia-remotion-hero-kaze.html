@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Remotion — Hero Video Kaze Designs</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--surface:#12121a;--card:#1a1a26;--border:#2a2a3a;--text:#e4e4ec;--muted:#8888a0;--accent:#6c63ff;--accent2:#00d4aa;--neon-pink:#ff3ec9;--neon-blue:#00b4ff;--gradient:linear-gradient(135deg,#6c63ff,#00d4aa)}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden}
+.hero{padding:80px 24px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(108,99,255,0.15),transparent 70%);border-bottom:1px solid var(--border)}
+.hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+.hero .sub{color:var(--muted);font-size:1.1rem;max-width:600px;margin:0 auto}
+.badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:20px}
+.badge--team{background:rgba(108,99,255,0.15);color:var(--accent);border:1px solid rgba(108,99,255,0.3)}
+main{max-width:900px;margin:0 auto;padding:40px 24px}
+section{margin-bottom:56px}
+h2{font-size:1.6rem;font-weight:700;margin-bottom:20px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+h2 .emoji{margin-right:8px}
+h3{font-size:1.15rem;font-weight:600;margin:24px 0 12px;color:var(--accent2)}
+p,.list-item{margin-bottom:14px;color:var(--text)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;margin:20px 0}
+.card--highlight{border-color:var(--accent);box-shadow:0 0 30px rgba(108,99,255,0.1)}
+.card--warn{border-color:#ff9f43;background:rgba(255,159,67,0.05)}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0}
+.stat{text-align:center;padding:24px;background:var(--surface);border-radius:12px;border:1px solid var(--border)}
+.stat .num{font-size:2rem;font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat .label{color:var(--muted);font-size:0.85rem;margin-top:4px}
+.compare{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.9rem}
+.compare th{text-align:left;padding:12px 16px;background:var(--surface);border:1px solid var(--border);color:var(--accent);font-weight:600}
+.compare td{padding:12px 16px;border:1px solid var(--border)}
+.compare tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+code{background:var(--surface);padding:2px 8px;border-radius:6px;font-size:0.88em;color:var(--accent2);border:1px solid var(--border)}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;overflow-x:auto;margin:16px 0;font-size:0.85rem;line-height:1.6}
+pre code{background:none;border:none;padding:0;color:var(--text)}
+.step{display:flex;gap:20px;margin:20px 0;align-items:flex-start}
+.step-num{min-width:44px;height:44px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;color:#fff;flex-shrink:0}
+.step-content h4{font-weight:600;margin-bottom:6px}
+.step-content p{color:var(--muted);font-size:0.92rem;margin:0}
+ul{padding-left:20px;margin:12px 0}
+li{margin-bottom:8px;color:var(--muted)}
+li strong{color:var(--text)}
+.glow-text{text-shadow:0 0 20px rgba(108,99,255,0.5),0 0 40px rgba(108,99,255,0.2)}
+.tag{display:inline-block;padding:3px 10px;border-radius:8px;font-size:0.75rem;font-weight:600;margin-right:6px}
+.tag--green{background:rgba(0,212,170,0.15);color:var(--accent2)}
+.tag--purple{background:rgba(108,99,255,0.15);color:var(--accent)}
+.footer{text-align:center;padding:40px;color:var(--muted);font-size:0.85rem;border-top:1px solid var(--border)}
+@media(max-width:600px){.step{flex-direction:column;gap:12px}.grid-3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="badge badge--team">📋 Documento para el equipo creativo</span>
+  <h1 class="glow-text">Remotion — Video Hero Kaze Designs</h1>
+  <p class="sub">Guía completa para crear el video hero de la homepage usando código React. Cómo, para qué y por qué.</p>
+</div>
+
+<main>
+
+<!-- ============ QUÉ ES ============ -->
+<section>
+<h2><span class="emoji">🎯</span> ¿Qué es Remotion?</h2>
+<p><strong>Remotion</strong> es un framework open-source que permite crear videos usando <strong>React</strong> (JavaScript). En lugar de editar video en Premiere o After Effects, escribes código que define cada frame, animación y transición.</p>
+
+<div class="grid-3">
+  <div class="stat"><div class="num">React</div><div class="label">Mismo lenguaje que el sitio Kaze</div></div>
+  <div class="stat"><div class="num">30fps</div><div class="label">Renderiza frame por frame</div></div>
+  <div class="stat"><div class="num">MP4</div><div class="label">Exporta directo a video</div></div>
+</div>
+
+<p>Piénsalo así: en vez de arrastrar capas en una línea de tiempo, escribes componentes React que se convierten en un video real.</p>
+</section>
+
+<!-- ============ POR QUÉ ============ -->
+<section>
+<h2><span class="emoji">💡</span> ¿Por qué Remotion y no edición tradicional?</h2>
+
+<table class="compare">
+<tr><th>Aspecto</th><th>Edición Tradicional</th><th>Remotion ⭐</th></tr>
+<tr><td><strong>Glassmorphism</strong></td><td>Hay que fabricar PNGs o simular blur manualmente</td><td>CSS nativo: <code>backdrop-filter: blur()</code></td></tr>
+<tr><td><strong>Iteración</strong></td><td>Cambiar color = re-editar todo el proyecto</td><td>Cambiar 1 variable = re-renderizar</td></tr>
+<tr><td><strong>Consistencia</strong></td><td>Depende del ojo del editor</td><td>Pixel-perfect, definido en código</td></tr>
+<tr><td><strong>Versiones</strong></td><td>Desktop y mobile = 2 proyectos</td><td>Cambias resolución en config = listo</td></tr>
+<tr><td><strong>Efecto neón</strong></td><td>Plugins o composición manual</td><td>CSS <code>text-shadow</code> + <code>box-shadow</code> animado</td></tr>
+<tr><td><strong>Costo</strong></td><td>Adobe CC ~$55/mes</td><td>Gratis (open source)</td></tr>
+</table>
+
+<div class="card card--highlight">
+<h3>La ventaja clave para Kaze</h3>
+<p>El video hero usa <strong>overlays glassmorphism</strong> — exactamente lo que CSS hace mejor que cualquier editor de video. Con Remotion, los paneles flotantes con blur son código nativo, no simulaciones.</p>
+</div>
+</section>
+
+<!-- ============ PARA QUÉ ============ -->
+<section>
+<h2><span class="emoji">🎬</span> ¿Para qué lo usaremos?</h2>
+<p>Para crear el <strong>video hero de 8-12 segundos</strong> que va en la homepage de Kaze Designs. El video tiene 5 actos:</p>
+
+<div class="card">
+<h3>Acto 1 — "La Prenda" (0s-2s)</h3>
+<p>Foto de producto/modelo + carrusel glassmorphism con prendas en blanco deslizándose desde la derecha.</p>
+</div>
+<div class="card">
+<h3>Acto 2 — "El Color" (2s-4s)</h3>
+<p>Panel glassmorphism con círculos de color. Se selecciona uno → la prenda cambia de color (transición fade).</p>
+</div>
+<div class="card">
+<h3>Acto 3 — "El Diseño" (4s-6s)</h3>
+<p>Panel vertical con opciones de logo/diseño. Se selecciona uno → aparece sobre la prenda.</p>
+</div>
+<div class="card">
+<h3>Acto 4 — "El Neón" ⭐ (6s-9s)</h3>
+<p>El fondo se oscurece. Un rótulo neón se ENCIENDE con efecto glow (text-shadow animado). Brillo, reflejos, ambiente de impacto.</p>
+</div>
+<div class="card">
+<h3>Acto 5 — "El CTA" (9s-12s)</h3>
+<p>Botón con gradiente animado (rosa→rojo→azul→verde). Texto "Cotiza tu Proyecto". Loop seamless.</p>
+</div>
+</section>
+
+<!-- ============ CÓMO ============ -->
+<section>
+<h2><span class="emoji">🛠️</span> ¿Cómo hacerlo? — Paso a paso</h2>
+
+<h3>Requisitos previos</h3>
+<ul>
+  <li><strong>Node.js 18+</strong> instalado (<a href="https://nodejs.org" style="color:var(--accent)">nodejs.org</a>)</li>
+  <li><strong>Conocimiento básico de React</strong> (componentes, props, hooks)</li>
+  <li><strong>Las fotos de BoxesMedia</strong> del Drive (producto en fondo limpio)</li>
+</ul>
+
+<h3>Paso 1 — Crear el proyecto</h3>
+<pre><code>npx create-video@latest</code></pre>
+<p>Seleccionar la plantilla <code>blank</code>. Esto crea la estructura del proyecto.</p>
+
+<h3>Paso 2 — Entender la estructura</h3>
+<pre><code>📂 kaze-hero-video/
+├── src/
+│   ├── Root.tsx          ← Define las composiciones (resolución, FPS, duración)
+│   ├── Composition.tsx   ← El video principal
+│   └── components/       ← Componentes por acto
+│       ├── ActoPrend.tsx
+│       ├── ActoColor.tsx
+│       ├── ActoDiseno.tsx
+│       ├── ActoNeon.tsx
+│       └── ActoCTA.tsx
+├── public/               ← Fotos de BoxesMedia van aquí
+│   ├── modelo-camiseta.webp
+│   ├── modelo-hoodie.webp
+│   └── logo-kaze.svg
+└── package.json</code></pre>
+
+<h3>Paso 3 — Configurar la composición</h3>
+<pre><code>// src/Root.tsx
+import { Composition } from "remotion";
+import { KazeHero } from "./KazeHero";
+
+export const RemotionRoot = () => {
+  return (
+    &lt;Composition
+      id="KazeHeroDesktop"
+      component={KazeHero}
+      durationInFrames={360}   // 12 seg × 30fps
+      fps={30}
+      width={1920}
+      height={1080}
+    /&gt;
+  );
+};</code></pre>
+
+<h3>Paso 4 — Crear un acto (ejemplo: Acto 1)</h3>
+<pre><code>// src/components/ActoPrenda.tsx
+import { useCurrentFrame, interpolate, spring, useVideoConfig, Img, staticFile } from "remotion";
+
+export const ActoPrenda = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  // Animación del carrusel: entra desde la derecha
+  const slideIn = spring({
+    frame,
+    fps,
+    config: { damping: 15, stiffness: 80 },
+  });
+  const carouselX = interpolate(slideIn, [0, 1], [600, 0]);
+
+  // Opacidad del producto
+  const opacity = interpolate(frame, [0, 15], [0, 1], {
+    extrapolateRight: "clamp",
+  });
+
+  return (
+    &lt;div style={{
+      width: "100%", height: "100%",
+      background: "linear-gradient(135deg, #0a0a1a, #1a1a2e)",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      position: "relative",
+    }}&gt;
+
+      {/* Producto / Modelo */}
+      &lt;Img
+        src={staticFile("modelo-camiseta.webp")}
+        style={{ height: "80%", opacity, objectFit: "contain" }}
+      /&gt;
+
+      {/* Carrusel Glassmorphism */}
+      &lt;div style={{
+        position: "absolute", right: 60, top: "50%",
+        transform: `translateY(-50%) translateX(${carouselX}px)`,
+        background: "rgba(255,255,255,0.12)",
+        backdropFilter: "blur(20px)",
+        border: "1px solid rgba(255,255,255,0.2)",
+        borderRadius: 20, padding: "20px 30px",
+        display: "flex", gap: 16,
+      }}&gt;
+        {["camiseta","hoodie","gorra","polo","chaleco"].map((p) =&gt; (
+          &lt;div key={p} style={{
+            width: 70, height: 90,
+            background: "rgba(255,255,255,0.08)",
+            borderRadius: 12,
+            border: "1px solid rgba(255,255,255,0.15)",
+          }} /&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+
+<h3>Paso 5 — Ensamblar los actos</h3>
+<pre><code>// src/KazeHero.tsx
+import { Sequence } from "remotion";
+import { ActoPrenda } from "./components/ActoPrenda";
+import { ActoColor } from "./components/ActoColor";
+import { ActoNeon } from "./components/ActoNeon";
+import { ActoCTA } from "./components/ActoCTA";
+
+export const KazeHero = () => {
+  return (
+    &lt;&gt;
+      &lt;Sequence from={0} durationInFrames={75}&gt;
+        &lt;ActoPrenda /&gt;
+      &lt;/Sequence&gt;
+
+      &lt;Sequence from={75} durationInFrames={60}&gt;
+        &lt;ActoColor /&gt;
+      &lt;/Sequence&gt;
+
+      &lt;Sequence from={135} durationInFrames={60}&gt;
+        {/* ActoDiseno */}
+      &lt;/Sequence&gt;
+
+      &lt;Sequence from={195} durationInFrames={90}&gt;
+        &lt;ActoNeon /&gt;
+      &lt;/Sequence&gt;
+
+      &lt;Sequence from={285} durationInFrames={75}&gt;
+        &lt;ActoCTA /&gt;
+      &lt;/Sequence&gt;
+    &lt;/&gt;
+  );
+};</code></pre>
+
+<h3>Paso 6 — Efecto neón (Acto 4)</h3>
+<pre><code>// Efecto glow con CSS — el neón se "enciende"
+const glowIntensity = interpolate(frame, [0, 30], [0, 1], {
+  extrapolateRight: "clamp",
+});
+
+const neonStyle = {
+  fontSize: 72,
+  fontWeight: 800,
+  color: `rgba(255, 62, 201, ${glowIntensity})`,
+  textShadow: `
+    0 0 ${10 * glowIntensity}px #ff3ec9,
+    0 0 ${20 * glowIntensity}px #ff3ec9,
+    0 0 ${40 * glowIntensity}px #ff3ec9,
+    0 0 ${80 * glowIntensity}px rgba(255,62,201,0.4)
+  `,
+};</code></pre>
+
+<h3>Paso 7 — Preview y renderizar</h3>
+<pre><code># Preview en navegador (edición en vivo)
+npx remotion studio
+
+# Renderizar a MP4 (desktop)
+npx remotion render src/index.ts KazeHeroDesktop out/kaze-hero-desktop.mp4
+
+# Renderizar versión mobile (cambiar dimensiones en Root.tsx)
+npx remotion render src/index.ts KazeHeroMobile out/kaze-hero-mobile.mp4</code></pre>
+</section>
+
+<!-- ============ CONCEPTOS CLAVE ============ -->
+<section>
+<h2><span class="emoji">📚</span> Conceptos clave de Remotion</h2>
+
+<table class="compare">
+<tr><th>Concepto</th><th>Qué hace</th><th>Ejemplo</th></tr>
+<tr><td><code>useCurrentFrame()</code></td><td>Te dice en qué frame estás</td><td>Frame 0 = inicio, frame 30 = segundo 1</td></tr>
+<tr><td><code>interpolate()</code></td><td>Convierte un rango de frames en valores de animación</td><td>Frame 0→30 = opacidad 0→1</td></tr>
+<tr><td><code>spring()</code></td><td>Animaciones con física (rebote natural)</td><td>Entrada suave del carrusel</td></tr>
+<tr><td><code>&lt;Sequence&gt;</code></td><td>Define cuándo empieza/termina un acto</td><td>Acto 1 en frame 0, Acto 2 en frame 75</td></tr>
+<tr><td><code>staticFile()</code></td><td>Carga archivos de la carpeta <code>public/</code></td><td>Fotos de BoxesMedia</td></tr>
+<tr><td><code>&lt;Img&gt;</code></td><td>Componente de imagen optimizado de Remotion</td><td>Muestra producto/modelo</td></tr>
+</table>
+</section>
+
+<!-- ============ TIPS ============ -->
+<section>
+<h2><span class="emoji">⚡</span> Tips para el equipo</h2>
+
+<div class="card card--warn">
+<h3>⚠️ Errores comunes a evitar</h3>
+<ul>
+  <li><strong>No usar <code>&lt;img&gt;</code> de HTML</strong> — usar <code>&lt;Img&gt;</code> de Remotion para que espere a que cargue</li>
+  <li><strong>No usar <code>setTimeout</code> ni <code>setInterval</code></strong> — Remotion no funciona en tiempo real, usa frames</li>
+  <li><strong>Las fotos deben estar en <code>public/</code></strong> y cargarse con <code>staticFile("nombre.webp")</code></li>
+  <li><strong>Para fuentes custom</strong>: usar <code>@remotion/google-fonts</code> o <code>delayRender</code></li>
+</ul>
+</div>
+
+<div class="card">
+<h3>✅ Mejores prácticas</h3>
+<ul>
+  <li><strong>Un componente por acto</strong> — mantener el código modular</li>
+  <li><strong>Preview constante</strong> — <code>npx remotion studio</code> actualiza en vivo</li>
+  <li><strong>Fotos en WebP</strong> — más ligeras, mejor rendimiento</li>
+  <li><strong>Glassmorphism = CSS puro</strong> — <code>backdrop-filter: blur()</code> funciona perfecto en Remotion</li>
+  <li><strong>Probar en 10fps primero</strong> — para iterar rápido, subir a 30fps para render final</li>
+</ul>
+</div>
+</section>
+
+<!-- ============ ENTREGABLES ============ -->
+<section>
+<h2><span class="emoji">📦</span> Lo que deben entregar</h2>
+<table class="compare">
+<tr><th>Archivo</th><th>Formato</th><th>Resolución</th></tr>
+<tr><td>kaze-hero-desktop.mp4</td><td>H.264, ≤5MB</td><td>1920×1080</td></tr>
+<tr><td>kaze-hero-desktop.webm</td><td>VP9, ≤4MB</td><td>1920×1080</td></tr>
+<tr><td>kaze-hero-mobile.mp4</td><td>H.264, ≤3MB</td><td>1080×1920</td></tr>
+<tr><td>kaze-hero-mobile.webm</td><td>VP9, ≤2MB</td><td>1080×1920</td></tr>
+<tr><td>poster-desktop.webp</td><td>WebP, ≤200KB</td><td>1920×1080</td></tr>
+<tr><td>poster-mobile.webp</td><td>WebP, ≤150KB</td><td>1080×1920</td></tr>
+<tr><td>Proyecto Remotion completo</td><td>Carpeta zip</td><td>—</td></tr>
+</table>
+</section>
+
+<!-- ============ RECURSOS ============ -->
+<section>
+<h2><span class="emoji">🔗</span> Recursos</h2>
+<ul>
+  <li><strong><a href="https://www.remotion.dev/docs" style="color:var(--accent)">Documentación oficial de Remotion</a></strong></li>
+  <li><strong><a href="https://www.remotion.dev/docs/interpolate" style="color:var(--accent)">Guía de interpolate()</a></strong> — la función más importante</li>
+  <li><strong><a href="https://www.remotion.dev/docs/spring" style="color:var(--accent)">Guía de spring()</a></strong> — animaciones con física</li>
+  <li><strong><a href="https://glassmorphism.com/" style="color:var(--accent)">Glassmorphism Generator</a></strong> — para experimentar con los valores del blur</li>
+  <li><strong><a href="https://www.youtube.com/watch?v=deg8bOoziaE" style="color:var(--accent)">Tutorial Remotion en YouTube</a></strong> — introducción visual</li>
+</ul>
+</section>
+
+</main>
+
+<div class="footer">
+  <p>Kaze Designs × BoxesMedia — Guía de producción video hero con Remotion</p>
+  <p style="margin-top:8px">Mayo 2026 · v1.0</p>
+</div>
+
+</body>
+</html>
