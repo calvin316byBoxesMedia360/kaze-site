@@ -183,8 +183,8 @@
   <h1>Proyecto KAZE</h1>
   <p class="subtitle">Documentación de estado, decisiones técnicas, tecnologías implementadas y hoja de ruta del sitio web de KAZE Custom Apparel &amp; Signs, Watsonville, CA.</p>
   <div class="header-meta">
-    <span class="ver-badge">v2.0</span>
-    <span style="color:#d9dde5;font-size:13px;">Última actualización: 17 mayo 2026</span>
+    <span class="ver-badge">v4.0</span>
+    <span style="color:#d9dde5;font-size:13px;">Última actualización: 20 mayo 2026</span>
     <span style="color:rgba(255,255,255,.4);font-size:13px;">|</span>
     <span style="color:#d9dde5;font-size:13px;">831-319-1837 · 347 Main St, Watsonville CA · @kaze_designs</span>
   </div>
@@ -192,15 +192,136 @@
 
 <!-- Version selector -->
 <div class="version-bar">
-  <button class="vtab active" onclick="showV('v3')">v3.0 — Vercel & Glassmorphism</button>
+  <button class="vtab active" onclick="showV('v4')">v4.0 — GitHub & Railway</button>
+  <button class="vtab" onclick="showV('v3')">v3.0 — Vercel & Glassmorphism</button>
   <button class="vtab" onclick="showV('v2')">v2.0 — Next.js</button>
   <button class="vtab" onclick="showV('v1')">v1.0 — HTML estático</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 4.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v4" class="v-pane active">
+<main>
+  <p class="section-label">Estado actual — v4.0</p>
+  <section class="grid" aria-label="Estado GitHub y Railway">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> GitHub</span>
+      <strong>Push OK</strong>
+      <span>Repo privado <code>calvin316byBoxesMedia360/kaze-site</code></span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Railway</span>
+      <strong>Source</strong>
+      <span>Proyecto y servicio <code>kaze-site</code> configurados</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Root</span>
+      <strong>HTML MVP</strong>
+      <span>Directorio de deploy: <code>kaze-site-local</code></span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip red"><span class="dot"></span> Pendiente</span>
+      <strong>GitHub App</strong>
+      <span>Autorizar Railway para leer el repo privado</span>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Resumen ejecutivo</h2>
+      <p>La fase v4.0 deja el proyecto preparado para un flujo profesional de despliegue: Git local, remoto privado en GitHub, configuración de Railway por servicio y documentación de continuidad actualizada.</p>
+      <p>El intento inicial con <code>railway up</code> falló por timeout durante la subida local de assets. Para estabilizar el deploy, se cambió la estrategia hacia GitHub como fuente principal y Railway como plataforma de despliegue conectada al repositorio.</p>
+      <div class="concept green">
+        <h3>Resultado principal</h3>
+        <p>El código ya vive en GitHub y Railway ya conoce el repo, branch y root directory. El bloqueo restante es de autorización externa: Railway GitHub App debe tener acceso al repo privado para crear snapshots y auto-deploys.</p>
+      </div>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Enlaces operativos</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>GitHub</td><td><code>https://github.com/calvin316byBoxesMedia360/kaze-site</code></td></tr>
+          <tr><td>Railway</td><td><code>https://railway.com/project/ff24d5cd-7612-4f75-9592-cef023294f4a</code></td></tr>
+          <tr><td>Servicio</td><td><code>kaze-site</code></td></tr>
+          <tr><td>Ambiente</td><td><code>production</code></td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <p class="section-label">Cambios aplicados</p>
+  <section class="grid">
+    <article class="panel span-6">
+      <h2>Git y repositorio</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num new">1</div>
+          <div><h3>Repo privado creado</h3><p><code>origin</code> apunta a <code>https://github.com/calvin316byBoxesMedia360/kaze-site.git</code>.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">2</div>
+          <div><h3>Historial sincronizado</h3><p>La rama <code>main</code> quedó pusheada hasta <code>3105fd7 docs: checkpoint GitHub and Railway setup</code>.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">3</div>
+          <div><h3>Checkpoint documentado</h3><p>Se actualizaron <code>MEMORY.md</code>, <code>NEXT_SESSION.md</code> y <code>AI_LOGBOOK.md</code>.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel span-6">
+      <h2>Railway</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>Proyecto</td><td><code>kaze-site</code></td></tr>
+          <tr><td>Servicio</td><td><code>kaze-site</code></td></tr>
+          <tr><td>Service ID</td><td><code>825d8d85-aba6-4328-8909-5247350b2b81</code></td></tr>
+          <tr><td>Branch</td><td><code>main</code></td></tr>
+          <tr><td>Root directory</td><td><code>kaze-site-local</code></td></tr>
+          <tr><td>Estado</td><td>Pendiente de autorización GitHub App para repo privado.</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-7">
+      <h2>Archivos agregados</h2>
+      <table class="table">
+        <thead><tr><th>Archivo</th><th>Función</th></tr></thead>
+        <tbody>
+          <tr><td><code>kaze-site-local/.railwayignore</code></td><td>Evita subir artefactos locales como <code>.vercel</code> y logs.</td></tr>
+          <tr><td><code>railway.json</code></td><td>Define build/start para ejecutar el MVP desde <code>kaze-site-local</code>.</td></tr>
+          <tr><td><code>MEMORY.md</code></td><td>Checkpoint operativo de GitHub y Railway.</td></tr>
+          <tr><td><code>AI_LOGBOOK.md</code></td><td>Registro histórico del avance.</td></tr>
+          <tr><td><code>NEXT_SESSION.md</code></td><td>Instrucciones para retomar el deploy.</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <article class="panel span-5">
+      <h2>Siguiente paso exacto</h2>
+      <div class="pending-list">
+        <div class="pending-item"><div class="pi-icon">1</div><div><div class="pi-label">Railway Dashboard</div>Entrar al servicio <code>kaze-site</code> y confirmar Source GitHub.</div></div>
+        <div class="pending-item"><div class="pi-icon">2</div><div><div class="pi-label">GitHub App</div>Autorizar Railway App para <code>calvin316byBoxesMedia360/kaze-site</code>.</div></div>
+        <div class="pending-item"><div class="pi-icon">3</div><div><div class="pi-label">Deploy</div>Lanzar deploy desde source y generar dominio público.</div></div>
+        <div class="pending-item"><div class="pi-icon">4</div><div><div class="pi-label">Variables</div>Configurar <code>RESEND_API_KEY</code> y <code>NOTIFICATION_EMAIL</code>.</div></div>
+      </div>
+    </article>
+  </section>
+
+  <footer>
+    Informe v4.0 · Proyecto KAZE · GitHub + Railway · 20 mayo 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
 <!-- VERSION 3.0                                             -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<div id="v3" class="v-pane active">
+<div id="v3" class="v-pane">
 <main>
   <p class="section-label">Estado actual</p>
   <section class="grid" aria-label="Métricas principales">
@@ -722,9 +843,10 @@
     document.querySelectorAll('.vtab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const tabs = document.querySelectorAll('.vtab');
-    if (id === 'v3') tabs[0].classList.add('active');
-    else if (id === 'v2') tabs[1].classList.add('active');
-    else tabs[2].classList.add('active');
+    if (id === 'v4') tabs[0].classList.add('active');
+    else if (id === 'v3') tabs[1].classList.add('active');
+    else if (id === 'v2') tabs[2].classList.add('active');
+    else tabs[3].classList.add('active');
   }
 </script>
 
