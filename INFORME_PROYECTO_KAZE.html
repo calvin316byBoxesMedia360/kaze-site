@@ -192,14 +192,83 @@
 
 <!-- Version selector -->
 <div class="version-bar">
-  <button class="vtab active" onclick="showV('v2')">v2.0 — Actual (Next.js)</button>
+  <button class="vtab active" onclick="showV('v3')">v3.0 — Vercel & Glassmorphism</button>
+  <button class="vtab" onclick="showV('v2')">v2.0 — Next.js</button>
   <button class="vtab" onclick="showV('v1')">v1.0 — HTML estático</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 3.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v3" class="v-pane active">
+<main>
+  <p class="section-label">Estado actual</p>
+  <section class="grid" aria-label="Métricas principales">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> Producción</span>
+      <strong>Vercel</strong>
+      <span>Deploy exitoso en <code>kaze-site-local.vercel.app</code></span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Estética</span>
+      <strong>Premium</strong>
+      <span>Glassmorphism, Sombras 24px, Backdrop Blur</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Optimización</span>
+      <strong>Copywriting</strong>
+      <span>Textos depurados, menos redundancia (ES/EN)</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip purple"><span class="dot"></span> Multimedia</span>
+      <strong>Videos / Remotion</strong>
+      <span>Fondo de video interactivo y soporte de presentación</span>
+    </article>
+  </section>
+
+  <p class="section-label">Qué se hizo en esta fase (v3.0)</p>
+  <section class="grid">
+    <article class="panel span-12">
+      <h2>Implementado ✓</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num new">1</div>
+          <div><h3>Deploy en Vercel</h3><p style="font-size:13px">Se publicó el sitio web (MVP) directamente en Vercel para acceso global, integrando la URL final de producción. Listo para clientes.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">2</div>
+          <div><h3>UI: Glassmorphism</h3><p style="font-size:13px">Rediseño del panel de cotización (<code>#cotizar</code>) y el formulario con efectos de <code>backdrop-filter: blur(24px)</code> y fondos translúcidos, dándole una apariencia "premium" inmersiva.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">3</div>
+          <div><h3>Actualización de Assets y Microcopy</h3><p style="font-size:13px">Se refinaron los textos para que fueran más asertivos (ej. "En KAZE transformamos la visión de tu negocio...") evitando repeticiones de la "historia" en la sección general. Se incluyó un video de fondo real y mejores renders visuales.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">4</div>
+          <div><h3>Documentación y Reglas de Sistema</h3><p style="font-size:13px">Se generó el INFO.md, SYSTEM_CONTRACT.md y se actualizó la memoria para alinear a todos los agentes que intervengan de aquí en adelante.</p></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>Estrategia Sugerida (Redes Sociales)</h2>
+    <div class="concept blue">
+        <h3>Remotion Automations <span class="new-tag">DISPONIBLE</span></h3>
+        <p>Se ha establecido una regla global para crear presentaciones en video automáticas con <strong>Remotion</strong> después de finalizar los proyectos, lo cual facilita la distribución en Reels, TikTok y YouTube Shorts. Para invocar esta automatización solo es necesario mencionar la acción: <code>genera presentacion remotion</code>.</p>
+    </div>
+  </section>
+
+  <footer>
+    Informe v3.0 · Proyecto KAZE · Generado el 20 mayo 2026 · BoxesMedia360
+  </footer>
+</main>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
 <!-- VERSION 2.0                                             -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<div id="v2" class="v-pane active">
+<div id="v2" class="v-pane">
 <main>
 
   <!-- Métricas principales -->
@@ -653,8 +722,9 @@
     document.querySelectorAll('.vtab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const tabs = document.querySelectorAll('.vtab');
-    if (id === 'v2') tabs[0].classList.add('active');
-    else tabs[1].classList.add('active');
+    if (id === 'v3') tabs[0].classList.add('active');
+    else if (id === 'v2') tabs[1].classList.add('active');
+    else tabs[2].classList.add('active');
   }
 </script>
 

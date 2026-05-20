@@ -31,6 +31,6 @@ http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": types[path.extname(filePath)] || "application/octet-stream" });
     res.end(data);
   });
-}).listen(port, "127.0.0.1", () => {
-  console.log(`KAZE site running at http://127.0.0.1:${port}/`);
+}).listen(port, "0.0.0.0", () => {
+  console.log(`KAZE site running at http://0.0.0.0:${port}/`);
 });

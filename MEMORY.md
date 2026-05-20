@@ -45,23 +45,18 @@ Al cerrar una iteracion importante:
 - `briefs/`: briefs de produccion, incluyendo hero/video.
 
 ## Ultimo Checkpoint
-Fecha local: 2026-05-18
+Fecha local: 2026-05-20
 
 Resumen:
-- El usuario confirmo que la version Next.js (`kaze-web/`) es la version de interes.
-- Se levanto Next en `http://127.0.0.1:3000/`.
-- Se creo y commiteo la primera version de Kaze Technical Edition en `/technical`.
-- Se importaron imagenes editadas a `kaze-web/public/technical/`.
-- Se redisenio `/technical` hacia un enfoque hibrido mas humano: `Kaze Shop Studio`.
-- Se instalaron skills locales del proyecto en `.agents/skills/`.
-- Se expuso el informe de habilidades en `http://127.0.0.1:3000/habilidades-agentes.html`.
-- Se reemplazaron todas las imagenes placeholder de Unsplash en el MVP (landing page larga) por 16 imagenes customizadas generadas por IA, almacenadas en `assets/images`.
+- **Deploy en Producción**: El proyecto de MVP (HTML) fue publicado directamente en Vercel de manera exitosa en `https://kaze-site-local.vercel.app`.
+- **Refinamiento de UI**: Se aplicó *Glassmorphism* (backdrop-filter y fondos traslúcidos) en el formulario de cotización, aumentando la estética premium del sitio.
+- **Copywriting y Multilenguaje**: Se corrigió redundancia en la sección de historia/acerca de, refinando la propuesta de valor tanto en español como inglés (ES/EN) de forma nativa.
+- **Documentación Operativa**: Se generaron archivos clave para alinear futuros trabajos: `INFO.md` (datos y directivas del proyecto), `SYSTEM_CONTRACT.md` (reglas críticas para los agentes) y se actualizó `INFORME_PROYECTO_KAZE.html` (añadida pestaña v3.0).
+- **Remotion Integrado**: Se estableció sugerir presentaciones automáticas para RRSS vía Remotion.
 
 Verificacion:
-- `npm run build` en `kaze-web/` paso correctamente despues del rediseno de `/technical`.
-- `http://127.0.0.1:3000/technical` responde 200.
-- `http://127.0.0.1:3000/habilidades-agentes.html` responde 200.
-- `npm run lint` falla por un error heredado en `kaze-web/src/app/page.tsx:25` (`react-hooks/set-state-in-effect`) y una advertencia de fuente en `layout.tsx`; no es causado por la ultima modificacion de `/technical`.
+- El sitio resuelve 200 en Vercel y mantiene los assets visuales cargados correctamente (video, hero bg, imágenes locales).
+- La pestaña activa del INFORME ahora refleja la `v3.0` correctamente y explica la estructura a nivel global.
 
 ## Decisiones Vigentes
 - La fuente de trabajo desde ahora debe ser `C:\Users\boxes\Documents\Kaze`.

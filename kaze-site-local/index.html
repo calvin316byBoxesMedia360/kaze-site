@@ -440,7 +440,10 @@
     }
 
     /* ── Form / Cotización ────────────────────────────────── */
-    .form-layout { display: grid; grid-template-columns: 1.25fr .75fr; gap: 28px; align-items: start; }
+    #cotizar { position: relative; z-index: 1; }
+    #cotizar::before { content: ""; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,51,63,0.04), rgba(212,168,67,0.04)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); z-index: -1; }
+    .form-layout { display: grid; grid-template-columns: 1.25fr .75fr; gap: 28px; align-items: start; padding: 40px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(24px); border: 1px solid rgba(200, 51, 63, 0.15); border-radius: 16px; box-shadow: 0 24px 48px rgba(0,0,0,0.06), inset 0 0 0 1px rgba(255,255,255,0.4); }
+    [data-theme="dark"] .form-layout, [data-theme="midnight"] .form-layout { background: rgba(10, 15, 28, 0.6); border-color: rgba(212, 168, 67, 0.2); box-shadow: 0 24px 64px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05); }
     form { padding: 36px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 10px; transition: background-color var(--transition); }
     fieldset { border: 0; padding: 0; margin: 0 0 32px; }
     legend { margin-bottom: 18px; font-family: "Sora"; font-weight: 800; font-size: 19px; }
@@ -481,12 +484,14 @@
     textarea { min-height: 120px; resize: vertical; }
     .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
     .contact-panel {
-      padding: 28px;
+      padding: 36px;
       color: #fff;
       background: var(--dark);
-      border-radius: 10px;
+      border-radius: 12px;
       position: sticky;
       top: 96px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.08);
     }
     .contact-panel p { color: rgba(255,255,255,.72); margin-top: 10px; }
     .contact-line { margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.14); font-weight: 800; font-size: 15px; }
@@ -530,6 +535,7 @@
       .hero { min-height: 620px; }
       .section { padding: 76px 0; }
       .section-head, .projects, .split, .form-layout { grid-template-columns: 1fr; }
+      .form-layout { padding: 24px; }
       .section-head .lead { justify-self: start; }
       .service-grid, .process, .stats, .catalog, .industry-grid, .footer-grid { grid-template-columns: 1fr 1fr; }
       .options { grid-template-columns: 1fr 1fr; }
@@ -634,7 +640,7 @@
         </div>
         <div class="service-grid">
           <article class="card" onclick="openModal('signs')">
-            <img class="card-img" src="assets/images/DTF sign picture.png" alt="Letrero luminoso neón">
+            <img class="card-img" src="assets/images/raider neon sign.png" alt="Letrero luminoso neón">
             <div style="background:var(--red); color:white; text-align:center; font-weight:bold; font-size:12px; padding:2px;">[IMG-02]</div>
             <div class="card-body"><h3 data-i18n="service-1-title">Letreros Luminosos</h3><p data-i18n="service-1-desc">Rótulos LED, neón, acrílico retroiluminado y letras 3D que hacen que tu negocio se vea desde lejos.</p><span class="card-link" data-i18n="service-link">Ver detalles →</span></div>
           </article>
@@ -699,9 +705,9 @@
           <p class="lead" data-i18n="projects-lead">Cada proyecto es diferente. Todos tienen algo en común: los clientes vuelven.</p>
         </div>
         <div class="projects">
-          <div class="project-main" style="background-image:url('assets/images/raider neon sign.png')">
+          <div class="project-main" style="background-image:url('assets/images/sign1.png')">
             <div style="position:absolute; top:10px; right:10px; background:var(--red); color:white; padding:2px 6px; font-size:12px; font-weight:bold; z-index:10; border-radius:4px;">[IMG-06]</div>
-            <div><p class="eyebrow" style="color:var(--green)" data-i18n="project-1-cat">Señalética</p><h3 data-i18n="project-1-title">Letreros LED para negocios locales</h3></div>
+            <div><p class="eyebrow" style="color:var(--green)" data-i18n="project-1-cat">Señalética</p><h3 data-i18n="project-1-title">Señaletica, rotulos y cajas luminosas</h3></div>
           </div>
           <div class="project-stack">
             <div style="background-image:url('assets/images/kit camisa & gorra.png')">
@@ -846,7 +852,7 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <p class="eyebrow" data-i18n="quote-eyebrow">Cotización</p>
+            <p class="eyebrow" data-i18n="quote-eyebrow">Cotiza con nosotros</p>
             <h2 data-i18n="quote-title">Cuéntanos tu proyecto</h2>
           </div>
           <p class="lead" data-i18n="quote-lead">Completa el formulario y te respondemos el mismo día. Sin rodeos, sin promesas vacías.</p>
@@ -998,14 +1004,14 @@
         "projects-title": "Proyectos con presencia real",
         "projects-lead": "Cada proyecto es diferente. Todos tienen algo en común: los clientes vuelven.",
         "project-1-cat": "Señalética",
-        "project-1-title": "Letreros LED para negocios locales",
+        "project-1-title": "Señaletica, rotulos y cajas luminosas",
         "project-2-cat": "Apparel",
         "project-2-title": "Uniformes y merch por volumen",
         "project-3-cat": "Bordado",
         "project-3-title": "Logos con textura y durabilidad",
         "about-eyebrow": "Por qué KAZE",
         "about-title": "Más de 10 años haciendo que los negocios se vean bien",
-        "about-lead": "KAZE nació de la necesidad de salir adelante. Hoy seguimos con la misma mentalidad: ningún proyecto es pequeño, ningún cliente es solo un número.",
+        "about-lead": "En KAZE transformamos la visión de tu negocio en una marca inolvidable. Combinamos calidad industrial con trato directo bajo una regla de oro: ningún proyecto es pequeño y ningún cliente es solo un número.",
         "stat-1": "años de experiencia en personalización",
         "stat-2": "pedidos por semana, cada semana",
         "stat-3": "personas cuidando producción y detalle",
@@ -1052,7 +1058,7 @@
         "app-3-desc": "Sin límite de colores. Perfecto para diseños complejos, fotografías y piezas únicas.",
         "app-4-title": "Stickers de Vinil",
         "app-4-desc": "Desde una calcomanía hasta vinilado para superficies, ventanas o vehículos.",
-        "quote-eyebrow": "Cotización",
+        "quote-eyebrow": "Cotiza con nosotros",
         "quote-title": "Cuéntanos tu proyecto",
         "quote-lead": "Completa el formulario y te respondemos el mismo día. Sin rodeos, sin promesas vacías.",
         "form-step-1": "1. ¿Qué necesitas?",
@@ -1153,7 +1159,7 @@
         "project-3-title": "Logos with texture and durability",
         "about-eyebrow": "Why KAZE",
         "about-title": "Over 10 years making businesses look great",
-        "about-lead": "KAZE was born from the need to move forward. Today we continue with the same mindset: no project is small, no customer is just a number.",
+        "about-lead": "At KAZE, we transform your business vision into an unforgettable brand. We combine industrial quality with direct service under a golden rule: no project is small and no customer is just a number.",
         "stat-1": "years of experience in customization",
         "stat-2": "orders per week, every week",
         "stat-3": "people taking care of production and detail",
