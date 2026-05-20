@@ -18,7 +18,7 @@ export default function Projects({ lang }: ProjectsProps) {
         <div className="projects">
           <div
             className="project-main"
-            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1524592094714-0f0654e20314?auto=format&fit=crop&w=1400&q=80')" }}
+            style={{ backgroundImage: "url('/technical/shop-wide-2.png')" }}
           >
             <div>
               <p className="eyebrow" style={{ color: 'var(--green)' }}>{t(lang, 'proj.p1.eye')}</p>
@@ -26,13 +26,13 @@ export default function Projects({ lang }: ProjectsProps) {
             </div>
           </div>
           <div className="project-stack">
-            <div style={{ backgroundImage: "url('https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=900&q=80')" }}>
+            <div style={{ backgroundImage: "url('/placeholders/team-uniforms.svg')" }}>
               <div>
                 <p className="eyebrow" style={{ color: 'var(--green)' }}>{t(lang, 'proj.p2.eye')}</p>
                 <h3>{t(lang, 'proj.p2.title')}</h3>
               </div>
             </div>
-            <div style={{ backgroundImage: "url('https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=900&q=80')" }}>
+            <div style={{ backgroundImage: "url('/technical/machinery.png')" }}>
               <div>
                 <p className="eyebrow" style={{ color: 'var(--green)' }}>{t(lang, 'proj.p3.eye')}</p>
                 <h3>{t(lang, 'proj.p3.title')}</h3>

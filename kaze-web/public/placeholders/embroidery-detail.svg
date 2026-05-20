@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#111"/>
+  <rect x="120" y="120" width="960" height="560" rx="280" fill="#f7f8f5" stroke="#d4a843" stroke-width="16"/>
+  <g stroke="#101820" stroke-width="9" fill="none" stroke-linecap="round">
+    <path d="M395 430c60-150 160-150 210 0s150 150 210 0"/>
+    <path d="M395 375c60-120 160-120 210 0s150 120 210 0" opacity=".65"/>
+    <path d="M395 485c60-120 160-120 210 0s150 120 210 0" opacity=".65"/>
+  </g>
+  <text x="600" y="275" text-anchor="middle" fill="#c8333f" font-family="Arial, sans-serif" font-size="56" font-weight="800">BORDADO</text>
+  <text x="600" y="575" text-anchor="middle" fill="#101820" font-family="Arial, sans-serif" font-size="34" font-weight="700">clean stitch finish</text>
+</svg>

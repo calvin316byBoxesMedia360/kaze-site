@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#101820"/>
+  <rect x="130" y="180" width="940" height="460" rx="18" fill="#f7f8f5"/>
+  <rect x="190" y="260" width="820" height="110" rx="12" fill="#111"/>
+  <text x="600" y="335" text-anchor="middle" fill="#d4a843" font-family="Arial, sans-serif" font-size="54" font-weight="900">MAIN STREET SHOP</text>
+  <rect x="245" y="420" width="250" height="220" fill="#b9d7e8"/><rect x="705" y="420" width="250" height="220" fill="#b9d7e8"/>
+  <rect x="520" y="420" width="160" height="220" fill="#2b2520"/>
+  <text x="600" y="730" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="42" font-weight="800">WATSONVILLE, CA</text>
+</svg>

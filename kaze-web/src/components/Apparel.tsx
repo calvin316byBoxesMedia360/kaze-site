@@ -7,22 +7,22 @@ interface ApparelProps {
 export default function Apparel({ lang }: ApparelProps) {
   const cards = [
     {
-      img: 'https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=900&q=80',
+      img: '/technical/machinery.png',
       titleKey: 'app.t1.title',
       textKey: 'app.t1.text',
     },
     {
-      img: 'https://images.unsplash.com/photo-1583743814966-8936f37f4678?auto=format&fit=crop&w=900&q=80',
+      img: '/placeholders/team-uniforms.svg',
       titleKey: 'app.t2.title',
       textKey: 'app.t2.text',
     },
     {
-      img: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=900&q=80',
+      img: '/placeholders/dtf-color.svg',
       titleKey: 'app.t3.title',
       textKey: 'app.t3.text',
     },
     {
-      img: 'https://images.unsplash.com/photo-1607083206968-13611e3d76db?auto=format&fit=crop&w=900&q=80',
+      img: '/placeholders/vinyl-decals.svg',
       titleKey: 'app.t4.title',
       textKey: 'app.t4.text',
     },

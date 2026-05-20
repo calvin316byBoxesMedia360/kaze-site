@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#ffffff"/>
+  <circle cx="600" cy="400" r="320" fill="#101820"/>
+  <g fill="#f7f8f5" stroke="#d4a843" stroke-width="8">
+    <path d="M340 290l58-35h78l58 35-30 70-36-14v180H326V346l-36 14z"/>
+    <path d="M540 250l70-42h92l70 42-36 85-46-18v240H522V317l-46 18z"/>
+    <path d="M790 290l58-35h78l58 35-30 70-36-14v180H776V346l-36 14z"/>
+  </g>
+  <text x="600" y="685" text-anchor="middle" fill="#101820" font-family="Arial, sans-serif" font-size="48" font-weight="900">TEAM UNIFORMS</text>
+</svg>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#f4f1ec"/>
+  <rect x="130" y="110" width="940" height="580" rx="28" fill="#fff" stroke="#ddd" stroke-width="4"/>
+  <path d="M235 510l230-260 180 200 105-115 215 240" fill="none" stroke="#101820" stroke-width="22" stroke-linejoin="round"/>
+  <path d="M230 590h740" stroke="#d4a843" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="860" cy="235" r="58" fill="#c8333f"/>
+  <text x="600" y="160" text-anchor="middle" fill="#101820" font-family="Arial, sans-serif" font-size="48" font-weight="800">STICKERS & VINYL</text>
+</svg>

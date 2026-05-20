@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#101820"/><stop offset="1" stop-color="#22170a"/></linearGradient>
+    <linearGradient id="gold" x1="0" x2="1"><stop stop-color="#f6d273"/><stop offset="1" stop-color="#b98522"/></linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="130" y="170" width="940" height="410" rx="34" fill="#151515" stroke="url(#gold)" stroke-width="10"/>
+  <text x="600" y="355" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="96" font-weight="800">KAZE</text>
+  <text x="600" y="445" text-anchor="middle" fill="#f6d273" font-family="Arial, sans-serif" font-size="46" font-weight="700">LED SIGNS</text>
+  <circle cx="210" cy="250" r="10" fill="#ff3f4f"/><circle cx="990" cy="250" r="10" fill="#ff3f4f"/>
+  <path d="M170 640h860" stroke="#f6d273" stroke-width="4" opacity=".55"/>
+</svg>

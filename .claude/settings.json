@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest kaze-web --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(npm install *)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\boxes\\Documents\\Kaze\\kaze-site-local"
+    ]
+  }
+}

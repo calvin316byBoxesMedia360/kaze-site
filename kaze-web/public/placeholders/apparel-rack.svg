@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#f7f8f5"/>
+  <rect x="0" y="0" width="1200" height="260" fill="#101820"/>
+  <path d="M190 245h820M245 245v390M955 245v390" stroke="#d4a843" stroke-width="12" stroke-linecap="round"/>
+  <g fill="#fff" stroke="#1a1a1a" stroke-width="8">
+    <path d="M295 310l70-42h88l70 42-36 86-46-18v226H277V378l-46 18z"/>
+    <path d="M535 310l70-42h88l70 42-36 86-46-18v226H517V378l-46 18z" fill="#101820"/>
+    <path d="M775 310l70-42h88l70 42-36 86-46-18v226H757V378l-46 18z"/>
+  </g>
+  <text x="600" y="710" text-anchor="middle" fill="#101820" font-family="Arial, sans-serif" font-size="48" font-weight="800">CUSTOM APPAREL</text>
+</svg>

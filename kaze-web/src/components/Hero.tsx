@@ -9,6 +9,8 @@ export default function Hero({ lang }: HeroProps) {
   return (
     <header className="hero" id="inicio">
       <div className="hero-bg">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className="hero-photo" src="/technical/shop-wide-1.png" alt="" />
         <div className="orb orb-1" />
         <div className="orb orb-2" />
         <div className="orb orb-3" />

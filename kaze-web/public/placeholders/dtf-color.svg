@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs><linearGradient id="rain" x1="0" x2="1"><stop stop-color="#e83e8c"/><stop offset=".35" stop-color="#ff3b30"/><stop offset=".7" stop-color="#0066ff"/><stop offset="1" stop-color="#00d084"/></linearGradient></defs>
+  <rect width="1200" height="800" fill="#101820"/>
+  <rect x="180" y="150" width="840" height="500" rx="30" fill="#f7f8f5"/>
+  <rect x="250" y="250" width="700" height="120" rx="60" fill="url(#rain)"/>
+  <rect x="250" y="420" width="500" height="36" rx="18" fill="#d4a843"/>
+  <rect x="250" y="490" width="360" height="36" rx="18" fill="#101820"/>
+  <text x="600" y="585" text-anchor="middle" fill="#101820" font-family="Arial, sans-serif" font-size="56" font-weight="900">DTF COLOR</text>
+</svg>

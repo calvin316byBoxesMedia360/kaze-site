@@ -2,6 +2,7 @@
   --tech-ink: #101114;
   --tech-panel: #181a1f;
   --tech-soft: #f4f1ec;
+  --tech-warm: #fffaf2;
   --tech-line: rgba(16, 17, 20, .14);
   --tech-muted: #696b72;
   --tech-pink: #ff3f9a;
@@ -281,20 +282,78 @@
 }
 
 .tech-section,
+.human-section,
 .visual-system,
 .quote-console {
   padding: clamp(70px, 8vw, 120px) clamp(18px, 4vw, 48px);
 }
 
-.tech-section-head {
+.tech-section-head,
+.human-copy {
   max-width: 920px;
   margin-bottom: 34px;
 }
 
 .tech-section-head h2,
+.human-copy h2,
 .quote-console h2 {
   max-width: 860px;
   font-size: clamp(30px, 4vw, 56px);
+}
+
+.human-section {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  gap: 38px;
+  align-items: start;
+  background:
+    linear-gradient(135deg, rgba(255, 63, 154, .09), transparent 30%),
+    var(--tech-warm);
+}
+
+.human-copy {
+  position: sticky;
+  top: 96px;
+  margin-bottom: 0;
+}
+
+.human-copy p:not(.tech-eyebrow) {
+  max-width: 620px;
+  margin: 20px 0 0;
+  color: var(--tech-muted);
+  font-size: clamp(16px, 1.7vw, 20px);
+}
+
+.audience-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.audience-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  align-items: start;
+  padding: 24px;
+  border: 1px solid rgba(16, 17, 20, .12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 16px 42px rgba(16, 17, 20, .06);
+}
+
+.audience-card svg {
+  grid-row: span 2;
+  color: var(--tech-pink);
+}
+
+.audience-card h3 {
+  margin: 0;
+  font-family: Sora, system-ui, sans-serif;
+}
+
+.audience-card p {
+  margin: 0;
+  color: var(--tech-muted);
 }
 
 .capability-grid {
@@ -476,6 +535,14 @@
   .quote-console {
     grid-template-columns: 1fr;
   }
+
+  .human-section {
+    grid-template-columns: 1fr;
+  }
+
+  .human-copy {
+    position: static;
+  }
 }
 
 @media (max-width: 760px) {
@@ -519,6 +586,7 @@
 
   .spec-grid,
   .capability-grid,
+  .audience-grid,
   .wide-gallery,
   .vertical-gallery,
   .console-panel {
@@ -535,5 +603,9 @@
 
   .vertical-image {
     min-height: 440px;
+  }
+
+  .audience-card {
+    grid-template-columns: 1fr;
   }
 }

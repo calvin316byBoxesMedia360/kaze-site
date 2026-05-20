@@ -21,25 +21,25 @@ interface CardInfo {
 export default function Signs({ lang }: SignsProps) {
   const cards: CardInfo[] = [
     {
-      img: 'https://images.unsplash.com/photo-1519608487953-e999c86e7455?auto=format&fit=crop&w=1000&q=80',
+      img: '/placeholders/signs-led.svg',
       badge: { key: 'signs.b1', className: 'badge green' },
       titleKey: 'signs.c1.title',
       textKey: 'signs.c1.text',
     },
     {
-      img: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=80',
+      img: '/placeholders/storefront-local.svg',
       badge: { key: 'signs.b2', className: 'badge', style: { color: '#111', background: '#ffdf9f', border: 'none' } },
       titleKey: 'signs.c2.title',
       textKey: 'signs.c2.text',
     },
     {
-      img: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1000&q=80',
+      img: '/technical/shop-wide-2.png',
       badge: null,
       titleKey: 'signs.c3.title',
       textKey: 'signs.c3.text',
     },
     {
-      img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80',
+      img: '/technical/dtf-sign.png',
       badge: null,
       titleKey: 'signs.c4.title',
       textKey: 'signs.c4.text',
