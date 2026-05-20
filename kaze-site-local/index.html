@@ -221,13 +221,20 @@
     .hero {
       min-height: 760px;
       color: #fff;
-      background:
-        linear-gradient(90deg, rgba(16,24,32,.97) 0%, rgba(16,24,32,.78) 55%, rgba(16,24,32,.32) 100%),
-        url("assets/images/Kaze shop picture 3.png") center/cover;
+      background: linear-gradient(90deg, rgba(16,24,32,.97) 0%, rgba(16,24,32,.78) 55%, rgba(16,24,32,.32) 100%);
       display: grid;
       align-items: center;
       position: relative;
       overflow: hidden;
+    }
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
     }
     .hero::after {
       content: "";
@@ -592,7 +599,10 @@
 
   <!-- ── Hero ───────────────────────────────────────────── -->
   <header class="hero" id="inicio">
-    <div style="position:absolute; top:80px; left:20px; background:var(--red); color:white; padding:4px 8px; font-size:14px; font-weight:bold; z-index:100; border-radius:4px;">[IMG-01 - Fondo Hero]</div>
+    <video class="hero-video" autoplay loop muted playsinline>
+      <source src="assets/images/Kaze_commercial_products.mp4" type="video/mp4">
+    </video>
+    <div style="position:absolute; top:80px; left:20px; background:var(--red); color:white; padding:4px 8px; font-size:14px; font-weight:bold; z-index:100; border-radius:4px;">[VID-01 - Fondo Hero]</div>
     <div class="container hero-copy">
       <p class="eyebrow" data-i18n="hero-eyebrow">Watsonville, CA · Desde 2014</p>
       <h1 data-i18n="hero-title">Tu marca,<br>hecha realidad.</h1>
