@@ -497,6 +497,64 @@
     .contact-line { margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.14); font-weight: 800; font-size: 15px; }
     .contact-line small { display: block; color: rgba(255,255,255,.5); font-weight: 400; font-size: 12px; margin-bottom: 4px; letter-spacing: .06em; text-transform: uppercase; }
 
+    /* ── Notifications ───────────────────────────────────── */
+    .notification-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 10000;
+      max-width: 380px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      background: rgba(16, 24, 32, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 168, 67, 0.3);
+      color: #fff;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-family: "Hanken Grotesk", sans-serif;
+    }
+    .notification-toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .notification-toast.success {
+      border-color: rgba(34, 197, 94, 0.4);
+    }
+    .notification-toast.error {
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    .notification-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .notification-content h5 {
+      margin: 0 0 4px;
+      font-family: "Sora", sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+    }
+    .notification-content p {
+      margin: 0;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1.4;
+    }
+    @media (max-width: 480px) {
+      .notification-toast {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        max-width: calc(100% - 24px);
+      }
+    }
+
     /* ── Footer ───────────────────────────────────────────── */
     footer { padding: 56px 0; color: #fff; background: #0e1520; }
     .footer-grid { display: grid; grid-template-columns: 1.3fr repeat(3, 1fr); gap: 32px; }
@@ -858,7 +916,7 @@
           <p class="lead" data-i18n="quote-lead">Completa el formulario y te respondemos el mismo día. Sin rodeos, sin promesas vacías.</p>
         </div>
         <div class="form-layout">
-          <form>
+          <form id="quote-form">
             <fieldset>
               <legend data-i18n="form-step-1">1. ¿Qué necesitas?</legend>
               <div class="options">
@@ -872,11 +930,11 @@
             </fieldset>
             <fieldset>
               <legend data-i18n="form-step-2">2. Tu proyecto</legend>
-              <label><span data-i18n="label-idea">Cuéntanos qué tienes en mente</span><textarea data-i18n-placeholder="placeholder-idea" placeholder="Necesito 50 camisetas para mi restaurante con mi logo bordado en el pecho..."></textarea></label>
+              <label><span data-i18n="label-idea">Cuéntanos qué tienes en mente</span><textarea id="quote-idea" name="idea" data-i18n-placeholder="placeholder-idea" placeholder="Necesito 50 camisetas para mi restaurante con mi logo bordado en el pecho..." required></textarea></label>
               <div class="form-grid" style="margin-top:22px">
-                <label><span data-i18n="label-pieces">¿Cuántas piezas aproximadamente?</span><input type="number" placeholder="50"></label>
+                <label><span data-i18n="label-pieces">¿Cuántas piezas aproximadamente?</span><input type="number" id="quote-pieces" name="pieces" placeholder="50"></label>
                 <label><span data-i18n="label-logo">¿Tienes logo o archivo listo?</span>
-                  <select>
+                  <select id="quote-logo" name="logoStatus">
                     <option value="" data-i18n="opt-select">Selecciona...</option>
                     <option data-i18n="opt-logo-yes">Sí, tengo archivo listo</option>
                     <option data-i18n="opt-logo-no">No, necesito diseño</option>
@@ -888,11 +946,11 @@
             <fieldset>
               <legend data-i18n="form-step-3">3. Tus datos</legend>
               <div class="form-grid">
-                <label><span data-i18n="label-name">Nombre</span><input type="text" data-i18n-placeholder="placeholder-name" placeholder="Tu nombre"></label>
-                <label><span data-i18n="label-phone">Teléfono o WhatsApp</span><input type="tel" placeholder="831-000-0000"></label>
-                <label><span data-i18n="label-email">Email</span><input type="email" placeholder="correo@ejemplo.com"></label>
+                <label><span data-i18n="label-name">Nombre</span><input type="text" id="quote-name" name="name" data-i18n-placeholder="placeholder-name" placeholder="Tu nombre" required></label>
+                <label><span data-i18n="label-phone">Teléfono o WhatsApp</span><input type="tel" id="quote-phone" name="phone" placeholder="831-000-0000"></label>
+                <label><span data-i18n="label-email">Email</span><input type="email" id="quote-email" name="email" placeholder="correo@ejemplo.com" required></label>
                 <label><span data-i18n="label-contact">Preferencia de contacto</span>
-                  <select>
+                  <select id="quote-contact-pref" name="contactPref">
                     <option>WhatsApp</option>
                     <option data-i18n="opt-phone">Teléfono</option>
                     <option>Email</option>
@@ -1351,6 +1409,98 @@
       steps.forEach(s => observer.observe(s));
     } else {
       steps.forEach(s => s.classList.add('visible'));
+    }
+
+    // Quote form submit handler with rich feedback
+    const quoteForm = document.getElementById('quote-form');
+    if (quoteForm) {
+      quoteForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitBtn = quoteForm.querySelector('button[type="submit"]');
+        const originalBtnText = submitBtn.innerHTML;
+        
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = currentLang === 'es' ? 'Enviando...' : 'Sending...';
+        
+        const formData = new FormData(quoteForm);
+        const data = {};
+        
+        const servicios = [];
+        formData.getAll('servicio').forEach(val => servicios.push(val));
+        data.servicio = servicios;
+        
+        data.idea = formData.get('idea');
+        data.pieces = formData.get('pieces');
+        data.logoStatus = formData.get('logoStatus');
+        data.name = formData.get('name');
+        data.phone = formData.get('phone');
+        data.email = formData.get('email');
+        data.contactPref = formData.get('contactPref');
+        
+        try {
+          const res = await fetch('/api/quote', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+          
+          const result = await res.json();
+          if (res.ok && result.success) {
+            showNotification(
+              currentLang === 'es' ? '¡Cotización Enviada!' : 'Quote Sent!',
+              currentLang === 'es' 
+                ? 'Hemos recibido tu solicitud. Te responderemos hoy mismo en nuestro horario de atención.' 
+                : 'We have received your request. We will reply today during business hours.',
+              'success'
+            );
+            quoteForm.reset();
+          } else {
+            throw new Error(result.error || (currentLang === 'es' ? 'Error al enviar' : 'Error sending'));
+          }
+        } catch (err) {
+          console.error(err);
+          showNotification(
+            currentLang === 'es' ? 'Error de envío' : 'Submission Error',
+            currentLang === 'es' 
+              ? 'No pudimos procesar tu solicitud. Por favor intenta de nuevo o llámanos directamente.' 
+              : 'Could not process your request. Please try again or call us directly.',
+            'error'
+          );
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnText;
+        }
+      });
+    }
+
+    function showNotification(title, message, type = 'success') {
+      let toast = document.getElementById('quote-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'quote-toast';
+        document.body.appendChild(toast);
+      }
+      
+      const icon = type === 'success' ? '✨' : '⚠️';
+      toast.className = `notification-toast ${type}`;
+      toast.innerHTML = `
+        <div class="notification-icon">${icon}</div>
+        <div class="notification-content">
+          <h5>${title}</h5>
+          <p>${message}</p>
+        </div>
+      `;
+      
+      toast.offsetHeight; // Force reflow
+      toast.classList.add('show');
+      
+      if (window.toastTimeout) clearTimeout(window.toastTimeout);
+      window.toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 5000);
     }
   </script>
   <!-- Modal -->

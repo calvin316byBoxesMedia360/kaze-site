@@ -18,6 +18,76 @@ const types = {
 
 http.createServer((req, res) => {
   const urlPath = decodeURIComponent(req.url.split("?")[0]);
+
+  // Handle Quote submissions
+  if (req.method === "POST" && urlPath === "/api/quote") {
+    let body = "";
+    req.on("data", chunk => {
+      body += chunk.toString();
+    });
+    req.on("end", async () => {
+      try {
+        const formData = JSON.parse(body);
+        console.log("Received Quote Request:", formData);
+
+        const toEmail = process.env.NOTIFICATION_EMAIL || "calvin316@boxesmedia360.com";
+        const apiKey = process.env.RESEND_API_KEY;
+
+        let responseDetail = "Simulated quote reception in development mode.";
+
+        if (apiKey) {
+          const services = Array.isArray(formData.servicio) ? formData.servicio.join(", ") : (formData.servicio || "Ninguno");
+          const htmlContent = `
+            <h2>Nueva Cotización desde KAZE Website</h2>
+            <p><strong>Nombre:</strong> ${formData.name || 'No proporcionado'}</p>
+            <p><strong>Email:</strong> ${formData.email || 'No proporcionado'}</p>
+            <p><strong>Teléfono:</strong> ${formData.phone || 'No proporcionado'}</p>
+            <p><strong>Preferencia de Contacto:</strong> ${formData.contactPref || 'No especificada'}</p>
+            <p><strong>Servicios requeridos:</strong> ${services}</p>
+            <p><strong>Cantidad aproximada de piezas:</strong> ${formData.pieces || 'No especificada'}</p>
+            <p><strong>Estado del Logo:</strong> ${formData.logoStatus || 'No especificado'}</p>
+            <p><strong>Detalle de la Idea/Proyecto:</strong></p>
+            <blockquote style="background: #f4f4f4; padding: 10px; border-left: 3px solid #d4a843;">
+              ${(formData.idea || '').replace(/\n/g, '<br>') || 'Sin descripción'}
+            </blockquote>
+          `;
+
+          const resendResponse = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${apiKey}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              from: "KAZE Web <onboarding@resend.dev>",
+              to: [toEmail],
+              subject: `Nueva Cotización: ${formData.name || 'Sin nombre'}`,
+              html: htmlContent
+            })
+          });
+
+          if (resendResponse.ok) {
+            responseDetail = "Email sent successfully via Resend.";
+          } else {
+            const errBody = await resendResponse.text();
+            console.error("Error from Resend API:", errBody);
+            throw new Error(`Resend error: ${errBody}`);
+          }
+        } else {
+          console.log(`[DEV MODE] Email to ${toEmail} simulated with payload:`, formData);
+        }
+
+        res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+        res.end(JSON.stringify({ success: true, message: responseDetail }));
+      } catch (err) {
+        console.error("Error handling quote:", err);
+        res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+        res.end(JSON.stringify({ success: false, error: err.message || "Error interno del servidor" }));
+      }
+    });
+    return;
+  }
+
   const safePath = path.normalize(urlPath).replace(/^(\.\.[/\\])+/, "");
   const isRoot = safePath === "/" || safePath === "\\" || safePath === "";
   const filePath = path.join(root, isRoot ? "index.html" : safePath);
