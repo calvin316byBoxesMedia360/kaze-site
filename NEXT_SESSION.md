@@ -27,6 +27,9 @@ http://127.0.0.1:3000/habilidades-agentes.html
 ## Contexto Importante
 - `http://127.0.0.1:4177/` puede seguir apuntando a la copia original en Downloads.
 - La copia nueva oficial para trabajar esta en `Documents\Kaze`.
+- Repo GitHub privado: `https://github.com/calvin316byBoxesMedia360/kaze-site`.
+- Railway proyecto/servicio: `kaze-site`, ambiente `production`, root directory `kaze-site-local`.
+- Railway esta configurado con repo `calvin316byBoxesMedia360/kaze-site`, branch `main`; falta completar/autorizar Railway GitHub App para que auto-deploy funcione con el repo privado.
 - El commit base del repo nuevo es `af56eed`.
 - El usuario confirmo que la version de interes es `kaze-web/` en Next.js.
 - Version 1 vive en `/`.
@@ -53,6 +56,7 @@ http://127.0.0.1:3000/habilidades-agentes.html
 - Crear estructura de docs mas formal si se va a escalar: `README.md`, `assets/`, `docs/`.
 - Normalizar encoding de documentos que muestran caracteres corruptos.
 - Preparar remote Git si se quiere subir a GitHub.
+- Completar conexion Railway GitHub App, luego desplegar desde source y generar dominio publico.
 
 ## Referencia Estatica
 Si se necesita revisar la version estatica historica:

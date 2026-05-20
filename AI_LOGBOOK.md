@@ -41,3 +41,12 @@
   - Mencionar Monterey Bay / Santa Cruz County de forma natural.
   - Posicionar a Kaze como tienda local fisica para negocios, equipos, eventos y marcas cercanas.
   - Aplicar la estrategia en metadata, JSON-LD, copy visible, contacto, areas atendidas y CTAs.
+
+## 2026-05-20 - GitHub y Railway
+- Se creo el repo privado `https://github.com/calvin316byBoxesMedia360/kaze-site`.
+- Se pusheo `main` hasta `6851564 chore: add Railway deployment config`.
+- Se agrego `kaze-site-local/.railwayignore`.
+- Se agrego `railway.json` para orientar Railway hacia `kaze-site-local`.
+- Railway proyecto/servicio: `kaze-site`, ambiente `production`.
+- Railway Agent configuro source repo `calvin316byBoxesMedia360/kaze-site`, branch `main`, root directory `kaze-site-local`.
+- Bloqueo restante: autorizar/conectar Railway GitHub App para que el repo privado pueda generar snapshot y auto-deploy.

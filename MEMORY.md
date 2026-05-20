@@ -21,7 +21,7 @@ Al cerrar una iteracion importante:
 - Proyecto: KAZE Custom Apparel & Signs / Kaze Designs.
 - Ubicacion nueva de trabajo: `C:\Users\boxes\Documents\Kaze`.
 - Ubicacion original preservada: `C:\Users\boxes\Downloads\Habilidades de Agentes\proyecto Kaze`.
-- Git: repo local inicializado en la ubicacion nueva, rama `main`.
+- Git: repo local inicializado en la ubicacion nueva, rama `main`, remoto `origin` en `https://github.com/calvin316byBoxesMedia360/kaze-site`.
 - Commit base: `af56eed chore: import Kaze project`.
 - Version activa para iterar: `kaze-web/`, proyecto Next.js.
 - Version estatica historica: `kaze-site-local/`, HTML estatico con servidor Node simple.
@@ -92,8 +92,19 @@ Verificacion:
 - Confirmar assets definitivos: version vectorial del logo y posibles videos (ya se integraron placeholders 4K por IA).
 - Si se sigue trabajando en `4178`, actualizar logs/servidores para evitar confusion con `4177`.
 - Corregir mojibake/encoding en algunos documentos heredados si se van a entregar o publicar.
+- Completar en Railway/GitHub la instalacion o autorizacion de Railway GitHub App para `calvin316byBoxesMedia360/kaze-site`.
+- Cuando Railway tenga acceso a GitHub, disparar deploy desde source y generar dominio publico.
 
 ## Historial De Iteraciones
+
+### 2026-05-20 - GitHub y configuracion Railway
+- Se creo el repo privado `https://github.com/calvin316byBoxesMedia360/kaze-site`.
+- Se hizo push de la rama `main` con historial local hasta `6851564 chore: add Railway deployment config`.
+- Se agrego `.railwayignore` para evitar subir artefactos locales de Vercel/logs.
+- Se agrego `railway.json` con build/start para ejecutar el MVP desde `kaze-site-local`.
+- Railway proyecto/servicio: `kaze-site`, ambiente `production`, service ID `825d8d85-aba6-4328-8909-5247350b2b81`.
+- Railway Agent configuro source repo `calvin316byBoxesMedia360/kaze-site`, branch `main`, root directory `kaze-site-local`.
+- Pendiente para deploy automatico: conectar/autorizar Railway GitHub App con acceso al repo privado.
 
 ### 2026-05-17 - Copia a Documents y Git local
 - Se copio `C:\Users\boxes\Downloads\Habilidades de Agentes\proyecto Kaze` a `C:\Users\boxes\Documents\Kaze`.
