@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informe del Proyecto KAZE</title>
+  <style>
+    :root {
+      --ink: #181818; --muted: #666a73; --paper: #f6f4ef;
+      --white: #ffffff; --gold: #d4a843; --red: #c8333f;
+      --green: #22a06b; --blue: #2563eb; --line: #dfddd7; --dark: #101820;
+      --purple: #7c3aed;
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:Arial,Helvetica,sans-serif; color:var(--ink); background:var(--paper); line-height:1.5; }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { font-size:clamp(30px,5vw,52px); line-height:1.02; margin-bottom:12px; }
+    h2 { font-size:22px; margin-bottom:14px; }
+    h3 { font-size:16px; margin-bottom:6px; }
+    p { color:var(--muted); margin-bottom:12px; }
+    code { background:#f0eee8; border:1px solid var(--line); border-radius:5px; padding:2px 6px; color:#222; font-size:13px; }
+    a { color:var(--blue); }
+
+    /* ── Header ── */
+    header { background:var(--dark); color:#fff; padding:36px 7vw 28px; border-bottom:5px solid var(--gold); }
+    .eyebrow { color:var(--gold); font-weight:800; text-transform:uppercase; letter-spacing:.08em; font-size:11px; margin-bottom:10px; }
+    .subtitle { max-width:720px; color:#d9dde5; font-size:16px; margin-bottom:0; }
+    .header-meta { display:flex; align-items:center; gap:12px; margin-top:18px; flex-wrap:wrap; }
+    .ver-badge { background:var(--gold); color:var(--dark); font-weight:900; font-size:12px; padding:4px 10px; border-radius:999px; }
+
+    /* ── Version tabs ── */
+    .version-bar { background:#0e1520; padding:0 7vw; display:flex; gap:0; border-bottom:1px solid rgba(255,255,255,.08); }
+    .vtab { padding:12px 22px; font-size:13px; font-weight:700; color:rgba(255,255,255,.45); border:none; background:none; cursor:pointer; border-bottom:3px solid transparent; transition:color .2s, border-color .2s; }
+    .vtab:hover { color:rgba(255,255,255,.8); }
+    .vtab.active { color:#fff; border-bottom-color:var(--gold); }
+
+    /* ── Version panes ── */
+    .v-pane { display:none; }
+    .v-pane.active { display:block; }
+
+    /* ── Layout ── */
+    main { width:min(1140px,calc(100% - 28px)); margin:24px auto 60px; }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:16px; margin-bottom:16px; }
+    .panel { background:var(--white); border:1px solid var(--line); border-radius:8px; padding:20px; box-shadow:0 6px 24px rgba(16,24,32,.06); }
+    .span-3 { grid-column:span 3; }
+    .span-4 { grid-column:span 4; }
+    .span-5 { grid-column:span 5; }
+    .span-6 { grid-column:span 6; }
+    .span-7 { grid-column:span 7; }
+    .span-8 { grid-column:span 8; }
+    .span-9 { grid-column:span 9; }
+    .span-12 { grid-column:span 12; }
+
+    /* ── Metrics ── */
+    .metric { display:flex; flex-direction:column; gap:6px; min-height:110px; }
+    .metric strong { font-size:28px; line-height:1; }
+    .metric span { color:var(--muted); font-size:13px; }
+    .chip { display:inline-flex; align-items:center; gap:7px; border-radius:999px; padding:6px 12px; font-weight:700; font-size:12px; }
+    .chip.green { background:#eaf7f0; color:#0b6b43; }
+    .chip.gold { background:#fef3d7; color:#7a5200; }
+    .chip.blue { background:#e8f0ff; color:#1e40af; }
+    .chip.red { background:#fde8e8; color:#991b1b; }
+    .chip.purple { background:#ede9fe; color:#5b21b6; }
+    .dot { width:8px; height:8px; border-radius:50%; background:currentColor; flex-shrink:0; }
+
+    /* ── Tables ── */
+    .table { width:100%; border-collapse:collapse; font-size:13px; }
+    .table th, .table td { border-bottom:1px solid var(--line); padding:10px 8px; text-align:left; vertical-align:top; }
+    .table th { color:#444; font-size:11px; text-transform:uppercase; letter-spacing:.06em; background:#faf9f7; }
+    .table tr:last-child td { border-bottom:0; }
+    .path { font-size:12px; word-break:break-word; }
+
+    /* ── Browser shot ── */
+    .browser-shot { overflow:hidden; border:1px solid #cfd2d7; border-radius:8px; background:#fff; }
+    .browser-bar { display:flex; gap:7px; align-items:center; padding:9px 11px; border-bottom:1px solid #dfe3e8; background:#f8fafc; }
+    .bd { width:10px; height:10px; border-radius:50%; }
+    .url { margin-left:6px; background:#eef2f6; border-radius:5px; padding:5px 10px; color:#44515f; font-size:12px; width:100%; }
+
+    /* ── Hero preview v2 — animated orbs ── */
+    .hero-v2 {
+      min-height:300px; padding:30px 28px; color:#fff;
+      background:#101820; display:grid; grid-template-columns:1fr 1fr;
+      gap:24px; align-items:center; position:relative; overflow:hidden;
+    }
+    .orb {
+      position:absolute; border-radius:50%; filter:blur(60px);
+      opacity:.4; pointer-events:none; animation-timing-function:ease-in-out;
+      animation-iteration-count:infinite; animation-direction:alternate;
+    }
+    .o1 { width:280px; height:280px; background:radial-gradient(circle,#e83e8c,#c8333f,transparent 70%); top:-80px; left:-60px; animation:orbA 8s infinite alternate; }
+    .o2 { width:220px; height:220px; background:radial-gradient(circle,#00d084,#22c55e,transparent 70%); bottom:-60px; right:-40px; animation:orbB 10s infinite alternate; }
+    .o3 { width:160px; height:160px; background:radial-gradient(circle,#d4a843,transparent 70%); top:40%; right:18%; animation:orbC 7s infinite alternate; }
+    @keyframes orbA { from{transform:translate(0,0) scale(1)} to{transform:translate(30px,-40px) scale(1.1)} }
+    @keyframes orbB { from{transform:translate(0,0) scale(1)} to{transform:translate(-25px,30px) scale(0.95)} }
+    @keyframes orbC { from{transform:translate(0,0)} to{transform:translate(20px,25px)} }
+    .hero-v2 > * { position:relative; z-index:1; }
+    .hero-v2 h2 { color:#fff; font-size:clamp(22px,4vw,38px); line-height:1.05; margin-bottom:10px; }
+    .hero-v2 p { color:rgba(255,255,255,.78); font-size:14px; }
+    .hero-v2 img { width:min(180px,100%); border-radius:50%; border:3px solid var(--gold); justify-self:center; }
+    .badge-row { display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+    .badge { background:rgba(255,255,255,.13); border:1px solid rgba(255,255,255,.22); border-radius:999px; padding:6px 10px; color:#fff; font-weight:700; font-size:11px; }
+    .badge.grad { background:linear-gradient(90deg,#e83e8c,#ff3b30,#0066ff,#00d084); border:0; }
+    .new-tag { background:var(--green); color:#fff; font-size:10px; font-weight:900; padding:2px 7px; border-radius:999px; margin-left:6px; vertical-align:middle; }
+
+    /* ── Hero preview v1 ── */
+    .hero-v1 {
+      min-height:260px; padding:24px; color:#fff;
+      background:linear-gradient(135deg,rgba(16,24,32,.88),rgba(16,24,32,.56)),
+                 linear-gradient(120deg,#101820,#c8333f 52%,#d4a843);
+      display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:center;
+    }
+    .hero-v1 h2 { color:#fff; font-size:clamp(22px,4vw,38px); line-height:1.05; margin-bottom:10px; }
+    .hero-v1 p { color:#f2f5f8; font-size:14px; }
+    .hero-v1 img { width:min(160px,100%); border-radius:50%; border:3px solid var(--gold); justify-self:center; }
+
+    /* ── Timeline ── */
+    .timeline { display:grid; gap:12px; }
+    .step { display:grid; grid-template-columns:32px 1fr; gap:10px; align-items:start; }
+    .step-num { display:grid; place-items:center; width:32px; height:32px; border-radius:50%; background:var(--dark); color:var(--gold); font-weight:900; font-size:13px; flex-shrink:0; }
+    .step-num.new { background:var(--green); color:#fff; }
+
+    /* ── Stack grid ── */
+    .stack-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin-top:4px; }
+    .stack-item { display:flex; align-items:center; gap:10px; padding:12px; border:1px solid var(--line); border-radius:7px; background:#faf9f7; font-size:13px; font-weight:700; }
+    .stack-icon { font-size:20px; flex-shrink:0; }
+
+    /* ── Concept card ── */
+    .concept { border-left:4px solid var(--gold); padding:14px 16px; background:#fefcf4; border-radius:0 7px 7px 0; margin-bottom:12px; }
+    .concept.blue { border-left-color:var(--blue); background:#f0f5ff; }
+    .concept.green { border-left-color:var(--green); background:#f0faf6; }
+    .concept.red { border-left-color:var(--red); background:#fff5f5; }
+    .concept h3 { margin-bottom:6px; color:var(--ink); font-size:15px; }
+    .concept p { font-size:13px; margin-bottom:0; }
+
+    /* ── Roadmap ── */
+    .roadmap { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+    .rm-item { padding:16px; border:2px solid var(--line); border-radius:8px; text-align:center; }
+    .rm-item.done { border-color:var(--green); background:#f0faf6; }
+    .rm-item.active { border-color:var(--gold); background:#fef9ec; }
+    .rm-item.pending { opacity:.6; }
+    .rm-phase { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:6px; }
+    .rm-title { font-weight:900; font-size:14px; color:var(--ink); margin-bottom:4px; }
+    .rm-status { font-size:11px; font-weight:700; }
+    .rm-item.done .rm-status { color:var(--green); }
+    .rm-item.active .rm-status { color:#7a5200; }
+
+    /* ── Pending ── */
+    .pending-list { display:grid; gap:8px; }
+    .pending-item { display:flex; align-items:flex-start; gap:10px; padding:12px; border:1px solid var(--line); border-radius:7px; background:#faf9f7; font-size:13px; }
+    .pending-item .pi-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+    .pending-item .pi-label { font-weight:800; font-size:12px; text-transform:uppercase; letter-spacing:.06em; margin-bottom:2px; }
+
+    /* ── Section separator ── */
+    .section-label { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:24px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+
+    /* ── Archive panel ── */
+    .archive-header { display:flex; align-items:center; justify-content:space-between; cursor:pointer; user-select:none; }
+    .archive-header h2 { margin:0; font-size:18px; }
+    .archive-body { margin-top:16px; }
+    summary { list-style:none; }
+    details > summary::-webkit-details-marker { display:none; }
+    .toggle-icon { font-size:18px; transition:transform .2s; }
+    details[open] .toggle-icon { transform:rotate(180deg); }
+
+    footer { color:var(--muted); border-top:1px solid var(--line); padding-top:18px; margin-top:24px; font-size:12px; }
+
+    @media(max-width:860px) {
+      .span-3,.span-4,.span-5,.span-6,.span-7,.span-8,.span-9 { grid-column:span 12; }
+      .hero-v2,.hero-v1 { grid-template-columns:1fr; }
+      .roadmap { grid-template-columns:1fr 1fr; }
+    }
+    @media(max-width:520px) {
+      .roadmap { grid-template-columns:1fr; }
+      .version-bar { padding:0 16px; }
+      .vtab { padding:10px 14px; font-size:12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Informe operativo · Proyecto KAZE · BoxesMedia360</div>
+  <h1>Proyecto KAZE</h1>
+  <p class="subtitle">Documentación de estado, decisiones técnicas, tecnologías implementadas y hoja de ruta del sitio web de KAZE Custom Apparel &amp; Signs, Watsonville, CA.</p>
+  <div class="header-meta">
+    <span class="ver-badge">v4.0</span>
+    <span style="color:#d9dde5;font-size:13px;">Última actualización: 20 mayo 2026</span>
+    <span style="color:rgba(255,255,255,.4);font-size:13px;">|</span>
+    <span style="color:#d9dde5;font-size:13px;">831-319-1837 · 347 Main St, Watsonville CA · @kaze_designs</span>
+  </div>
+</header>
+
+<!-- Version selector -->
+<div class="version-bar">
+  <button class="vtab active" onclick="showV('v4')">v4.0 — GitHub & Railway</button>
+  <button class="vtab" onclick="showV('v3')">v3.0 — Vercel & Glassmorphism</button>
+  <button class="vtab" onclick="showV('v2')">v2.0 — Next.js</button>
+  <button class="vtab" onclick="showV('v1')">v1.0 — HTML estático</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 4.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v4" class="v-pane active">
+<main>
+  <p class="section-label">Estado actual — v4.0</p>
+  <section class="grid" aria-label="Estado GitHub y Railway">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> GitHub</span>
+      <strong>Push OK</strong>
+      <span>Repo privado <code>calvin316byBoxesMedia360/kaze-site</code></span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Railway</span>
+      <strong>Source</strong>
+      <span>Proyecto y servicio <code>kaze-site</code> configurados</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Root</span>
+      <strong>HTML MVP</strong>
+      <span>Directorio de deploy: <code>kaze-site-local</code></span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip red"><span class="dot"></span> Pendiente</span>
+      <strong>GitHub App</strong>
+      <span>Autorizar Railway para leer el repo privado</span>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Resumen ejecutivo</h2>
+      <p>La fase v4.0 deja el proyecto preparado para un flujo profesional de despliegue: Git local, remoto privado en GitHub, configuración de Railway por servicio y documentación de continuidad actualizada.</p>
+      <p>El intento inicial con <code>railway up</code> falló por timeout durante la subida local de assets. Para estabilizar el deploy, se cambió la estrategia hacia GitHub como fuente principal y Railway como plataforma de despliegue conectada al repositorio.</p>
+      <div class="concept green">
+        <h3>Resultado principal</h3>
+        <p>El código ya vive en GitHub y Railway ya conoce el repo, branch y root directory. El bloqueo restante es de autorización externa: Railway GitHub App debe tener acceso al repo privado para crear snapshots y auto-deploys.</p>
+      </div>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Enlaces operativos</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>GitHub</td><td><code>https://github.com/calvin316byBoxesMedia360/kaze-site</code></td></tr>
+          <tr><td>Railway</td><td><code>https://railway.com/project/ff24d5cd-7612-4f75-9592-cef023294f4a</code></td></tr>
+          <tr><td>Servicio</td><td><code>kaze-site</code></td></tr>
+          <tr><td>Ambiente</td><td><code>production</code></td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <p class="section-label">Cambios aplicados</p>
+  <section class="grid">
+    <article class="panel span-6">
+      <h2>Git y repositorio</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num new">1</div>
+          <div><h3>Repo privado creado</h3><p><code>origin</code> apunta a <code>https://github.com/calvin316byBoxesMedia360/kaze-site.git</code>.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">2</div>
+          <div><h3>Historial sincronizado</h3><p>La rama <code>main</code> quedó pusheada hasta <code>3105fd7 docs: checkpoint GitHub and Railway setup</code>.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">3</div>
+          <div><h3>Checkpoint documentado</h3><p>Se actualizaron <code>MEMORY.md</code>, <code>NEXT_SESSION.md</code> y <code>AI_LOGBOOK.md</code>.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel span-6">
+      <h2>Railway</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>Proyecto</td><td><code>kaze-site</code></td></tr>
+          <tr><td>Servicio</td><td><code>kaze-site</code></td></tr>
+          <tr><td>Service ID</td><td><code>825d8d85-aba6-4328-8909-5247350b2b81</code></td></tr>
+          <tr><td>Branch</td><td><code>main</code></td></tr>
+          <tr><td>Root directory</td><td><code>kaze-site-local</code></td></tr>
+          <tr><td>Estado</td><td>Pendiente de autorización GitHub App para repo privado.</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-7">
+      <h2>Archivos agregados</h2>
+      <table class="table">
+        <thead><tr><th>Archivo</th><th>Función</th></tr></thead>
+        <tbody>
+          <tr><td><code>kaze-site-local/.railwayignore</code></td><td>Evita subir artefactos locales como <code>.vercel</code> y logs.</td></tr>
+          <tr><td><code>railway.json</code></td><td>Define build/start para ejecutar el MVP desde <code>kaze-site-local</code>.</td></tr>
+          <tr><td><code>MEMORY.md</code></td><td>Checkpoint operativo de GitHub y Railway.</td></tr>
+          <tr><td><code>AI_LOGBOOK.md</code></td><td>Registro histórico del avance.</td></tr>
+          <tr><td><code>NEXT_SESSION.md</code></td><td>Instrucciones para retomar el deploy.</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <article class="panel span-5">
+      <h2>Siguiente paso exacto</h2>
+      <div class="pending-list">
+        <div class="pending-item"><div class="pi-icon">1</div><div><div class="pi-label">Railway Dashboard</div>Entrar al servicio <code>kaze-site</code> y confirmar Source GitHub.</div></div>
+        <div class="pending-item"><div class="pi-icon">2</div><div><div class="pi-label">GitHub App</div>Autorizar Railway App para <code>calvin316byBoxesMedia360/kaze-site</code>.</div></div>
+        <div class="pending-item"><div class="pi-icon">3</div><div><div class="pi-label">Deploy</div>Lanzar deploy desde source y generar dominio público.</div></div>
+        <div class="pending-item"><div class="pi-icon">4</div><div><div class="pi-label">Variables</div>Configurar <code>RESEND_API_KEY</code> y <code>NOTIFICATION_EMAIL</code>.</div></div>
+      </div>
+    </article>
+  </section>
+
+  <footer>
+    Informe v4.0 · Proyecto KAZE · GitHub + Railway · 20 mayo 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 3.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v3" class="v-pane">
+<main>
+  <p class="section-label">Estado actual</p>
+  <section class="grid" aria-label="Métricas principales">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> Producción</span>
+      <strong>Vercel</strong>
+      <span>Deploy exitoso en <code>kaze-site-local.vercel.app</code></span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Estética</span>
+      <strong>Premium</strong>
+      <span>Glassmorphism, Sombras 24px, Backdrop Blur</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Optimización</span>
+      <strong>Copywriting</strong>
+      <span>Textos depurados, menos redundancia (ES/EN)</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip purple"><span class="dot"></span> Multimedia</span>
+      <strong>Videos / Remotion</strong>
+      <span>Fondo de video interactivo y soporte de presentación</span>
+    </article>
+  </section>
+
+  <p class="section-label">Qué se hizo en esta fase (v3.0)</p>
+  <section class="grid">
+    <article class="panel span-12">
+      <h2>Implementado ✓</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num new">1</div>
+          <div><h3>Deploy en Vercel</h3><p style="font-size:13px">Se publicó el sitio web (MVP) directamente en Vercel para acceso global, integrando la URL final de producción. Listo para clientes.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">2</div>
+          <div><h3>UI: Glassmorphism</h3><p style="font-size:13px">Rediseño del panel de cotización (<code>#cotizar</code>) y el formulario con efectos de <code>backdrop-filter: blur(24px)</code> y fondos translúcidos, dándole una apariencia "premium" inmersiva.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">3</div>
+          <div><h3>Actualización de Assets y Microcopy</h3><p style="font-size:13px">Se refinaron los textos para que fueran más asertivos (ej. "En KAZE transformamos la visión de tu negocio...") evitando repeticiones de la "historia" en la sección general. Se incluyó un video de fondo real y mejores renders visuales.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">4</div>
+          <div><h3>Documentación y Reglas de Sistema</h3><p style="font-size:13px">Se generó el INFO.md, SYSTEM_CONTRACT.md y se actualizó la memoria para alinear a todos los agentes que intervengan de aquí en adelante.</p></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>Estrategia Sugerida (Redes Sociales)</h2>
+    <div class="concept blue">
+        <h3>Remotion Automations <span class="new-tag">DISPONIBLE</span></h3>
+        <p>Se ha establecido una regla global para crear presentaciones en video automáticas con <strong>Remotion</strong> después de finalizar los proyectos, lo cual facilita la distribución en Reels, TikTok y YouTube Shorts. Para invocar esta automatización solo es necesario mencionar la acción: <code>genera presentacion remotion</code>.</p>
+    </div>
+  </section>
+
+  <footer>
+    Informe v3.0 · Proyecto KAZE · Generado el 20 mayo 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 2.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v2" class="v-pane">
+<main>
+
+  <!-- Métricas principales -->
+  <p class="section-label">Estado actual</p>
+  <section class="grid" aria-label="Métricas principales">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> Migrado</span>
+      <strong>Next.js</strong>
+      <span>v16.2.6 · App Router · TypeScript · Tailwind CSS</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> Activo</span>
+      <strong>:3000</strong>
+      <span>Dev server en <code>localhost:3000</code></span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Implementado</span>
+      <strong>GEO</strong>
+      <span>Schema.org JSON-LD · LocalBusiness + servicios</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Confirmado</span>
+      <strong>Mobile-first</strong>
+      <span>12 componentes responsivos con breakpoints móvil-primero</span>
+    </article>
+  </section>
+
+  <!-- Vista del sitio v2 -->
+  <p class="section-label">Vista del sitio — versión actual</p>
+  <section class="grid">
+    <article class="panel span-7">
+      <h2>Sitio Next.js <span class="new-tag">NUEVO</span></h2>
+      <p>Animación de fondo tipo aurora — orbs de gradiente flotando en el hero. Stack moderno con componentes React separados.</p>
+      <div class="browser-shot" role="img" aria-label="Vista previa del sitio Next.js con animated background">
+        <div class="browser-bar">
+          <span class="bd" style="background:#ff5f57"></span>
+          <span class="bd" style="background:#ffbd2e"></span>
+          <span class="bd" style="background:#28c840"></span>
+          <span class="url">http://localhost:3000</span>
+        </div>
+        <div class="hero-v2">
+          <!-- Animated orbs -->
+          <div class="orb o1"></div>
+          <div class="orb o2"></div>
+          <div class="orb o3"></div>
+          <div>
+            <div class="eyebrow" style="color:var(--gold)">Watsonville, CA · Desde 2014</div>
+            <h2>Tu marca,<br>hecha realidad.</h2>
+            <p>Letreros luminosos, uniformes personalizados y más — diseñados con precisión por un taller local.</p>
+            <div class="badge-row">
+              <span class="badge grad">Cotiza tu proyecto</span>
+              <span class="badge">Mockup gratis</span>
+              <span class="badge">+10 años</span>
+            </div>
+          </div>
+          <img src="kaze-site-local/kaze-logo.jpg" alt="Logo KAZE">
+        </div>
+      </div>
+    </article>
+
+    <article class="panel span-5">
+      <h2>URLs activas</h2>
+      <table class="table">
+        <thead><tr><th>URL</th><th>Uso</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>localhost:3000</code></td>
+            <td>Next.js dev server <span class="new-tag">ACTIVO</span></td>
+            <td><span class="chip green" style="font-size:11px;">Principal</span></td>
+          </tr>
+          <tr>
+            <td><code>127.0.0.1:4178</code></td>
+            <td>HTML estático — respaldo</td>
+            <td><span class="chip gold" style="font-size:11px;">Legado</span></td>
+          </tr>
+          <tr>
+            <td><code>127.0.0.1:4177</code></td>
+            <td>Copia original Downloads</td>
+            <td><span class="chip red" style="font-size:11px;">No usar</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top:20px;">Levantar el servidor</h3>
+      <p style="font-size:13px;margin-bottom:8px;">Next.js dev server:</p>
+      <code style="display:block;padding:10px;font-size:12px;line-height:1.6;">
+        cd "/c/Users/boxes/Documents/Kaze/kaze-web"<br>npm run dev
+      </code>
+      <p style="font-size:12px;margin-top:10px;">HTML legado (si se necesita):</p>
+      <code style="display:block;padding:10px;font-size:12px;line-height:1.6;">
+        $env:PORT='4178'<br>node kaze-site-local\server.js
+      </code>
+    </article>
+  </section>
+
+  <!-- Stack tecnológico -->
+  <p class="section-label">Stack tecnológico implementado</p>
+  <section class="grid">
+    <article class="panel span-12">
+      <h2>Tecnologías</h2>
+      <div class="stack-grid">
+        <div class="stack-item"><span class="stack-icon">⚛️</span><div><div>Next.js 16.2.6</div><div style="color:var(--muted);font-size:11px;font-weight:400;">App Router</div></div></div>
+        <div class="stack-item"><span class="stack-icon">🔷</span><div><div>TypeScript</div><div style="color:var(--muted);font-size:11px;font-weight:400;">Strict mode</div></div></div>
+        <div class="stack-item"><span class="stack-icon">🎨</span><div><div>Tailwind CSS</div><div style="color:var(--muted);font-size:11px;font-weight:400;">+ CSS custom props</div></div></div>
+        <div class="stack-item"><span class="stack-icon">🎞️</span><div><div>Framer Motion</div><div style="color:var(--muted);font-size:11px;font-weight:400;">Animaciones</div></div></div>
+        <div class="stack-item"><span class="stack-icon">🔣</span><div><div>Lucide React</div><div style="color:var(--muted);font-size:11px;font-weight:400;">Iconos</div></div></div>
+        <div class="stack-item"><span class="stack-icon">🌐</span><div><div>i18n manual</div><div style="color:var(--muted);font-size:11px;font-weight:400;">ES / EN integrado</div></div></div>
+        <div class="stack-item"><span class="stack-icon">🗺️</span><div><div>Schema.org</div><div style="color:var(--muted);font-size:11px;font-weight:400;">JSON-LD · GEO</div></div></div>
+        <div class="stack-item"><span class="stack-icon">📱</span><div><div>Mobile-first</div><div style="color:var(--muted);font-size:11px;font-weight:400;">min-width breakpoints</div></div></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Qué se hizo -->
+  <p class="section-label">Qué se hizo en esta sesión</p>
+  <section class="grid">
+    <article class="panel span-6">
+      <h2>Implementado ✓</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num new">1</div>
+          <div><h3>Migración a Next.js 16</h3><p style="font-size:13px">Proyecto creado en <code>kaze-web/</code> con App Router, TypeScript y Tailwind. Build limpio sin errores.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">2</div>
+          <div><h3>12 componentes React</h3><p style="font-size:13px">Navbar, Hero, Services, Process, Projects, About, History, Signs, Apparel, QuoteForm, ContactPanel, Footer — todos con soporte bilingüe y dark mode.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">3</div>
+          <div><h3>Aurora animated background</h3><p style="font-size:13px">Hero con orbs de gradiente flotando en CSS puro — rojo, verde y dorado (brand colors). Grain texture overlay para textura. Sin librerías externas.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">4</div>
+          <div><h3>Schema.org JSON-LD (GEO)</h3><p style="font-size:13px">LocalBusiness, dirección, horarios, servicios y aggregateRating en el <code>&lt;head&gt;</code>. Visible para ChatGPT, Perplexity y Google AI Overview.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">5</div>
+          <div><h3>Mobile-first implementado</h3><p style="font-size:13px">Touch targets ≥48px, nav fullscreen overlay en mobile, hero orbs reducidos en mobile, formulario en columna única, FAB de WhatsApp ajustado.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel span-6">
+      <h2>Conceptos explicados esta sesión</h2>
+
+      <div class="concept green">
+        <h3>GEO — Generative Engine Optimization <span class="new-tag">IMPLEMENTADO</span></h3>
+        <p>Optimización del sitio para ser encontrado y citado por motores de IA (ChatGPT, Perplexity, Google AI Overview). Se implementa con Schema.org JSON-LD estructurado, FAQs directas y copies orientados a "respuesta directa". Ya incluido en el layout de Next.js.</p>
+      </div>
+
+      <div class="concept blue">
+        <h3>AI Photo Transformer <span style="background:#e0e7ff;color:#3730a3;font-size:10px;font-weight:900;padding:2px 7px;border-radius:999px;margin-left:6px;vertical-align:middle;">PENDIENTE DECISIÓN</span></h3>
+        <p>El usuario sube una foto → IA la convierte a estilo artístico (manga, 3D, acuarela, pop art) → resultado aparece sobre mockup de prenda → cliente lo usa como diseño de bordado/DTF. Requiere API de Replicate/fal.ai + storage (R2/S3) + ~1-2 semanas extra. Recomendado para v3.</p>
+        <p style="margin-bottom:0;font-size:12px;color:var(--blue);">Costo por transformación: ~$0.02–$0.08 USD · Estrategia: 2 gratuitas como lead magnet.</p>
+      </div>
+
+      <div class="concept">
+        <h3>Animated Background moderno (2026)</h3>
+        <p style="margin-bottom:0;">Tendencia: orbs de gradiente con blur flotando lentamente + grain texture overlay. Implementado en el hero de KAZE con CSS puro — sin JS, sin librerías pesadas. Efecto aurora que complementa la estética neon/signs de la marca.</p>
+      </div>
+    </article>
+  </section>
+
+  <!-- Estructura de archivos -->
+  <p class="section-label">Estructura del proyecto</p>
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Archivos y directorios</h2>
+      <table class="table">
+        <thead><tr><th>Ruta</th><th>Función</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="path"><code>kaze-web/</code></td>
+            <td>Proyecto Next.js 16 — sitio de producción <strong>NUEVO</strong></td>
+            <td><span class="chip green" style="font-size:11px;">Principal</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>kaze-web/src/app/</code></td>
+            <td>App Router — layout, page, globals.css</td>
+            <td><span class="chip green" style="font-size:11px;">✓</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>kaze-web/src/components/</code></td>
+            <td>12 componentes React (Navbar, Hero, Services…)</td>
+            <td><span class="chip green" style="font-size:11px;">✓</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>kaze-web/src/lib/i18n.ts</code></td>
+            <td>Traducciones ES/EN completas + función t(lang, key)</td>
+            <td><span class="chip green" style="font-size:11px;">✓</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>kaze-site-local/</code></td>
+            <td>HTML estático original — respaldo de referencia</td>
+            <td><span class="chip gold" style="font-size:11px;">Legado</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>MEMORY.md</code></td>
+            <td>Memoria viva — estado, reglas, decisiones y pendientes</td>
+            <td><span class="chip green" style="font-size:11px;">Activo</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>preferencias-diseno.md</code></td>
+            <td>Inspiraciones visuales, preferencias #001–#007, roadmap UX</td>
+            <td><span class="chip green" style="font-size:11px;">Activo</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>copys/COPYS-001_website-kaze-designs.md</code></td>
+            <td>Voz de marca, textos oficiales y meta tags SEO</td>
+            <td><span class="chip green" style="font-size:11px;">Activo</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>briefs/</code></td>
+            <td>Briefs de producción — hero video (Remotion), futuras piezas</td>
+            <td><span class="chip gold" style="font-size:11px;">Pendiente</span></td>
+          </tr>
+          <tr>
+            <td class="path"><code>INFORME_PROYECTO_KAZE.html</code></td>
+            <td>Este documento — historial de versiones del proyecto</td>
+            <td><span class="chip blue" style="font-size:11px;">v2.0</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Git</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num new">3</div>
+          <div><h3><code>aac963a</code></h3><p style="font-size:12px;">Informe HTML v1.0 + documentos de sesión.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div><h3><code>85953ca</code></h3><p style="font-size:12px;">Documentación de memoria viva y README.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div><h3><code>af56eed</code></h3><p style="font-size:12px;">Importación inicial del proyecto Kaze a Documents.</p></div>
+        </div>
+      </div>
+      <p style="font-size:12px;margin-top:16px;color:var(--muted);">⚠️ El directorio <code>kaze-web/</code> aún no está en un commit. Pendiente hacer commit de la migración Next.js.</p>
+    </article>
+  </section>
+
+  <!-- Pendientes -->
+  <p class="section-label">Pendientes y decisiones</p>
+  <section class="grid">
+    <article class="panel span-12">
+      <h2>Qué falta decidir o hacer</h2>
+      <div class="pending-list">
+        <div class="pending-item">
+          <span class="pi-icon">🤖</span>
+          <div>
+            <div class="pi-label" style="color:var(--blue);">Pendiente decisión</div>
+            <strong>AI Photo Transformer</strong> — ¿lo incluimos en v3? Requiere cuenta Replicate/fal.ai, bucket S3/R2 y ~2 semanas. Se explicó el costo (~$0.02-$0.08/imagen) y la estrategia de 2 gratis como lead magnet.
+          </div>
+        </div>
+        <div class="pending-item">
+          <span class="pi-icon">📦</span>
+          <div>
+            <div class="pi-label" style="color:var(--red);">Commit pendiente</div>
+            <strong>Commit de Next.js migration</strong> — El directorio <code>kaze-web/</code> existe pero aún no está en el historial Git. Hacer <code>git add kaze-web/ && git commit</code>.
+          </div>
+        </div>
+        <div class="pending-item">
+          <span class="pi-icon">☁️</span>
+          <div>
+            <div class="pi-label" style="color:var(--muted);">Cuando esté listo</div>
+            <strong>Deploy en Vercel</strong> — El proyecto Next.js está listo para subirse a Vercel (free tier). Requiere crear remote en GitHub primero.
+          </div>
+        </div>
+        <div class="pending-item" style="border-color:var(--green); background:#f0faf6;">
+          <span class="pi-icon">🖼️</span>
+          <div>
+            <div class="pi-label" style="color:var(--green);">Completado</div>
+            <strong>Imágenes placeholders</strong> — Se reemplazaron las 16 fotos de Unsplash por imágenes 4K fotorrealistas generadas por IA.
+          </div>
+        </div>
+        <div class="pending-item">
+          <span class="pi-icon">♾️</span>
+          <div>
+            <div class="pi-label" style="color:var(--muted);">V2 del sitio</div>
+            <strong>Carrusel auto-scroll de proyectos + reviews</strong> — (Preferencia #005) Implementar el carrusel horizontal infinito con color filter y testimonios. La versión actual tiene grid estático.
+          </div>
+        </div>
+        <div class="pending-item">
+          <span class="pi-icon">💡</span>
+          <div>
+            <div class="pi-label" style="color:var(--muted);">Pendiente</div>
+            <strong>Logo vectorial</strong> — Confirmar si existe versión .svg o .ai del logo KAZE para usar en lugar del .jpg actual.
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Roadmap -->
+  <p class="section-label">Roadmap del proyecto</p>
+  <section class="panel">
+    <h2>Fases del sitio</h2>
+    <div class="roadmap">
+      <div class="rm-item done">
+        <div class="rm-phase">v1.0 — Completada</div>
+        <div class="rm-title">HTML Estático</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Single page, bilingüe, dark mode, formulario, WhatsApp FAB</div>
+        <div class="rm-status">✓ Entregado</div>
+      </div>
+      <div class="rm-item active">
+        <div class="rm-phase">v2.0 — Actual</div>
+        <div class="rm-title">Next.js + Animaciones</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Next.js 16, aurora hero, GEO/Schema.org, mobile-first, componentes React</div>
+        <div class="rm-status">🚀 En curso</div>
+      </div>
+      <div class="rm-item pending">
+        <div class="rm-phase">v3 — Próxima</div>
+        <div class="rm-title">AI Photo Transformer</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Carrusel infinito, transformación de foto con IA, mockup 2D con Canvas</div>
+        <div class="rm-status">⏳ Pendiente decisión</div>
+      </div>
+      <div class="rm-item pending">
+        <div class="rm-phase">v4 — Futuro</div>
+        <div class="rm-title">Configurador 3D</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:6px;">Mockup 3D rotable (Three.js), cotizador automático, backend completo</div>
+        <div class="rm-status">⏳ Aspiracional</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Informe v2.0 · Proyecto KAZE · Generado el 17 mayo 2026 · BoxesMedia360 · <code>INFORME_PROYECTO_KAZE.html</code>
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 1.0 (archivo histórico)                         -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v1" class="v-pane">
+<main>
+  <div style="background:#fef3d7;border:1px solid #d4a843;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;">
+    ⚠️ <strong>Versión archivada</strong> — Este es el informe original de la sesión del 17 mayo 2026 (importación inicial). El sitio actual ya migró a Next.js. <a href="#" onclick="showV('v2');return false;">Ver versión actual →</a>
+  </div>
+
+  <p class="section-label">Estado original — v1.0</p>
+  <section class="grid" aria-label="Resumen v1">
+    <article class="panel span-4 metric">
+      <span class="chip green"><span class="dot"></span> Activo</span>
+      <strong>4178</strong>
+      <span>HTML estático en <code>http://127.0.0.1:4178/</code></span>
+    </article>
+    <article class="panel span-4 metric">
+      <span class="chip green"><span class="dot"></span> Git limpio</span>
+      <strong>2 commits</strong>
+      <span>Importación base + documentación de memoria.</span>
+    </article>
+    <article class="panel span-4 metric">
+      <span class="chip gold"><span class="dot"></span> Copiado</span>
+      <strong>Documents</strong>
+      <span>Nueva ubicación: <code>C:\Users\boxes\Documents\Kaze</code></span>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-7">
+      <h2>Vista del sitio — v1.0 (HTML estático)</h2>
+      <p>Sitio HTML de una sola página, servidor Node simple, sin framework.</p>
+      <div class="browser-shot" role="img" aria-label="Vista previa v1 del sitio KAZE">
+        <div class="browser-bar">
+          <span class="bd" style="background:#ff5f57"></span>
+          <span class="bd" style="background:#ffbd2e"></span>
+          <span class="bd" style="background:#28c840"></span>
+          <span class="url">http://127.0.0.1:4178/</span>
+        </div>
+        <div class="hero-v1">
+          <div>
+            <div class="eyebrow" style="color:var(--gold)">Watsonville, CA · Desde 2014</div>
+            <h2>Tu marca,<br>hecha realidad.</h2>
+            <p>Letreros luminosos, uniformes personalizados y más, diseñados con precisión por un taller local.</p>
+            <div class="badge-row">
+              <span class="badge">Mockup gratis</span>
+              <span class="badge">+10 años</span>
+              <span class="badge">30-50 pedidos/semana</span>
+            </div>
+          </div>
+          <img src="kaze-site-local/kaze-logo.jpg" alt="Logo KAZE">
+        </div>
+      </div>
+    </article>
+
+    <article class="panel span-5">
+      <h2>URLs — v1.0</h2>
+      <table class="table">
+        <thead><tr><th>URL</th><th>Uso</th><th>Estado</th></tr></thead>
+        <tbody>
+          <tr><td><code>127.0.0.1:4178</code></td><td>Copia nueva en Documents</td><td>Activo, HTTP 200</td></tr>
+          <tr><td><code>127.0.0.1:4177</code></td><td>Copia original en Downloads</td><td>No usar como fuente</td></tr>
+        </tbody>
+      </table>
+      <h3 style="margin-top:18px;">Comando para levantar</h3>
+      <code style="display:block;padding:10px;font-size:12px;">$env:PORT='4178'<br>node kaze-site-local\server.js</code>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Estructura v1.0</h2>
+      <table class="table">
+        <thead><tr><th>Ruta</th><th>Función</th></tr></thead>
+        <tbody>
+          <tr><td class="path"><code>kaze-site-local/</code></td><td>Sitio HTML estático, logo y servidor Node local.</td></tr>
+          <tr><td class="path"><code>MEMORY.md</code></td><td>Memoria viva, estado actual, reglas, decisiones y pendientes.</td></tr>
+          <tr><td class="path"><code>NEXT_SESSION.md</code></td><td>Instrucciones para retomar desde otro editor o sesión.</td></tr>
+          <tr><td class="path"><code>preferencias-diseno.md</code></td><td>Inspiraciones visuales, prioridades MVP y roadmap de experiencia.</td></tr>
+          <tr><td class="path"><code>copys/</code></td><td>Voz de marca, textos oficiales, estructura de páginas y SEO.</td></tr>
+          <tr><td class="path"><code>briefs/</code></td><td>Briefs de producción para hero/video y piezas futuras.</td></tr>
+        </tbody>
+      </table>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Git — v1.0</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num">2</div>
+          <div><h3><code>85953ca</code></h3><p style="font-size:12px;">Documentación de memoria viva, siguiente sesión y README.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num">1</div>
+          <div><h3><code>af56eed</code></h3><p style="font-size:12px;">Importación inicial del proyecto Kaze a Documents.</p></div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <section class="panel">
+    <h2>Conclusiones v1.0</h2>
+    <p>El proyecto KAZE quedó trabajable desde <code>C:\Users\boxes\Documents\Kaze</code> con historial Git local. La copia original se conservó como respaldo en Downloads. Para evitar confusión entre servidores, la copia nueva se revisaba en <code>http://127.0.0.1:4178/</code>.</p>
+    <p style="margin-bottom:0;">Los siguientes pasos identificados en ese momento: normalizar encoding de documentos heredados, decidir si el sitio seguiría como HTML estático o migraría a un framework, y crear un remote en GitHub si se necesitaba colaboración externa. — <em>En v2.0 se tomó la decisión: Next.js.</em></p>
+  </section>
+
+  <footer>
+    Informe v1.0 (archivado) · Proyecto KAZE · 17 mayo 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<script>
+  function showV(id) {
+    document.querySelectorAll('.v-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.vtab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const tabs = document.querySelectorAll('.vtab');
+    if (id === 'v4') tabs[0].classList.add('active');
+    else if (id === 'v3') tabs[1].classList.add('active');
+    else if (id === 'v2') tabs[2].classList.add('active');
+    else tabs[3].classList.add('active');
+  }
+</script>
+
+</body>
+</html>
