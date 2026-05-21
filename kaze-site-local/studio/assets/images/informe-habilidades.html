@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Habilidades de Agentes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --secondary: #8b5cf6;
+            --card-bg: #1e293b;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .copy-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .copy-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #e2e8f0;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+            display: inline-block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.3);
+            border-color: var(--primary);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #fff;
+            font-size: 1.25rem;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            margin-top: auto;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Notificación Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #10b981;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 1rem;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s, visibility 0.3s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content-to-copy">
+        <header>
+            <h1>Informe de Habilidades de Agentes</h1>
+            <p class="subtitle">Inventario completo y detallado de todas las skills (habilidades) instaladas y disponibles en el entorno de trabajo.</p>
+            <button class="copy-btn" onclick="copyToClipboard()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                Copiar Todo el Informe
+            </button>
+        </header>
+
+        <!-- Desarrollo Web y Frontend -->
+        <section>
+            <h2>🌐 Desarrollo Web y Frontend</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>3d-web-experience</h3>
+                        <span class="tag">Web</span>
+                    </div>
+                    <p>Experto en la construcción de experiencias 3D para la web utilizando Three.js, React Three Fiber, Spline y WebGL. Ideal para configuradores de productos, portafolios 3D y sitios inmersivos.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>modern-javascript-patterns</h3>
+                        <span class="tag">JS / Frontend</span>
+                    </div>
+                    <p>Dominio de características de ES6+, incluyendo async/await, desestructuración, promesas, módulos y programación funcional para escribir código limpio y eficiente.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>nextjs-app-router-patterns</h3>
+                        <span class="tag">Next.js</span>
+                    </div>
+                    <p>Patrones avanzados para Next.js App Router (14+). Incluye Server Components, Streaming y arquitectura de layouts para experiencias web premium.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>react-state-management</h3>
+                        <span class="tag">React</span>
+                    </div>
+                    <p>Guía exhaustiva para patrones de gestión de estado modernos en React. Incluye estado local, global (Zustand/Jotai) y de servidor (React Query).</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>web-component-design</h3>
+                        <span class="tag">UI Components</span>
+                    </div>
+                    <p>Patrones de componentes para React, Vue y Svelte. Estrategias de composición, CSS-in-JS y diseño de librerías de componentes UI reutilizables.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>tailwind-design-system</h3>
+                        <span class="tag">CSS / Estilos</span>
+                    </div>
+                    <p>Arquitectura de sistemas de diseño usando Tailwind CSS v4. Se enfoca en estética premium, modo oscuro y librerías de componentes visuales consistentes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Desarrollo Móvil -->
+        <section>
+            <h2>📱 Desarrollo Móvil</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>react-native-architecture</h3>
+                        <span class="tag">React Native</span>
+                    </div>
+                    <p>Patrones listos para producción en desarrollo móvil con React Native y Expo Router. Optimizado para rendimiento y consistencia multiplataforma.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>react-native-design</h3>
+                        <span class="tag">Mobile UI</span>
+                    </div>
+                    <p>Diseño avanzado, navegación y animaciones con Reanimated para aplicaciones React Native multiplataforma con alto rendimiento.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>mobile-android-design</h3>
+                        <span class="tag">Android / Nativo</span>
+                    </div>
+                    <p>Patrones de Material Design 3 y Jetpack Compose para crear aplicaciones nativas de Android siguiendo las guías de Google.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>mobile-ios-design</h3>
+                        <span class="tag">iOS / Nativo</span>
+                    </div>
+                    <p>Directrices de Apple Human Interface y patrones de SwiftUI para diseñar vistas nativas de iOS e interfaces de usuario consistentes.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>mobile-security-patterns</h3>
+                        <span class="tag">Seguridad Móvil</span>
+                    </div>
+                    <p>Seguridad a nivel de producción para apps móviles. Incluye almacenamiento seguro, endurecimiento de WebView, seguridad de red y autenticación biométrica.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Backend y APIs -->
+        <section>
+            <h2>⚙️ Desarrollo Backend y APIs</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>nodejs-api-integration</h3>
+                        <span class="tag">Node.js / Express</span>
+                    </div>
+                    <p>Experto en la construcción de APIs robustas en Node.js/Express, integración de SDKs de IA (Anthropic, Google GenAI), respuestas estructuradas de errores y validación de entornos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Diseño, UX/UI y Accesibilidad -->
+        <section>
+            <h2>🎨 Diseño, UX/UI y Accesibilidad</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Visual UX Auditor</h3>
+                        <span class="tag">Auditoría UX</span>
+                    </div>
+                    <p>Auditoría visual de interfaces usando visión por IA y herramientas de navegador para asegurar la excelencia en el diseño y consistencia de marca.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>brand-identity</h3>
+                        <span class="tag">Branding</span>
+                    </div>
+                    <p>Fuente única de la verdad para las guías de marca de BoxesMedia360, tokens de diseño, tono de voz y decisiones de estilo corporativo.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>visual-design-foundations</h3>
+                        <span class="tag">Diseño Visual</span>
+                    </div>
+                    <p>Principios de tipografía, teoría del color, sistemas de espaciado e iconografía para interfaces cohesivas y jerarquía visual correcta.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>design-system-patterns</h3>
+                        <span class="tag">Design Systems</span>
+                    </div>
+                    <p>Construcción de sistemas de diseño escalables con tokens, infraestructura de temas y arquitectura robusta para librerías de componentes.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>design-md</h3>
+                        <span class="tag">Sintetizador UI</span>
+                    </div>
+                    <p>Analiza proyectos de la herramienta Stitch y sintetiza un sistema de diseño semántico directamente en archivos DESIGN.md.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>interaction-design</h3>
+                        <span class="tag">Interacciones</span>
+                    </div>
+                    <p>Diseño e implementación de microinteracciones, transiciones y animaciones para crear estados de carga y experiencias de usuario pulidas.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>responsive-design</h3>
+                        <span class="tag">Responsive</span>
+                    </div>
+                    <p>Implementación de layouts modernos usando Container Queries, CSS Grid, tipografía fluida y estrategias Mobile-First.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>accessibility-compliance</h3>
+                        <span class="tag">Accesibilidad</span>
+                    </div>
+                    <p>Implementación de interfaces bajo estándares WCAG 2.2, patrones ARIA, soporte para lectores de pantalla y diseño inclusivo.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Creación de Contenido y Video -->
+        <section>
+            <h2>🎬 Creación de Contenido y Video</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Remotion Architect</h3>
+                        <span class="tag">Video Programático</span>
+                    </div>
+                    <p>Asistente experto para la creación programática de videos usando Remotion (basado en React). Ayuda con inicialización de proyectos, composiciones y renderizado.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>remotion-best-practices</h3>
+                        <span class="tag">Remotion Docs</span>
+                    </div>
+                    <p>Mejores prácticas y flujos de trabajo optimizados para la creación de video usando React mediante Remotion.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>ConocimientoYT</h3>
+                        <span class="tag">Análisis YouTube</span>
+                    </div>
+                    <p>Extracción, análisis y estructuración de conocimiento valioso a partir de videos y canales de YouTube, transformándolo en contenido estructurado.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>CuatesMenuGPT</h3>
+                        <span class="tag">Prompts Especializados</span>
+                    </div>
+                    <p>Creación de prompts profesionales de video e imagen para cartelería digital. Genera briefs de producción completos y guías de edición (Ej. Restaurante Los Cuates).</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estrategia y Análisis -->
+        <section>
+            <h2>📊 Estrategia, Análisis y Herramientas</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Intelligent App Interpreter</h3>
+                        <span class="tag">Product Management</span>
+                    </div>
+                    <p>Transforma ideas ambiguas en decisiones de producto sólidas mediante investigación, análisis de mercado y pensamiento UX avanzado previo a escribir código.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>DgtlStack&BrandMkr</h3>
+                        <span class="tag">Ingeniería Inversa</span>
+                    </div>
+                    <p>Analiza sitios web, apps y dashboards. Extrae identidad de marca, stacks tecnológicos, estrategias SEO y ofrece comparativas multi-sitio.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Skill Creator</h3>
+                        <span class="tag">Meta-Desarrollo</span>
+                    </div>
+                    <p>Habilidad encargada de asistir en la creación de nuevas Agent Skills. Asegura estructuras de carpetas correctas y formato SKILL.md en inglés y español.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Buenas Prácticas y Flujos -->
+        <section>
+            <h2>✅ Buenas Prácticas y Flujos de Trabajo</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>brainstorming</h3>
+                        <span class="tag">Ideación</span>
+                    </div>
+                    <p>Fase inicial antes de cualquier trabajo creativo o implementación. Explora intenciones del usuario, requerimientos y diseño de características.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>writing-plans</h3>
+                        <span class="tag">Planificación</span>
+                    </div>
+                    <p>Elaboración de especificaciones y requerimientos estructurados para tareas de múltiples pasos antes de iniciar el código.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>executing-plans</h3>
+                        <span class="tag">Ejecución</span>
+                    </div>
+                    <p>Ejecución sistemática de planes de implementación pre-escritos con validación paso a paso y puntos de control (checkpoints).</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>clean-code</h3>
+                        <span class="tag">Código Limpio</span>
+                    </div>
+                    <p>Aplica principios de 'Clean Code' de Robert C. Martin. Se enfoca en la calidad, mantenibilidad, nombrado, comentarios y manejo de errores de primer nivel.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>error-handling-patterns</h3>
+                        <span class="tag">Resiliencia</span>
+                    </div>
+                    <p>Estrategias robustas para manejo de errores y sistemas tolerantes a fallos, asegurando la mejor experiencia durante el debugging en producción.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>systematic-debugging</h3>
+                        <span class="tag">Debugging</span>
+                    </div>
+                    <p>Proceso metódico para encontrar y arreglar problemas técnicos atacando la causa raíz a través del método científico en lugar de intentos aleatorios.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>frontend-security-patterns</h3>
+                        <span class="tag">Seguridad Web</span>
+                    </div>
+                    <p>Patrones base de seguridad para la web: prevención de XSS, gestión de CSP, mitigación CSRF y control de sesiones seguras.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>receiving-code-review</h3>
+                        <span class="tag">Code Review</span>
+                    </div>
+                    <p>Reglas para recibir retroalimentación técnica, priorizando la corrección y objetividad sobre factores sociales. Evita respuestas automatizadas sin valor.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Desarrollo de Videojuegos -->
+        <section>
+            <h2>🎮 Desarrollo de Videojuegos</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>godot-gdscript-patterns</h3>
+                        <span class="tag">Godot Engine</span>
+                    </div>
+                    <p>Patrones avanzados para desarrollo en Godot. Incluye arquitectura de nodos, máquinas de estado y desacoplamiento basado en señales.</p>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>unity-game-development</h3>
+                        <span class="tag">Unity 3D</span>
+                    </div>
+                    <p>Desarrollo avanzado y experiencias inmersivas 3D usando Unity 6 LTS. Cubre flujos HDRP/URP, C# de alto rendimiento y arquitectura DOTS/ECS.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="toast">¡Informe copiado al portapapeles exitosamente!</div>
+
+    <script>
+        function copyToClipboard() {
+            // Seleccionar todo el HTML que necesitamos copiar
+            const contentToCopy = document.documentElement.outerHTML;
+            
+            // Copiar al portapapeles usando la API moderna
+            navigator.clipboard.writeText(contentToCopy).then(() => {
+                showToast();
+            }).catch(err => {
+                console.error('Error al copiar el texto: ', err);
+                alert("Hubo un error al copiar. Por favor, selecciona todo el texto manualmente.");
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById("toast");
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+    </script>
+</body>
+</html>

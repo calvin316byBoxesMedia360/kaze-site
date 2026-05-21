@@ -98,15 +98,32 @@ http.createServer((req, res) => {
   const filePath = path.join(root, isRoot ? "index.html" : safePath);
 
   fs.stat(filePath, (err, stats) => {
-    if (err || !stats.isFile()) {
+    if (err) {
       res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
       res.end("Not found");
       return;
     }
 
-    const ext = path.extname(filePath).toLowerCase();
+    let finalPath = filePath;
+    let finalStats = stats;
+
+    if (stats.isDirectory()) {
+      finalPath = path.join(filePath, "index.html");
+      try {
+        finalStats = fs.statSync(finalPath);
+        if (!finalStats.isFile()) {
+          throw new Error("Not a file");
+        }
+      } catch (e) {
+        res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+        res.end("Not found");
+        return;
+      }
+    }
+
+    const ext = path.extname(finalPath).toLowerCase();
     const contentType = types[ext] || "application/octet-stream";
-    const fileSize = stats.size;
+    const fileSize = finalStats.size;
     const range = req.headers.range;
 
     if (range) {
@@ -124,7 +141,7 @@ http.createServer((req, res) => {
       }
 
       const chunksize = (end - start) + 1;
-      const file = fs.createReadStream(filePath, { start, end });
+      const file = fs.createReadStream(finalPath, { start, end });
       const head = {
         "Content-Range": `bytes ${start}-${end}/${fileSize}`,
         "Accept-Ranges": "bytes",
@@ -141,7 +158,7 @@ http.createServer((req, res) => {
         "Accept-Ranges": "bytes"
       };
       res.writeHead(200, head);
-      fs.createReadStream(filePath).pipe(res);
+      fs.createReadStream(finalPath).pipe(res);
     }
   });
 }).listen(port, "0.0.0.0", () => {

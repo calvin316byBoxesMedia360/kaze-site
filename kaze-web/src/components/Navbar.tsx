@@ -83,6 +83,9 @@ export default function Navbar({ lang, onLangChange, theme, onThemeChange }: Nav
               {t(lang, link.key)}
             </a>
           ))}
+          <a className="btn primary" href="/studio/" onClick={closeMenu} style={{ borderColor: 'var(--gold)', color: 'var(--gold)' }}>
+            {t(lang, 'nav.editor')}
+          </a>
           <a className="btn primary" href="#cotizar" onClick={closeMenu}>
             {t(lang, 'nav.quote')}
           </a>
