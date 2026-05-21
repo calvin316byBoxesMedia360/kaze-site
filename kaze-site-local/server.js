@@ -14,6 +14,11 @@ const types = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".svg": "image/svg+xml",
+  ".mp4": "video/mp4",
+  ".webm": "video/webm",
+  ".ogv": "video/ogg",
+  ".mp3": "audio/mpeg",
+  ".wav": "audio/wav"
 };
 
 http.createServer((req, res) => {
@@ -92,14 +97,52 @@ http.createServer((req, res) => {
   const isRoot = safePath === "/" || safePath === "\\" || safePath === "";
   const filePath = path.join(root, isRoot ? "index.html" : safePath);
 
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
+  fs.stat(filePath, (err, stats) => {
+    if (err || !stats.isFile()) {
       res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
       res.end("Not found");
       return;
     }
-    res.writeHead(200, { "Content-Type": types[path.extname(filePath)] || "application/octet-stream" });
-    res.end(data);
+
+    const ext = path.extname(filePath).toLowerCase();
+    const contentType = types[ext] || "application/octet-stream";
+    const fileSize = stats.size;
+    const range = req.headers.range;
+
+    if (range) {
+      const parts = range.replace(/bytes=/, "").split("-");
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+      if (start >= fileSize || end >= fileSize || start > end) {
+        res.writeHead(416, {
+          "Content-Range": `bytes */${fileSize}`,
+          "Content-Type": "text/plain; charset=utf-8"
+        });
+        res.end("Requested range not satisfiable");
+        return;
+      }
+
+      const chunksize = (end - start) + 1;
+      const file = fs.createReadStream(filePath, { start, end });
+      const head = {
+        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": chunksize,
+        "Content-Type": contentType
+      };
+
+      res.writeHead(206, head);
+      file.pipe(res);
+    } else {
+      const head = {
+        "Content-Length": fileSize,
+        "Content-Type": contentType,
+        "Accept-Ranges": "bytes"
+      };
+      res.writeHead(200, head);
+      fs.createReadStream(filePath).pipe(res);
+    }
   });
 }).listen(port, "0.0.0.0", () => {
   console.log(`KAZE site running at http://0.0.0.0:${port}/`);
