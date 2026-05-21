@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cd kaze-site-local && npm install",
-    "start": "cd kaze-site-local && node server.js"
+    "start": "node kaze-site-local/server.js"
   }
 }
