@@ -1,138 +1,82 @@
 # MEMORY.md - Memoria Viva del Proyecto Kaze
 
-## Proposito
-Este archivo es la memoria operativa corta del proyecto. Debe leerse al inicio de cada nueva sesion antes de tocar codigo o documentos.
+## Propósito
+Este archivo es la memoria operativa corta del proyecto. Debe leerse al inicio de cada nueva sesión antes de tocar código o documentos.
 
-## Regla De Uso Para Cada Sesion
+## Regla De Uso Para Cada Sesión
 Al iniciar:
 1. Leer `MEMORY.md`.
-2. Leer `NEXT_SESSION.md` si existe.
-3. Ejecutar `git status --short`.
-4. No revertir cambios existentes no hechos por la sesion actual.
+2. Leer `NEXT_SESSION.md`.
+3. Ejecutar: `git status --short`.
+4. No revertir cambios existentes no hechos por la sesión actual.
 
-Al cerrar una iteracion importante:
-1. Actualizar `Ultimo Checkpoint`.
+Al cerrar una iteración importante:
+1. Actualizar `Último Checkpoint`.
 2. Agregar entrada a `Historial De Iteraciones`.
 3. Actualizar docs relacionados si aplica.
-4. Verificar el sitio local si hubo cambios visuales.
-5. Hacer commit si fue solicitado o si se quiere asegurar el checkpoint.
+4. Hacer commit y push para registrar avances.
+
+---
 
 ## Estado Actual Del Proyecto
-- Proyecto: KAZE Custom Apparel & Signs / Kaze Designs.
-- Ubicacion nueva de trabajo: `C:\Users\boxes\Documents\Kaze`.
-- Ubicacion original preservada: `C:\Users\boxes\Downloads\Habilidades de Agentes\proyecto Kaze`.
-- Git: repo local inicializado en la ubicacion nueva, rama `main`, remoto `origin` en `https://github.com/calvin316byBoxesMedia360/kaze-site`.
-- Commit base: `af56eed chore: import Kaze project`.
-- Version activa para iterar: `kaze-web/`, proyecto Next.js.
-- Version estatica historica: `kaze-site-local/`, HTML estatico con servidor Node simple.
-- URL Next local: `http://127.0.0.1:3000/`.
-- URL Kaze Shop Studio / Technical: `http://127.0.0.1:3000/technical`.
-- URL informe de habilidades: `http://127.0.0.1:3000/habilidades-agentes.html`.
-- Sitio estatico local nuevo: `http://127.0.0.1:4178/`.
-- Sitio estatico anterior/original: `http://127.0.0.1:4177/`.
-- Regla principal: trabajar desde `Documents\Kaze` para nuevas iteraciones; dejar la carpeta original como respaldo.
+* **Proyecto:** KAZE Custom Apparel & Signs / Kaze Designs.
+* **Ubicación de Trabajo Activa:** `C:\Users\boxes\Documents\Kaze`.
+* **Git Remote:** `https://github.com/calvin316byBoxesMedia360/kaze-site.git` (rama `main`).
+* **Deploy Activo (Railway):** [https://kazedesignswtv1-production.up.railway.app](https://kazedesignswtv1-production.up.railway.app)
+* **Kaze Studio Activo:** [https://kazedesignswtv1-production.up.railway.app/studio/](https://kazedesignswtv1-production.up.railway.app/studio/)
+* **Dirección Local de Trabajo:** `http://127.0.0.1:4178/`.
+* **Correo de Recepción de Formularios:** `kazecustomdesign@yahoo.com`
 
-## Modulos Principales
-- `kaze-site-local/`: sitio local entregable, contiene `index.html`, `kaze-logo.jpg` y `server.js`.
-- `kaze-web/`: aplicacion Next.js activa para desarrollo. Ruta `/` conserva Version 1 y ruta `/technical` contiene la variante Kaze Shop Studio.
-- `kaze-web/public/technical/`: imagenes editadas para la version tecnica/hibrida.
-- `.agents/skills/`: skills locales instaladas para Kaze (`kaze-nextjs-frontend`, `kaze-technical-edition`, `kaze-responsive-ux`, `kaze-visual-ux-auditor`, `kaze-design-system`).
-- `public/informe-habilidades.html`: inventario de habilidades fuente; copiado tambien a `kaze-web/public/habilidades-agentes.html` para servirlo con Next.
-- `preferencias-diseno.md`: documento vivo de preferencias visuales, inspiraciones, fases y prioridades.
-- `copys/`: copywriting del sitio, voz de marca, estructura y datos oficiales.
-- `ui-ux-test/`: brief UI/UX del primer MVP de Home.
-- `planeacion-mvp/`: planeacion del MVP funcional.
-- `briefs/`: briefs de produccion, incluyendo hero/video.
+---
 
-## Ultimo Checkpoint
-Fecha local: 2026-05-20
+## Módulos Principales
+* `kaze-site-local/`: Directorio que Railway sirve en producción.
+  * `index.html`: Landing page principal, con el botón de "Diseña tu Prenda" alineado junto a "Cotizar".
+  * `server.js`: Backend en Express que sirve archivos estáticos, maneja las redirecciones del SPA del editor (`/studio/`) y envía correos mediante la API de Resend.
+  * `studio/`: Compilación optimizada en producción de Kaze Studio (el personalizador interactivo React).
+  * `assets/mockups/`: Carpeta de imágenes base premium recortadas y procesadas por IA para la herramienta de diseño.
+* `kaze-studio/`: Aplicación SPA interactiva de diseño de mockups (React 18 + Vite 5 + TypeScript + Tailwind CSS).
+* `kaze-web/`: Estructura inicial en Next.js (reservada para futuras iteraciones v2.0).
 
-Resumen:
-- **Deploy en Producción**: El proyecto de MVP (HTML) fue publicado directamente en Vercel de manera exitosa en `https://kaze-site-local.vercel.app`.
-- **Refinamiento de UI**: Se aplicó *Glassmorphism* (backdrop-filter y fondos traslúcidos) en el formulario de cotización, aumentando la estética premium del sitio.
-- **Copywriting y Multilenguaje**: Se corrigió redundancia en la sección de historia/acerca de, refinando la propuesta de valor tanto en español como inglés (ES/EN) de forma nativa.
-- **Documentación Operativa**: Se generaron archivos clave para alinear futuros trabajos: `INFO.md` (datos y directivas del proyecto), `SYSTEM_CONTRACT.md` (reglas críticas para los agentes) y se actualizó `INFORME_PROYECTO_KAZE.html` (añadida pestaña v3.0).
-- **Remotion Integrado**: Se estableció sugerir presentaciones automáticas para RRSS vía Remotion.
+---
 
-Verificacion:
-- El sitio resuelve 200 en Vercel y mantiene los assets visuales cargados correctamente (video, hero bg, imágenes locales).
-- La pestaña activa del INFORME ahora refleja la `v3.0` correctamente y explica la estructura a nivel global.
+## Último Checkpoint
+Fecha local: 21 de Mayo de 2026
+
+**Resumen:**
+1. **MVP e Interconectividad en Producción:** Se vinculó el repositorio de GitHub a Railway con integración automática (GitHub Auto-Deploy). El sitio está 100% online y responde a todas las rutas.
+2. **Kaze Studio (Diseña tu Prenda):** 
+   - Se completó la herramienta de diseño de mockups con rotación y escalado dinámico (por cursor y por botones de escala).
+   - Se añadió la capacidad de descargar el diseño resultante de forma independiente con un botón de descarga en PNG.
+   - El botón de inicio de diseño fue alineado en la navbar principal de `kaze-site-local/index.html` y `kaze-web/src/components/Navbar.tsx` junto al botón "Cotizar" para darle paridad de importancia.
+3. **Actualización de Destinatario de Correo:** Se actualizó el correo fallback en `server.js` por solicitud urgente del cliente a `kazecustomdesign@yahoo.com`.
+4. **Documentación Completa:** Se sincronizaron todas las guías de inicio rápido, el archivo de reglas operativas, el log de cambios de IA y ambas copias del archivo interactivo de reporte (`INFORME_PROYECTO_KAZE.html`).
+
+---
 
 ## Decisiones Vigentes
-- La fuente de trabajo desde ahora debe ser `C:\Users\boxes\Documents\Kaze`.
-- La carpeta original en Downloads queda como respaldo historico.
-- Para cambios nuevos, trabajar principalmente en `kaze-web/`.
-- Mantener Version 1 en `/` intacta salvo instruccion explicita.
-- Usar `/technical` como variante paralela Kaze Shop Studio: tecnico, editorial, brillante en mobile, pero con tono humano/local.
-- Para revisar Next usar `http://127.0.0.1:3000/`.
-- Para revisar la copia estatica usar `PORT=4178 node server.js` dentro de `kaze-site-local`, solo si se necesita comparar o rescatar contenido.
-- El objetivo del sitio es generacion de leads y cotizaciones, no ecommerce.
-- El hero y narrativa deben priorizar letreros luminosos y senaletica, con apparel como segunda vertical.
-- Los datos oficiales del cliente son: 347 Main Street, Watsonville, CA; 831-319-1837; Instagram `@kaze_designs`.
-- Aplicar GEO/SEO local en todas las versiones: Kaze debe posicionarse como tienda fisica en Watsonville, CA, sirviendo Monterey Bay / Santa Cruz County y negocios locales cercanos.
+* La única fuente activa de trabajo es `C:\Users\boxes\Documents\Kaze`. La carpeta en descargas es solo de respaldo.
+* Toda nueva modificación debe ser commiteada y pusheada a la rama `main` de GitHub para actualizar producción en Railway.
+* El destinatario de cotizaciones por defecto del backend es `kazecustomdesign@yahoo.com`, configurable por variable de entorno (`NOTIFICATION_EMAIL`).
+* Si se edita `kaze-studio`, se debe correr `npm run build` en su directorio para compilar la carpeta de producción en `/studio/` del servidor principal.
 
-## Reglas Criticas
-- No borrar ni sobrescribir la carpeta original sin confirmacion explicita.
-- No commitear logs locales, secretos, credenciales ni archivos temporales.
-- No asumir que `4177` es la copia nueva; actualmente `4177` corresponde al servidor original.
-- Antes de cambios visuales, revisar `preferencias-diseno.md`, `copys/COPYS-001_website-kaze-designs.md` y `ui-ux-test/UIUX-TEST-001_primer-mvp-diseno.md`.
-- Para cambios Next, revisar `kaze-web/AGENTS.md` y las skills locales relevantes en `.agents/skills/`.
-- Mantener el tono de marca: directo, calido, experto, urbano y profesional.
-- No volver la version tecnica demasiado fria o repetitiva; balancear precision con trato humano, negocio local y guia al cliente.
-- No eliminar ni diluir la estrategia de ubicacion: mencionar de forma natural Watsonville, Main Street, Monterey Bay, Santa Cruz County y la atencion local cuando aplique.
-- **AL ACTUALIZAR EL INFORME HTML (`INFORME_PROYECTO_KAZE.html`), NUNCA SOBRESCRIBIR LA VERSIÓN ACTUAL.** Crear siempre una nueva pestaña de versión (ej. `v3.0`) y archivar la versión anterior como pestaña histórica para mantener la bitácora intacta.
-
-## Pendientes Conocidos
-- Crear un README completo si el proyecto se compartira con otro editor/equipo.
-- Decidir si se commitean las skills locales `.agents/skills/` y el informe `kaze-web/public/habilidades-agentes.html`.
-- Corregir lint heredado en `kaze-web/src/app/page.tsx:25`.
-- Revisar visualmente `/technical` en desktop y mobile con navegador/screenshot.
-- Decidir que elementos de `Kaze Shop Studio` migraran eventualmente a Version 1.
-- Implementar una pasada GEO/SEO local en `kaze-web/`: metadata, JSON-LD, copy visible, contacto, mapa/ubicacion, areas atendidas y CTAs de tienda local.
-- Confirmar assets definitivos: version vectorial del logo y posibles videos (ya se integraron placeholders 4K por IA).
-- Si se sigue trabajando en `4178`, actualizar logs/servidores para evitar confusion con `4177`.
-- Corregir mojibake/encoding en algunos documentos heredados si se van a entregar o publicar.
-- Completar en Railway/GitHub la instalacion o autorizacion de Railway GitHub App para `calvin316byBoxesMedia360/kaze-site`.
-- Cuando Railway tenga acceso a GitHub, disparar deploy desde source y generar dominio publico.
+---
 
 ## Historial De Iteraciones
 
-### 2026-05-20 - GitHub y configuracion Railway
-- Se creo el repo privado `https://github.com/calvin316byBoxesMedia360/kaze-site`.
-- Se hizo push de la rama `main` con historial local hasta `6851564 chore: add Railway deployment config`.
-- Se agrego `.railwayignore` para evitar subir artefactos locales de Vercel/logs.
-- Se agrego `railway.json` con build/start para ejecutar el MVP desde `kaze-site-local`.
-- Railway proyecto/servicio: `kaze-site`, ambiente `production`, service ID `825d8d85-aba6-4328-8909-5247350b2b81`.
-- Railway Agent configuro source repo `calvin316byBoxesMedia360/kaze-site`, branch `main`, root directory `kaze-site-local`.
-- Pendiente para deploy automatico: conectar/autorizar Railway GitHub App con acceso al repo privado.
+### 2026-05-21 - Despliegue Exitoso en Railway e Integración de Kaze Studio
+* Se completó la lógica del personalizador en React: rotación y escalado de imágenes importadas, prendas base premium optimizadas por IA, visualización de frente/dorso, flujo por pasos y botón de descarga directa de mockup en PNG.
+* Se alineó estéticamente el botón **Diseña tu Prenda** en la Navbar al lado de **Cotizar** en todas las vistas (HTML local y Next.js).
+* Se actualizó el correo receptor de cotizaciones del backend a `kazecustomdesign@yahoo.com`.
+* Se configuró el flujo de compilación para volcar el Studio dentro del servidor de backend (`kaze-site-local/studio`).
+* Se realizó el push del código a GitHub y se habilitó el despliegue automático en Railway. El sitio está oficialmente en producción.
+* El cliente presentó el MVP con total éxito, destacando los videos e imágenes creados con IA y el branding digital.
 
-### 2026-05-17 - Copia a Documents y Git local
-- Se copio `C:\Users\boxes\Downloads\Habilidades de Agentes\proyecto Kaze` a `C:\Users\boxes\Documents\Kaze`.
-- Se inicializo Git en la copia nueva.
-- Se creo `.gitignore`.
-- Se hizo commit base `af56eed chore: import Kaze project`.
-- Se verifico la copia nueva en `http://127.0.0.1:4178/`.
+### 2026-05-20 - GitHub y Configuración de Railway
+* Se creó el repositorio privado `https://github.com/calvin316byBoxesMedia360/kaze-site`.
+* Se subió la rama `main` con el historial del proyecto.
+* Se agregó `.railwayignore` y `railway.json` para orientar el despliegue a la carpeta `kaze-site-local`.
 
-### 2026-05-18 - Next.js y Kaze Technical Edition
-- Se confirmo que la version Next.js `kaze-web/` es la version principal de interes.
-- Se levanto la app en `http://127.0.0.1:3000/`.
-- Se creo la ruta `/technical` como variante paralela de diseno.
-- Se agregaron imagenes editadas en `kaze-web/public/technical/`.
-- Se hizo commit `9a6a4e0 feat: add Kaze Technical Edition`.
-
-### 2026-05-18 - Kaze Shop Studio e instalacion de skills locales
-- Se analizo `public/informe-habilidades.html`.
-- Se crearon skills locales en `.agents/skills/` para frontend Next, Technical Edition, responsive UX, auditoria visual y sistema de diseno.
-- Se copio el informe a `kaze-web/public/habilidades-agentes.html`.
-- Se redisenio `/technical` para recuperar calidez humana: `Kaze Shop Studio`, seccion `Built Around People`, copy menos robotico y overlays mas utiles.
-- Verificacion: `npm run build` paso; `/technical` y `/habilidades-agentes.html` responden 200.
-
-### 2026-05-18 - Nota GEO y estrategia de ubicacion
-- El usuario pidio no olvidar aplicar GEO y estrategia de ubicacion para la tienda.
-- Regla agregada: Kaze debe reforzar Watsonville, CA, Main Street, Monterey Bay / Santa Cruz County, tienda fisica, servicios locales y cotizacion cercana sin sonar artificial.
-
-### 2026-05-18 - Reemplazo de Placeholders y Landing Page Larga
-- Se reviso el MVP inicial (`index.html`) que funcionaba como landing page larga.
-- Se detectaron 16 imagenes placeholder de Unsplash de baja fidelidad.
-- Se generaron 16 imagenes nuevas con IA (4K, fotorrealistas) para las secciones Hero, Servicios, Proyectos, Historia y Catalogos.
-- Se reemplazaron las URLs y se guardaron los assets localmente en `assets/images`.
+### 2026-05-18 - Remplazo de Placeholders y Landing Page Larga
+* Se generaron 16 imágenes fotorrealistas de alta definición (4K) con IA para reemplazar todos los placeholders de Unsplash en Hero, Servicios, Proyectos, Historia y Catálogos.
+* Se guardaron los recursos en `kaze-site-local/assets/images`.

@@ -1,50 +1,79 @@
-# KAZE Custom Apparel & Signs
+# KAZE Custom Apparel & Signs / Kaze Designs
 
-Sitio y documentacion de trabajo para KAZE Custom Apparel & Signs / Kaze Designs.
+Repositorio y documentación oficial para el sitio web y la herramienta interactiva de personalización de KAZE Custom Apparel & Signs.
 
-## Ubicacion De Trabajo
-La copia activa del proyecto esta en:
+## 🚀 Despliegue en Vivo
+* **Producción (Railway):** [https://kazedesignswtv1-production.up.railway.app](https://kazedesignswtv1-production.up.railway.app)
+* **Kaze Studio (Personalizador):** [https://kazedesignswtv1-production.up.railway.app/studio/](https://kazedesignswtv1-production.up.railway.app/studio/)
+* **Destinatario de Cotizaciones:** `kazecustomdesign@yahoo.com`
 
-```text
-C:\Users\boxes\Documents\Kaze
+---
+
+## 💻 Configuración para un Nuevo Terminal Físico
+Para clonar, correr y continuar el desarrollo en otra computadora usando la misma cuenta y administrador:
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/calvin316byBoxesMedia360/kaze-site.git
+cd kaze-site
 ```
 
-La carpeta original en Downloads queda como respaldo.
+### 2. Estructura del Proyecto
+* `kaze-site-local/`: Directorio raíz del backend y del MVP estático servido en producción.
+  * `kaze-site-local/server.js`: Servidor Node.js (express) que maneja las cotizaciones a través de Resend y rutea el SPA del Studio.
+  * `kaze-site-local/studio/`: Archivos compilados en producción de Kaze Studio (el personalizador interactivo).
+  * `kaze-site-local/assets/mockups/`: Prendas e imágenes base optimizadas por IA.
+* `kaze-studio/`: Código fuente de la aplicación interactiva de diseño (React + Vite + TypeScript). Compila directamente hacia `kaze-site-local/studio/`.
+* `kaze-web/`: Aplicación en Next.js (conservada para el roadmap de la versión 2.0).
 
-## Vista Local
-El sitio estatico vive en `kaze-site-local/`.
+### 3. Instalación de Dependencias
+Ejecuta la instalación en los dos entornos clave:
+```bash
+# Servidor Principal
+npm install
 
-Para levantar la copia nueva:
-
-```powershell
-$env:PORT='4178'
-node kaze-site-local\server.js
+# Entorno de Desarrollo de Kaze Studio
+cd kaze-studio
+npm install
+cd ..
 ```
 
-Abrir:
+### 4. Ejecución en Local
+* **Servidor Backend y Sitio Web:**
+  ```powershell
+  $env:PORT="4178"
+  node kaze-site-local/server.js
+  ```
+  Abre [http://localhost:4178/](http://localhost:4178/) y [http://localhost:4178/studio/](http://localhost:4178/studio/).
 
-```text
-http://127.0.0.1:4178/
+* **Desarrollo del Personalizador (Live Reload):**
+  ```bash
+  cd kaze-studio
+  npm run dev
+  ```
+
+### 5. Compilación del Studio
+Si realizas cambios en el personalizador (`kaze-studio/`), compila el proyecto para mover los archivos de producción al servidor de producción:
+```bash
+cd kaze-studio
+npm run build
 ```
 
-Nota: `http://127.0.0.1:4177/` puede apuntar a la copia original si ese servidor sigue activo.
+---
 
-## Documentos Clave
-- `MEMORY.md`: memoria viva y estado operativo del proyecto.
-- `NEXT_SESSION.md`: instrucciones para retomar.
-- `INFORME_PROYECTO_KAZE.html`: informe histórico del estado del proyecto.
-- `preferencias-diseno.md`: direccion visual e inspiraciones.
-- `copys/COPYS-001_website-kaze-designs.md`: copy y voz de marca.
-- `ui-ux-test/UIUX-TEST-001_primer-mvp-diseno.md`: brief UI/UX del primer MVP.
-- `planeacion-mvp/planeacion-kaze-designs.html`: planeacion del MVP.
-- `briefs/`: briefs de produccion.
-- `kaze-site-local/assets/images/`: imágenes de alta fidelidad generadas por IA para placeholders.
+## 🛠️ Integración con Railway
+El servicio de producción está configurado con **GitHub Auto-Deploy** en la rama `main` del repositorio `calvin316byBoxesMedia360/kaze-site`. 
+Cualquier cambio empujado con `git push origin main` iniciará automáticamente una nueva compilación y despliegue.
 
-## Git
-Repo local inicializado en rama `main`.
+### Variables de Entorno Requeridas en Railway:
+* `PORT`: Puerto asignado automáticamente por Railway (ej. `8080`).
+* `NOTIFICATION_EMAIL`: Correo de destino para cotizaciones (por defecto `kazecustomdesign@yahoo.com`).
+* `RESEND_API_KEY`: API Key oficial de Resend para el envío real de correos.
 
-Commit base:
+---
 
-```text
-af56eed chore: import Kaze project
-```
+## 📄 Documentación del Proyecto
+* `MEMORY.md`: Estado actual y bitácora operativa de la sesión.
+* `NEXT_SESSION.md`: Instrucciones paso a paso para retomar el desarrollo.
+* `INFORME_PROYECTO_KAZE.html`: Reporte interactivo con pestañas de versiones v1.0 a v4.0.
+* `preferencias-diseno.md`: Dirección visual, colores y tokens de marca oficiales de KAZE.

@@ -12,7 +12,7 @@
 
 ## 3. Tooling & Environments
 - **Respect Historical Versions**: Never override the historical MVP directories (`kaze-site-local` or older servers) without user consent.
-- **Deployments**: Vercel is the primary deployment environment. Always deploy changes with `vercel --prod` to ensure live verification.
+- **Deployments**: Railway is the primary deployment environment. Always commit and push changes to the `main` branch on GitHub to trigger the automatic build and verify the live site at `https://kazedesignswtv1-production.up.railway.app`.
 - **Native Tools**: Always prefer specific agent tools (`view_file`, `write_to_file`, `replace_file_content`) over bash commands like `cat`, `sed`, or `grep`.
 
 ## 4. Workflows
