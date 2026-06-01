@@ -588,7 +588,7 @@ function ShirtMesh({
   onUpdate,
 }: ShirtMeshProps) {
   const meshRef = useRef<THREE.Mesh>(null)
-  const { nodes } = useGLTF('/shirt_baked.glb')
+  const { nodes } = useGLTF('shirt_baked.glb')
 
   const shirtMesh = useMemo(() => {
     const mesh = Object.values(nodes).find((node) => (node as any).isMesh) as THREE.Mesh
