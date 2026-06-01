@@ -503,8 +503,33 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   const brushCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const vehicleInputRef = useRef<HTMLInputElement>(null);
+  const viewportRef = useRef<HTMLDivElement | null>(null);
   
   const activeLayer = layers.find(l => l.id === activeLayerId);
+
+  // Mouse wheel zoom handling when zoom tool is active or Ctrl is held
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      if (activeTool === 'zoom' || e.ctrlKey) {
+        e.preventDefault();
+        const delta = e.deltaY;
+        // Adjust zoom by 5% increments
+        if (delta < 0) {
+          setZoom(prev => Math.min(400, prev + 5));
+        } else {
+          setZoom(prev => Math.max(10, prev - 5));
+        }
+      }
+    };
+
+    viewport.addEventListener('wheel', handleWheel, { passive: false });
+    return () => {
+      viewport.removeEventListener('wheel', handleWheel);
+    };
+  }, [activeTool]);
 
   // Initialize and load default mask on tool/layer switch
   useEffect(() => {
@@ -2453,7 +2478,10 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
           )}
 
           {/* Canvas Wrapper */}
-          <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div 
+            ref={viewportRef}
+            style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}
+          >
             <div 
               style={{ 
                 position: 'absolute',
@@ -2500,7 +2528,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center',
-                  cursor: activeTool === 'pan' ? 'grab' : 'default'
+                  cursor: activeTool === 'pan' ? 'grab' : activeTool === 'zoom' ? 'zoom-in' : 'default'
                 }}
               >
               {/* Base Vehicle Layer */}
