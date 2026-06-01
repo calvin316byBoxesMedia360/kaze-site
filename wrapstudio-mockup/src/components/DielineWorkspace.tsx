@@ -192,7 +192,7 @@ export function DielineWorkspace({ state, onUpdate, onUpdateLayer }: Props) {
       return layer.aspect || 1.0
     })()
 
-    const heightPx = layer.scale * 0.45 * boxWidth
+    const heightPx = layer.scale * 0.81 * boxWidth
     const widthPx = heightPx * aspect
 
     return (
