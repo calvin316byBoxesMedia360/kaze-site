@@ -2489,11 +2489,20 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
             </svg>
 
             {/* Canvas zoom and pan container */}
-            <motion.div 
-              drag={activeTool === 'pan'}
-              dragMomentum={false}
-              style={{ scale: zoom / 100, position: 'relative', width: '800px', height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
+            <div style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '800px', height: '400px', position: 'relative' }}>
+              <motion.div 
+                drag={activeTool === 'pan'}
+                dragMomentum={false}
+                whileDrag={activeTool === 'pan' ? { cursor: 'grabbing' } : undefined}
+                style={{ 
+                  position: 'absolute', 
+                  inset: 0, 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  cursor: activeTool === 'pan' ? 'grab' : 'default'
+                }}
+              >
               {/* Base Vehicle Layer */}
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img 
@@ -2519,7 +2528,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.4 }}
                     exit={{ opacity: 0 }}
-                    style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', mixBlendMode: 'multiply' }}
+                    style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', mixBlendMode: 'screen' }}
                   >
                     <img 
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt6QOLKQlyHHtFmo9MYTBlUutvMGoxxWsPja_pmUMQjulR5ud8QJ87D619oWEHTQzxhMU01SE63CDFZnsjX7qqXT5bvBHU7dhtebVWlKKhDdNAaX5wWg7r0HDX03UYLdb9eQTXLEid8CmMxl55Fgz1ZTCPrtYJygd5BNUjpYmi_jG5E_f26qimOJ9IQjRG46x7hE7lVkpr504mfeyEOOO0OXiVMyT-dAvpzCbd7omojH4k9tmVL3pQUsa_rHoyhMulE5aC6H_YJHg" 
@@ -2810,7 +2819,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
               {((activeTool === 'brush' && activeLayerId) || activeTool === 'bodyMask') && (
                 <canvas
                   ref={brushCanvasRef}
-                  style={{ position: 'absolute', inset: 0, zIndex: 30, cursor: 'crosshair', pointerEvents: 'auto' }}
+                  style={{ position: 'absolute', inset: 0, zIndex: 30, cursor: 'crosshair', pointerEvents: 'auto', opacity: 0.5 }}
                   width={800}
                   height={400}
                   onPointerDown={handleBrushDown}
@@ -2832,6 +2841,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
               </AnimatePresence>
             </motion.div>
           </div>
+        </div>
 
           {/* Floating Zoom Controls */}
           <div className="canvas-zoom-controls" style={{ bottom: '20px' }}>
