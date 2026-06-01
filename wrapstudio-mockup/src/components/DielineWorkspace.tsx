@@ -176,21 +176,7 @@ export function DielineWorkspace({ state, onUpdate, onUpdateLayer }: Props) {
   const renderDecal2D = (layer: DecalLayer, boxWidth: number) => {
     const isSel = layer.id === state.selectedLayerId
 
-    // Calculate aspect ratio dynamically
-    const aspect = (() => {
-      if (layer.type === 'text' && layer.text) {
-        const canvas = document.createElement('canvas')
-        const ctx = canvas.getContext('2d')
-        if (ctx) {
-          ctx.font = `bold 64px "${layer.fontFamily || 'Plus Jakarta Sans'}", sans-serif`
-          const metrics = ctx.measureText(layer.text)
-          const textWidth = Math.max(10, Math.ceil(metrics.width))
-          const textHeight = 80
-          return textWidth / textHeight
-        }
-      }
-      return layer.aspect || 1.0
-    })()
+    const aspect = layer.aspect || 1.0
 
     const heightPx = layer.scale * 0.81 * boxWidth
     const widthPx = heightPx * aspect

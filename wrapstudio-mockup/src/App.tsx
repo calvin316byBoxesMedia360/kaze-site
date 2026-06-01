@@ -72,13 +72,14 @@ export function clampDecalPosition(
     const clampedY = limitYMin <= limitYMax ? Math.max(limitYMin, Math.min(limitYMax, offsetY)) : -0.05
     return { offsetX: clampedX, offsetY: clampedY }
   } else {
-    // Sleeves: 40% wide (-0.20 to 0.20) and 45% high, shifted down (-0.33 to 0.12)
-    const limitX = 0.20 - halfSizeX
+    // Sleeves: width safety is z = [-0.08, 0.08], height safety is y = [0.02, 0.18]
+    // with offset +0.10, offsetY range is [-0.08, 0.08]
+    const limitX = 0.08 - halfSizeX
     const clampedX = limitX >= 0 ? Math.max(-limitX, Math.min(limitX, offsetX)) : 0
 
-    const minY = -0.33 + halfSizeY
-    const maxY = 0.12 - halfSizeY
-    const clampedY = minY <= maxY ? Math.max(minY, Math.min(maxY, offsetY)) : -0.105
+    const minY = -0.08 + halfSizeY
+    const maxY = 0.08 - halfSizeY
+    const clampedY = minY <= maxY ? Math.max(minY, Math.min(maxY, offsetY)) : 0
     return { offsetX: clampedX, offsetY: clampedY }
   }
 }
@@ -120,9 +121,9 @@ export default function App() {
         if (l.id !== id) return l
         const merged = { ...l, ...patch }
         
-        // Calculate aspect ratio dynamically
+        // Calculate aspect ratio dynamically only if text or font changed, or if aspect is not set
         let aspect = merged.aspect || 1.0
-        if (merged.type === 'text' && merged.text) {
+        if (merged.type === 'text' && merged.text && (patch.text !== undefined || patch.fontFamily !== undefined || !merged.aspect)) {
           const canvas = document.createElement('canvas')
           const ctx = canvas.getContext('2d')
           if (ctx) {
@@ -135,8 +136,8 @@ export default function App() {
         }
 
         const isTorso = merged.region === 'front' || merged.region === 'back'
-        const maxScaleX = isTorso ? (0.24 / (0.45 * aspect)) : (0.40 / (0.45 * aspect))
-        const maxScaleY = isTorso ? (0.40 / 0.45) : (0.45 / 0.45)
+        const maxScaleX = isTorso ? (0.24 / (0.45 * aspect)) : (0.16 / (0.45 * aspect))
+        const maxScaleY = isTorso ? (0.40 / 0.45) : (0.16 / 0.45)
         const maxScale = Math.min(maxScaleX, maxScaleY)
 
         merged.scale = Math.max(0.01, Math.min(maxScale, merged.scale))

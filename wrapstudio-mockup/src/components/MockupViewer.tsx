@@ -178,20 +178,7 @@ function Decal3DHandles({ layer, onUpdateLayer, setIsDragging, shirtMesh }: Deca
 
   const { position, rotation } = useMemo(() => getDecalTransform(layer), [layer])
 
-  const aspect = useMemo(() => {
-    if (layer.type === 'text' && layer.text) {
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-      if (ctx) {
-        ctx.font = `bold 64px "${layer.fontFamily || 'Plus Jakarta Sans'}", sans-serif`
-        const metrics = ctx.measureText(layer.text)
-        const textWidth = Math.max(10, Math.ceil(metrics.width))
-        const textHeight = 80
-        return textWidth / textHeight
-      }
-    }
-    return layer.aspect || 1.0
-  }, [layer.type, layer.text, layer.fontFamily, layer.aspect])
+  const aspect = layer.aspect || 1.0
 
   const sizeY = layer.scale * 0.45
   const sizeX = sizeY * aspect
