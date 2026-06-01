@@ -17,10 +17,10 @@ export function getDecalTransform(layer: DecalLayer): { position: [number, numbe
     position = [-layer.offsetX, layer.offsetY, -0.15]
     rotation = [0, Math.PI, -rotRad]
   } else if (layer.region === 'left-sleeve') {
-    position = [0.34, layer.offsetY, layer.offsetX]
+    position = [0.24, layer.offsetY, layer.offsetX]
     rotation = [0, Math.PI / 2, rotRad]
   } else if (layer.region === 'right-sleeve') {
-    position = [-0.34, layer.offsetY, -layer.offsetX]
+    position = [-0.24, layer.offsetY, -layer.offsetX]
     rotation = [0, -Math.PI / 2, rotRad]
   }
   return { position, rotation }
@@ -485,9 +485,9 @@ export function calculateDecalOffset(
  * Classifies a local 3D point into one of the four interactive regions of the T-shirt.
  */
 export function classifyRegion(x: number, z: number): 'front' | 'back' | 'left-sleeve' | 'right-sleeve' {
-  if (x > 0.35) {
+  if (x > 0.17) {
     return 'left-sleeve'
-  } else if (x < -0.35) {
+  } else if (x < -0.17) {
     return 'right-sleeve'
   } else {
     if (z >= 0) {
@@ -530,10 +530,10 @@ function SafetyAreaVisualizer({ region }: SafetyAreaVisualizerProps) {
         [-x, yMax, z],
       ] as [number, number, number][]
     } else if (region === 'left-sleeve') {
-      const x = 0.342
-      const yMin = -0.33
-      const yMax = 0.12
-      const z = 0.20
+      const x = 0.242
+      const yMin = 0.02
+      const yMax = 0.18
+      const z = 0.08
       return [
         [x, yMax, -z],
         [x, yMax, z],
@@ -542,10 +542,10 @@ function SafetyAreaVisualizer({ region }: SafetyAreaVisualizerProps) {
         [x, yMax, -z],
       ] as [number, number, number][]
     } else { // right-sleeve
-      const x = -0.342
-      const yMin = -0.33
-      const yMax = 0.12
-      const z = 0.20
+      const x = -0.242
+      const yMin = 0.02
+      const yMax = 0.18
+      const z = 0.08
       return [
         [x, yMax, -z],
         [x, yMax, z],
