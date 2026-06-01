@@ -2772,9 +2772,51 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                                   x: layer.x + dW / 2
                                 }, true);
                               }} onDragEnd={() => saveToHistory(layers)} />
+
+                              {/* Rotate Handles (Photoshop style) */}
+                              <RotateHandle 
+                                position="top-left" 
+                                currentRotate={layer.rotate}
+                                scaleX={layer.scaleX} 
+                                scaleY={layer.scaleY} 
+                                onRotate={(newRotate) => {
+                                  updateLayer(layer.id, { rotate: newRotate }, true);
+                                }} 
+                                onRotateEnd={() => saveToHistory(layers)} 
+                              />
+                              <RotateHandle 
+                                position="top-right" 
+                                currentRotate={layer.rotate}
+                                scaleX={layer.scaleX} 
+                                scaleY={layer.scaleY} 
+                                onRotate={(newRotate) => {
+                                  updateLayer(layer.id, { rotate: newRotate }, true);
+                                }} 
+                                onRotateEnd={() => saveToHistory(layers)} 
+                              />
+                              <RotateHandle 
+                                position="bottom-left" 
+                                currentRotate={layer.rotate}
+                                scaleX={layer.scaleX} 
+                                scaleY={layer.scaleY} 
+                                onRotate={(newRotate) => {
+                                  updateLayer(layer.id, { rotate: newRotate }, true);
+                                }} 
+                                onRotateEnd={() => saveToHistory(layers)} 
+                              />
+                              <RotateHandle 
+                                position="bottom-right" 
+                                currentRotate={layer.rotate}
+                                scaleX={layer.scaleX} 
+                                scaleY={layer.scaleY} 
+                                onRotate={(newRotate) => {
+                                  updateLayer(layer.id, { rotate: newRotate }, true);
+                                }} 
+                                onRotateEnd={() => saveToHistory(layers)} 
+                              />
                             </div>
                           );
-                        })()}
+                         })()}
                       </div>
                     </motion.div>
                   </div>
@@ -3268,6 +3310,135 @@ function ResizeHandle({ position, onDrag, onDragEnd, scaleX = 1, scaleY = 1 }: {
           borderRadius: '50%',
           pointerEvents: 'auto',
           cursor: getCursor()
+        }}
+      />
+    </div>
+  );
+}
+
+function RotateHandle({ 
+  position, 
+  currentRotate, 
+  onRotate, 
+  onRotateEnd, 
+  scaleX = 1, 
+  scaleY = 1 
+}: { 
+  position: string; 
+  currentRotate: number; 
+  onRotate: (newRotate: number) => void; 
+  onRotateEnd?: () => void; 
+  scaleX?: number; 
+  scaleY?: number; 
+}) {
+  const isDraggingRef = useRef(false);
+  const startAngleRef = useRef(0);
+  const initialRotateRef = useRef(0);
+  const centerXRef = useRef(0);
+  const centerYRef = useRef(0);
+
+  const getPositionStyles = () => {
+    // Offset further outward from the corner (e.g., -18px)
+    const offset = '-18px';
+    switch (position) {
+      case 'top-left': return { top: offset, left: offset };
+      case 'top-right': return { top: offset, right: offset };
+      case 'bottom-left': return { bottom: offset, left: offset };
+      case 'bottom-right': return { bottom: offset, right: offset };
+      default: return {};
+    }
+  };
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    
+    // Find layer center relative to the screen
+    const rect = e.currentTarget.parentElement?.parentElement?.getBoundingClientRect();
+    if (!rect) return;
+    
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    centerXRef.current = centerX;
+    centerYRef.current = centerY;
+    isDraggingRef.current = true;
+    
+    // Calculate start angle of pointer relative to center
+    startAngleRef.current = Math.atan2(e.clientY - centerY, e.clientX - centerX) * (180 / Math.PI);
+    initialRotateRef.current = currentRotate;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    e.stopPropagation();
+    e.preventDefault();
+    
+    const currentAngle = Math.atan2(e.clientY - centerYRef.current, e.clientX - centerXRef.current) * (180 / Math.PI);
+    const angleDelta = currentAngle - startAngleRef.current;
+    
+    const newRotate = Math.round(initialRotateRef.current + angleDelta);
+    onRotate(newRotate);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current) return;
+    e.stopPropagation();
+    e.preventDefault();
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (_err) {}
+    isDraggingRef.current = false;
+    if (onRotateEnd) onRotateEnd();
+  };
+
+  const rotateCursor = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ccff00' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><path d='M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67'/></svg>") 12 12, auto`;
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        width: '0px',
+        height: '0px',
+        zIndex: 25,
+        transform: `scale(${1 / scaleX}, ${1 / scaleY})`,
+        transformOrigin: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...getPositionStyles()
+      }}
+    >
+      <div
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        style={{ 
+          position: 'absolute',
+          width: '16px',
+          height: '16px',
+          left: '-8px',
+          top: '-8px',
+          backgroundColor: 'transparent',
+          border: '1.5px solid transparent',
+          borderRadius: '50%',
+          pointerEvents: 'auto',
+          cursor: rotateCursor,
+          transition: 'all 0.15s ease',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = 'var(--accent)';
+          e.currentTarget.style.borderColor = '#FFFFFF';
+          e.currentTarget.style.transform = 'scale(1.2)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = 'transparent';
+          e.currentTarget.style.borderColor = 'transparent';
+          e.currentTarget.style.transform = 'scale(1)';
         }}
       />
     </div>
