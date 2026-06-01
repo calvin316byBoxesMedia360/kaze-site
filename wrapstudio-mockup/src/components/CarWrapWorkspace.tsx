@@ -2532,8 +2532,9 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                 }}
               >
               {/* Base Vehicle Layer */}
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
                 <img 
+                  draggable={false}
                   src={vehicleUrl} 
                   alt="Vehicle Template"
                   style={{
@@ -2559,6 +2560,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                     style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', mixBlendMode: 'screen' }}
                   >
                     <img 
+                      draggable={false}
                       src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt6QOLKQlyHHtFmo9MYTBlUutvMGoxxWsPja_pmUMQjulR5ud8QJ87D619oWEHTQzxhMU01SE63CDFZnsjX7qqXT5bvBHU7dhtebVWlKKhDdNAaX5wWg7r0HDX03UYLdb9eQTXLEid8CmMxl55Fgz1ZTCPrtYJygd5BNUjpYmi_jG5E_f26qimOJ9IQjRG46x7hE7lVkpr504mfeyEOOO0OXiVMyT-dAvpzCbd7omojH4k9tmVL3pQUsa_rHoyhMulE5aC6H_YJHg" 
                       alt="Contours"
                       style={{ width: '100%', height: 'auto', filter: 'grayscale(1) invert(1)' }}
@@ -2804,6 +2806,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                   }}
                 >
                   <img 
+                    draggable={false}
                     src={vehicleUrl} 
                     alt="Vehicle Shadows"
                     style={{ width: '100%', height: 'auto', imageRendering: 'high-quality' as any, filter: `grayscale(1) contrast(${shadowContrast}) brightness(${shadowBrightness})` }}
@@ -2837,6 +2840,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                   }}
                 >
                   <img 
+                    draggable={false}
                     src={vehicleUrl} 
                     alt="Vehicle Reflections"
                     style={{ width: '100%', height: 'auto', imageRendering: 'high-quality' as any, filter: `grayscale(1) contrast(${reflectionContrast}) brightness(${reflectionBrightness})` }}
