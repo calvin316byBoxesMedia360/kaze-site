@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informe de Proyecto - Pacdora Mockup Maker</title>
+    <style>
+        :root {
+            --bg-color: #0d0e12;
+            --surface-color: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #ccff00; /* Neon Lime active in tool */
+            --accent-blue: #3b82f6;
+            --accent-glow: rgba(204, 255, 0, 0.15);
+            --font-main: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 3rem 2rem;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(204, 255, 0, 0.04), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.06), transparent 35%);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 2.2rem;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        .card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow);
+            border-color: rgba(204, 255, 0, 0.25);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        h2::before {
+            content: '';
+            display: block;
+            width: 5px;
+            height: 1.2em;
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .metric-card {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        .metric-card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .metric-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .list-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .list-item::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        code {
+            background: rgba(204, 255, 0, 0.05);
+            color: var(--accent);
+            padding: 0.2em 0.5em;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            border: 1px solid rgba(204, 255, 0, 0.15);
+        }
+
+        .code-block {
+            background: #07080a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            color: #e2e8f0;
+            margin: 1.5rem 0;
+        }
+
+        .formula {
+            background: rgba(59, 130, 246, 0.03);
+            border: 1px dashed rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 1.2rem;
+            border-radius: 10px;
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        /* History Timeline styling */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid var(--border-color);
+            margin: 1.5rem 0;
+        }
+
+        .timeline-event {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-event::before {
+            content: '';
+            position: absolute;
+            left: calc(-2rem - 6px);
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border-color);
+            border: 2px solid var(--bg-color);
+        }
+
+        .timeline-event.active::before {
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .version-badge {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            padding: 0.15rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .version-badge.latest {
+            background: rgba(204, 255, 0, 0.15);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.8rem 1.8rem;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background: rgba(204, 255, 0, 0.1);
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">Mockup<span>MKR</span></div>
+            <div class="subtitle">Informe de Arquitectura e Historial de Estabilidad (v1.3.0)</div>
+        </header>
+
+        <div class="card">
+            <h2>Resumen del Sistema</h2>
+            <p>El **Pacdora Mockup Maker** es una plataforma híbrida de personalización de productos 3D (prendas textiles como camisetas) y 2D (vehículos / "Car Wrap"). La herramienta combina el poder del motor tridimensional <strong>WebGL (React Three Fiber & Three.js)</strong> con la versatilidad de procesamiento bidimensional de la <strong>API de HTML5 Canvas</strong> para ofrecer previsualizaciones realistas de productos listos para producción física.</p>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>Cálculos y Estabilidad 3D</h2>
+                <p>Para evitar que el modelo 3D se desvíe o se "des-centre" verticalmente al hacer zoom in/out, alineamos el eje vertical <code>Y</code> de la cámara con el objetivo <code>target</code> en el espacio 3D:</p>
+                <div class="formula">
+                    Camera_Y = Controls_Target_Y = -0.05
+                </div>
+                <p>Esto restringe el zoom a un plano puramente horizontal, estabilizando la visualización de la prenda.</p>
+            </div>
+
+            <div class="card">
+                <h2>Pipeline de Exportación 2D</h2>
+                <p>Las capturas directas de WebGL con fondo transparente (requerido para el suavizado de sombras dinámicas de <code>ContactShadows</code>) causaban colores lavados al exportar a PNG. Implementamos composición intermedia de capas:</p>
+                <div class="formula">
+                    Canvas_Output = Background_Layer(Opaque) + WebGL_Render(Alpha)
+                </div>
+                <p>El color final conserva el 100% de la fidelidad e intensidad original del diseño.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Métricas Técnicas Clave</h2>
+            <div class="grid" style="margin-bottom: 0;">
+                <div class="metric-card">
+                    <div class="metric-value">Y = -0.05</div>
+                    <div class="metric-label">Centro Visual 3D Estable</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">> 2560px</div>
+                    <div class="metric-label">Resolución Mínima de Exportación</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">Opaque 2D</div>
+                    <div class="metric-label">Composición de Exportación</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Historial de Cambios y Versiones</h2>
+            <div class="timeline">
+                <div class="timeline-event active">
+                    <h3>Versión 1.3.0 <span class="version-badge latest">Actual</span></h3>
+                    <p><strong>Mejoras críticas de Usabilidad y Precisión en 2D:</strong></p>
+                    <div class="list-item">Implementación de un manejador de arrastre (Drag & Drop) basado en punteros directos, eliminando los conflictos de re-renderizado de Framer Motion.</div>
+                    <div class="list-item">Adición de la fórmula de corrección de zoom <code>(100 / zoom)</code> en el arrastre para garantizar que el puntero se mantenga pegado al mismo píxel en cualquier escala.</div>
+                    <div class="list-item">Establecimiento de límites físicos seguros de coordenadas (anti-pérdida) para evitar que las calcomanías se arrastren fuera del área visible.</div>
+                    <div class="list-item">Incorporación de iconos de zoom específicos (lupa con <code>+</code> y <code>-</code> integrados) mediante <code>ZoomIn</code> y <code>ZoomOut</code> de Lucide para una identificación visual clara.</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h3>Versión 1.2.0</h3>
+                    <p><strong>Corrección de centrado de cámara y fidelidad de color en descargas:</strong></p>
+                    <div class="list-item">Fijado del eje Y de la cámara y del control orbital en <code>-0.05</code> para eliminar la deriva diagonal en zoom.</div>
+                    <div class="list-item">Reversión de <code>alpha: false</code> a <code>alpha: true</code> en WebGL para devolver el suelo uniforme al visor 3D (evitando recortes negros).</div>
+                    <div class="list-item">Adición de la composición intermedia en canvas 2D del <code>ExportHelper</code> para forzar exportaciones PNG opacas de alto contraste.</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h3>Versión 1.1.0</h3>
+                    <p><strong>Alineaciones 2D y manipulación de texto:</strong></p>
+                    <div class="list-item">Introducción del escalado mínimo de fuentes a <code>0.01</code> para diseños de texto detallados en mangas y costuras.</div>
+                    <div class="list-item">Implementación de <code>clampDecalPosition</code> para el arrastre y seguridad de decals en mangas y torso frontal/trasero.</div>
+                    <div class="list-item">Sincronización síncrona en el grafo de Three.js para silenciar guías visuales y controles durante la captura sin provocar bucles React.</div>
+                </div>
+
+                <div class="timeline-event">
+                    <h3>Versión 1.0.0</h3>
+                    <p><strong>Lanzamiento base del Editor:</strong></p>
+                    <div class="list-item">Carga de modelos GLTF y renderizado de la camiseta en estudio 3D.</div>
+                    <div class="list-item">Algoritmos de detección de siluetas de vehículos para el Car Wrap Workspace.</div>
+                    <div class="list-item">Ajustes iniciales de iluminación ambiental, rotación automática y paletas de colores en el panel lateral.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="text-align: center;">
+            <h2>Garantía de Estándares del Sistema</h2>
+            <p>Los parámetros matemáticos, límites seguros de coordenadas y reglas arquitectónicas están descritos en el contrato del sistema adjunto.</p>
+            <br>
+            <a href="system_contract.md" class="btn">Abrir Contrato de Sistema</a>
+        </div>
+    </div>
+</body>
+</html>

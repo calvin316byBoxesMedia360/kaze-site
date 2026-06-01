@@ -18,7 +18,9 @@ const types = {
   ".webm": "video/webm",
   ".ogv": "video/ogg",
   ".mp3": "audio/mpeg",
-  ".wav": "audio/wav"
+  ".wav": "audio/wav",
+  ".glb": "model/gltf-binary",
+  ".gltf": "model/gltf+json"
 };
 
 http.createServer((req, res) => {
