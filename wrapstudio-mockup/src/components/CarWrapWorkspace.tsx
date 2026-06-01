@@ -2570,7 +2570,9 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                         maskImage: `url(${layer.maskUrl})`,
                         WebkitMaskImage: `url(${layer.maskUrl})`,
                         maskSize: '100% 100%',
-                        WebkitMaskSize: '100% 100%'
+                        WebkitMaskSize: '100% 100%',
+                        maskRepeat: 'no-repeat',
+                        WebkitMaskRepeat: 'no-repeat'
                       } : {})
                     }}
                   >
