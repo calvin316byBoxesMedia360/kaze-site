@@ -17,10 +17,10 @@ export function getDecalTransform(layer: DecalLayer): { position: [number, numbe
     position = [-layer.offsetX, layer.offsetY, -0.15]
     rotation = [0, Math.PI, -rotRad]
   } else if (layer.region === 'left-sleeve') {
-    position = [0.24, layer.offsetY, layer.offsetX]
+    position = [0.24, layer.offsetY + 0.10, layer.offsetX]
     rotation = [0, Math.PI / 2, rotRad]
   } else if (layer.region === 'right-sleeve') {
-    position = [-0.24, layer.offsetY, -layer.offsetX]
+    position = [-0.24, layer.offsetY + 0.10, -layer.offsetX]
     rotation = [0, -Math.PI / 2, rotRad]
   }
   return { position, rotation }
@@ -628,8 +628,10 @@ function ShirtMesh({
       clickOffsetX = -localPoint.x
     } else if (region === 'left-sleeve') {
       clickOffsetX = localPoint.z
+      clickOffsetY = localPoint.y - 0.10
     } else if (region === 'right-sleeve') {
       clickOffsetX = -localPoint.z
+      clickOffsetY = localPoint.y - 0.10
     }
 
     // Find if the click hit any of the decals (topmost first)
