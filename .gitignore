@@ -1,1 +1,6 @@
 kaze-site-local/*.log
+kaze-promo/node_modules/
+kaze-promo/out/
+kaze-promo/dist/
+wrapstudio-mockup/node_modules/
+wrapstudio-mockup/dist/
