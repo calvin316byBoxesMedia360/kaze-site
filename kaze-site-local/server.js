@@ -37,7 +37,7 @@ http.createServer((req, res) => {
         const formData = JSON.parse(body);
         console.log("Received Quote Request:", formData);
 
-        const toEmail = process.env.NOTIFICATION_EMAIL || "kazecustomdesign@yahoo.com";
+        const toEmail = process.env.NOTIFICATION_EMAIL || "boxesmedia360@gmail.com";
         const apiKey = process.env.RESEND_API_KEY;
 
         let responseDetail = "Simulated quote reception in development mode.";

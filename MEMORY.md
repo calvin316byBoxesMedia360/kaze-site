@@ -25,7 +25,7 @@ Al cerrar una iteración importante:
 * **Deploy Activo (Railway):** [https://kazedesignswtv1-production.up.railway.app](https://kazedesignswtv1-production.up.railway.app)
 * **Kaze Studio Activo:** [https://kazedesignswtv1-production.up.railway.app/studio/](https://kazedesignswtv1-production.up.railway.app/studio/)
 * **Dirección Local de Trabajo:** `http://127.0.0.1:4178/`.
-* **Correo de Recepción de Formularios:** `kazecustomdesign@yahoo.com`
+* **Correo de Recepción de Formularios:** `boxesmedia360@gmail.com` (temporal para pruebas con Resend)
 
 ---
 
