@@ -9,7 +9,6 @@ import {
   Hand, 
   ZoomIn,
   ZoomOut,
-  Brush, 
   Grid3X3, 
   Undo2, 
   Redo2, 
@@ -452,8 +451,6 @@ function scanVehicleSilhouette(imageUrl: string, threshold = 35): Promise<string
 export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   // Navigation & Tabs
   const [zoom, setZoom] = useState(85);
-  const [activeTab, setActiveTab] = useState<'Side' | 'Front' | 'Rear'>('Side');
-  const [sidebarTab, setSidebarTab] = useState<'vehicle' | 'layers' | 'panels' | 'ai'>('layers');
   const [showProjects, setShowProjects] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   
@@ -464,7 +461,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   const [selectedPanel, setSelectedPanel] = useState<string[]>([]);
   
   // Overlay & Realism settings
-  const [desaturateVehicle, setDesaturateVehicle] = useState(false);
+  const desaturateVehicle = false;
   const [reflectionOpacity, setReflectionOpacity] = useState(60);
   const reflectionContrast = 6.0;
   const reflectionBrightness = 0.12;
@@ -489,11 +486,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   // AI Mockup Generation States
   const [showAiModal, setShowAiModal] = useState(false);
   const [aiPrompt, setAiPrompt] = useState('');
-  const [aiCarModel, setAiCarModel] = useState('');
-  const [aiEnvironment, setAiEnvironment] = useState('estacionado en un estudio fotográfico con luces suaves de publicidad');
   const [isGeneratingAi, setIsGeneratingAi] = useState(false);
-  const [generatedAiImageUrl, setGeneratedAiImageUrl] = useState<string | null>(null);
-  const [showAiResultModal, setShowAiResultModal] = useState(false);
   const [isProcessingBg, setIsProcessingBg] = useState(false);
   
   // History for Undo/Redo
@@ -738,7 +731,6 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
           };
           updateLayersWithHistory(prev => [...prev, newLayer]);
           setActiveLayerId(newLayer.id);
-          setSidebarTab('layers');
           setActiveTool('select');
           
           // Reset file input value so onChange can be triggered again for the same file
@@ -861,11 +853,6 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
     window.addEventListener('pointerup', handlePointerUp);
   };
 
-  const togglePanel = (panel: string) => {
-    setSelectedPanel(prev => 
-      prev.includes(panel) ? prev.filter(p => p !== panel) : [...prev, panel]
-    );
-  };
 
   // Drawing event handlers with ZOOM Correction
   const getCanvasCoords = (e: React.PointerEvent<HTMLCanvasElement>, canvas: HTMLCanvasElement) => {
@@ -1288,54 +1275,6 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
     }
   };
 
-  // Generate hyperrealistic AI mockup with Gemini Imagen
-  const generateAiRender = async () => {
-    if (!aiCarModel.trim()) {
-      alert("Por favor introduce el modelo del vehículo para la IA.");
-      return;
-    }
-    setIsGeneratingAi(true);
-    
-    // Construct layers description
-    const layersDesc = layers.length > 0 
-      ? layers.map(l => l.name).join(", ")
-      : "vinilos publicitarios personalizados";
-      
-    const finalPrompt = `Photorealistic commercial photography of a ${aiCarModel} fully wrapped in a custom commercial wrap design with ${layersDesc} and graphics. The car is ${aiEnvironment}. Professional lighting, sharp reflection details, realistic car texture, 8k resolution, raytraced reflection.`;
-    
-    try {
-      const response = await ai.models.generateImages({
-        model: "imagen-3.0-generate-002",
-        prompt: finalPrompt,
-        config: {
-          numberOfImages: 1,
-          aspectRatio: "16:9",
-          outputMimeType: "image/jpeg"
-        },
-      });
-      
-      const generated = response.generatedImages;
-      if (!generated || generated.length === 0) {
-        throw new Error("No images generated");
-      }
-      
-      const firstImage = generated[0];
-      if (!firstImage || !firstImage.image || !firstImage.image.imageBytes) {
-        throw new Error("Invalid image format from Gemini AI");
-      }
-      const imageBytes = firstImage.image.imageBytes;
-      const url = `data:image/jpeg;base64,${imageBytes}`;
-      
-      setGeneratedAiImageUrl(url);
-      setShowAiResultModal(true);
-      setShowAiModal(false);
-    } catch (err) {
-      console.error("AI scene generation failed", err);
-      alert("Error al generar el render fotorrealista con IA. Comprueba tu clave de API.");
-    } finally {
-      setIsGeneratingAi(false);
-    }
-  };
 
   const vehicleAspect = vehicleSize.width / vehicleSize.height;
   const carHeight = 800 / vehicleAspect;
@@ -1575,60 +1514,74 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
 
         {/* Left Sidebar control panel */}
         <aside className="control-panel" style={{ width: '320px', borderRight: '1px solid var(--border-glass)', display: 'flex', flexDirection: 'column', height: '100%', flexShrink: 0, zIndex: 10 }}>
-          {/* Sub-tabs header */}
-          <div className="dieline-tab-buttons" style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-glass)', marginTop: 0, flexShrink: 0 }}>
-            <button
-              onClick={() => setSidebarTab('vehicle')}
-              className={`dieline-tab-btn ${sidebarTab === 'vehicle' ? 'dieline-tab-btn--active' : ''}`}
-              style={{ flex: 1 }}
-            >
-              Vehículo
-            </button>
-            <button
-              onClick={() => setSidebarTab('layers')}
-              className={`dieline-tab-btn ${sidebarTab === 'layers' ? 'dieline-tab-btn--active' : ''}`}
-              style={{ flex: 1 }}
-            >
-              Capas
-            </button>
-            <button
-              onClick={() => setSidebarTab('panels')}
-              className={`dieline-tab-btn ${sidebarTab === 'panels' ? 'dieline-tab-btn--active' : ''}`}
-              style={{ flex: 1 }}
-            >
-              Áreas
-            </button>
-            <button
-              onClick={() => setSidebarTab('ai')}
-              className={`dieline-tab-btn ${sidebarTab === 'ai' ? 'dieline-tab-btn--active' : ''}`}
-              style={{ flex: 1 }}
-            >
-              IA Render
-            </button>
-          </div>
+          {/* Hidden uploader inputs */}
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            accept="image/png, image/jpeg"
+            onChange={handleFileUpload}
+            style={{ display: 'none' }}
+          />
+          <input 
+            type="file" 
+            ref={vehicleInputRef} 
+            accept="image/png, image/jpeg"
+            onChange={handleVehicleUpload}
+            style={{ display: 'none' }}
+          />
 
-          {/* Permanent Design Upload Section */}
-          <div style={{ padding: '12px 20px', borderBottom: '1px solid var(--border-glass)', flexShrink: 0, background: 'rgba(255, 255, 255, 0.01)' }}>
-            <input 
-              type="file" 
-              ref={fileInputRef} 
-              accept="image/png, image/jpeg"
-              onChange={handleFileUpload}
-              style={{ display: 'none' }}
-            />
-            <input 
-              type="file" 
-              ref={vehicleInputRef} 
-              accept="image/png, image/jpeg"
-              onChange={handleVehicleUpload}
-              style={{ display: 'none' }}
-            />
-            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+          <div className="panel-content" style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            
+            {/* Auto Personalizado (Custom Vehicle Upload) */}
+            <div className="control-section">
+              <p className="section-label">Auto Personalizado</p>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255, 255, 255, 0.02)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-glass)' }}>
+                <div style={{ width: '48px', height: '32px', borderRadius: '4px', background: '#09090b', overflow: 'hidden', flexShrink: 0 }}>
+                  <img src={vehicleUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Vehículo" referrerPolicy="no-referrer" />
+                </div>
+                <div style={{ flex: 1, overflow: 'hidden' }}>
+                  <p style={{ fontSize: '11px', color: 'var(--text-white)', fontWeight: 'bold', margin: 0, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                    {isDefaultVehicle ? 'Plantilla Sedan 2D' : 'Imagen subida'}
+                  </p>
+                  <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
+                    <button 
+                      onClick={() => vehicleInputRef.current?.click()}
+                      style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
+                    >
+                      <Upload className="size-3" /> Subir foto de auto
+                    </button>
+                    {!isDefaultVehicle && (
+                      <button 
+                        onClick={() => {
+                          setVehicleUrl("https://lh3.googleusercontent.com/aida-public/AB6AXuBMTNrnvHRPw1Lv_R4s9Ba1R2xeofOUWtsGf9NtDhdsm5454Yjgdb0pW_v4bwikhcPNSGeJJ7dTlQ_maLNUbVvBLlO8n_hBJD5sLuMnAqCS4BSm6pxylcitbUOvDdP0GxeYxDMRMTiUcnZzoRQCROAUCaPRXH62QVuuTgg1dFVABZGytgIrFxPeMy60hQe2abNMW1mSiZgxCK4MMrEzrZQJ6UDavrFT5jkqBk5qrkDWfgIBuU5hB8CZIBI2-dCxN3toYhjt-jzGihc");
+                          setIsDefaultVehicle(true);
+                          setGlobalBodyMaskUrl(undefined);
+                        }}
+                        style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '11px', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center', gap: '4px' }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+                      >
+                        Restaurar
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+              
+              <p style={{ fontSize: '10px', color: 'var(--text-muted)', fontStyle: 'italic', margin: '4px 0 0 0', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <AlertCircle className="size-3" /> Sugerencia: Subir fotos en planos laterales, frontales o traseros limpios.
+              </p>
+            </div>
+
+            {/* Diseño del Wrap (Wrap Uploader) */}
+            <div className="control-section" style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '16px' }}>
+              <p className="section-label">Diseño del Wrap</p>
               <button
                 onClick={() => fileInputRef.current?.click()}
                 className="btn-base"
                 style={{
-                  flex: 1,
+                  width: '100%',
                   padding: '10px 4px',
                   fontSize: '11px',
                   background: 'var(--accent)',
@@ -1644,584 +1597,164 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                   boxShadow: '0 4px 12px var(--accent-glow)'
                 }}
               >
-                <Upload className="size-3.5" /> Diseño (Wrap)
-              </button>
-              <button
-                onClick={() => {
-                  setSidebarTab('vehicle');
-                  vehicleInputRef.current?.click();
-                }}
-                className="btn-base"
-                style={{
-                  flex: 1,
-                  padding: '10px 4px',
-                  fontSize: '11px',
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  color: 'var(--text-body)',
-                  border: '1px solid var(--border-glass)',
-                  borderRadius: '8px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  transition: 'all 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.color = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.06)';
-                  e.currentTarget.style.color = 'var(--text-body)';
-                }}
-              >
-                <Upload className="size-3.5" /> Cambiar Auto
+                <Upload className="size-3.5" /> Subir Diseño (Wrap)
               </button>
             </div>
-          </div>
 
-          <div className="panel-content" style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
-            
-            {/* TAB: VEHICLE */}
-            {sidebarTab === 'vehicle' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                
-                {/* Angle choice for default vehicle */}
-                <div className="control-section">
-                  <p className="section-label">Ángulo de Plantilla</p>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    {['Side', 'Front', 'Rear'].map(tab => (
-                      <button
-                        key={tab}
-                        onClick={() => {
-                          setActiveTab(tab as 'Side' | 'Front' | 'Rear');
-                          setIsDefaultVehicle(true);
-                          if (tab === 'Side') {
-                            setVehicleUrl("https://lh3.googleusercontent.com/aida-public/AB6AXuBMTNrnvHRPw1Lv_R4s9Ba1R2xeofOUWtsGf9NtDhdsm5454Yjgdb0pW_v4bwikhcPNSGeJJ7dTlQ_maLNUbVvBLlO8n_hBJD5sLuMnAqCS4BSm6pxylcitbUOvDdP0GxeYxDMRMTiUcnZzoRQCROAUCaPRXH62QVuuTgg1dFVABZGytgIrFxPeMy60hQe2abNMW1mSiZgxCK4MMrEzrZQJ6UDavrFT5jkqBk5qrkDWfgIBuU5hB8CZIBI2-dCxN3toYhjt-jzGihc");
-                          } else if (tab === 'Front') {
-                            setVehicleUrl("https://lh3.googleusercontent.com/aida-public/AB6AXuBMTNrnvHRPw1Lv_R4s9Ba1R2xeofOUWtsGf9NtDhdsm5454Yjgdb0pW_v4bwikhcPNSGeJJ7dTlQ_maLNUbVvBLlO8n_hBJD5sLuMnAqCS4BSm6pxylcitbUOvDdP0GxeYxDMRMTiUcnZzoRQCROAUCaPRXH62QVuuTgg1dFVABZGytgIrFxPeMy60hQe2abNMW1mSiZgxCK4MMrEzrZQJ6UDavrFT5jkqBk5qrkDWfgIBuU5hB8CZIBI2-dCxN3toYhjt-jzGihc"); // Fallback to Sedan side if no other template loaded
-                          } else {
-                            setVehicleUrl("https://lh3.googleusercontent.com/aida-public/AB6AXuBMTNrnvHRPw1Lv_R4s9Ba1R2xeofOUWtsGf9NtDhdsm5454Yjgdb0pW_v4bwikhcPNSGeJJ7dTlQ_maLNUbVvBLlO8n_hBJD5sLuMnAqCS4BSm6pxylcitbUOvDdP0GxeYxDMRMTiUcnZzoRQCROAUCaPRXH62QVuuTgg1dFVABZGytgIrFxPeMy60hQe2abNMW1mSiZgxCK4MMrEzrZQJ6UDavrFT5jkqBk5qrkDWfgIBuU5hB8CZIBI2-dCxN3toYhjt-jzGihc");
-                          }
-                        }}
-                        className={`chip-btn ${activeTab === tab ? 'chip-btn--active' : ''}`}
-                        style={{ flex: 1, padding: '8px 0', fontSize: '11px', textAlign: 'center' }}
-                      >
-                        {tab === 'Side' ? 'Lateral' : tab === 'Front' ? 'Frontal' : 'Trasera'}
-                      </button>
-                    ))}
-                  </div>
+            {/* Selected Layer Properties */}
+            {activeLayer && (
+              <div style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h5 style={{ fontSize: '10px', fontWeight: 'bold', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>
+                    Propiedades de Capa
+                  </h5>
+                  <button
+                    onClick={() => {
+                      if (activeLayerId) deleteLayer(activeLayerId);
+                    }}
+                    style={{ background: 'none', border: 'none', color: '#ef4444', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', padding: '4px' }}
+                  >
+                    <Trash2 className="size-3" /> Eliminar
+                  </button>
                 </div>
 
-                {/* Shading & Highlight Controls */}
-                <div className="control-section" style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '16px' }}>
-                  <p className="section-label">Fotorrealismo e Integración</p>
-                  
-                  <label style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', marginBottom: '14px', fontSize: '12px' }}>
-                    <span>Desaturar pintura original</span>
+                {/* Centering & Background removal */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <button
+                    onClick={handleRemoveBackground}
+                    disabled={isProcessingBg}
+                    className="btn-base"
+                    style={{
+                      width: '100%',
+                      height: '32px',
+                      fontSize: '11px',
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid var(--border-glass)',
+                      borderRadius: '6px',
+                      cursor: isProcessingBg ? 'not-allowed' : 'pointer',
+                      color: 'var(--text-body)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    {isProcessingBg ? <RefreshCw className="size-3 animate-spin" /> : '✂'}
+                    Remover Fondo (Auto-Trim)
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (!activeLayer) return;
+                      const renderedUnscaledWidth = (activeLayer.width / vehicleSize.width) * 800;
+                      const targetRenderedWidth = 240;
+                      const initialScale = Math.min(1.0, targetRenderedWidth / renderedUnscaledWidth);
+                      updateLayer(activeLayer.id, {
+                        x: 0,
+                        y: 0,
+                        scaleX: initialScale,
+                        scaleY: initialScale,
+                        rotate: 0
+                      });
+                    }}
+                    className="btn-base"
+                    style={{
+                      width: '100%',
+                      height: '32px',
+                      fontSize: '11px',
+                      background: 'rgba(255,255,255,0.03)',
+                      border: '1px solid var(--border-glass)',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      color: 'var(--text-body)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    🎯 Centrar en Lienzo
+                  </button>
+                </div>
+
+                {/* Opacity */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'var(--text-muted)' }}>
+                    <span>Opacidad</span>
+                    <span style={{ color: 'var(--text-white)', fontWeight: 'bold' }}>{Math.round(activeLayer.opacity)}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={activeLayer.opacity}
+                    onChange={(e) => updateLayer(activeLayer.id, { opacity: parseFloat(e.target.value) }, true)}
+                    onMouseUp={() => saveToHistory(layers)}
+                    style={{ width: '100%', accentColor: 'var(--accent)', cursor: 'pointer' }}
+                  />
+                </div>
+
+                {/* Position */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Posición X</span>
                     <input
-                      type="checkbox"
-                      checked={desaturateVehicle}
-                      onChange={(e) => setDesaturateVehicle(e.target.checked)}
-                      style={{ accentColor: 'var(--accent)', cursor: 'pointer', width: '15px', height: '15px' }}
+                      type="number"
+                      value={Math.round(activeLayer.x)}
+                      onChange={(e) => updateLayer(activeLayer.id, { x: parseFloat(e.target.value) || 0 })}
+                      style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '6px 10px', width: '100%' }}
                     />
-                  </label>
-
-                  {/* Shadows Slider */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '14px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-muted)' }}>
-                      <span>Hendiduras y Costuras (Multiply)</span>
-                      <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>{shadowOpacity}%</span>
-                    </div>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Posición Y</span>
                     <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={shadowOpacity}
-                      onChange={(e) => setShadowOpacity(parseInt(e.target.value))}
-                      style={{ width: '100%', accentColor: 'var(--accent)', cursor: 'pointer' }}
+                      type="number"
+                      value={Math.round(activeLayer.y)}
+                      onChange={(e) => updateLayer(activeLayer.id, { y: parseFloat(e.target.value) || 0 })}
+                      style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '6px 10px', width: '100%' }}
                     />
                   </div>
+                </div>
 
-                  {/* Reflections Slider */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-muted)' }}>
-                      <span>Brillo y Reflejo Laca (Screen)</span>
-                      <span style={{ color: 'var(--accent)', fontWeight: 'bold' }}>{reflectionOpacity}%</span>
-                    </div>
+                {/* Scale */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Escala X</span>
                     <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={reflectionOpacity}
-                      onChange={(e) => setReflectionOpacity(parseInt(e.target.value))}
-                      style={{ width: '100%', accentColor: 'var(--accent)', cursor: 'pointer' }}
+                      type="number"
+                      step="0.01"
+                      value={Math.round(activeLayer.scaleX * 100) / 100}
+                      onChange={(e) => updateLayer(activeLayer.id, { scaleX: parseFloat(e.target.value) || 0.01 })}
+                      style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '6px 10px', width: '100%' }}
+                    />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Escala Y</span>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={Math.round(activeLayer.scaleY * 100) / 100}
+                      onChange={(e) => updateLayer(activeLayer.id, { scaleY: parseFloat(e.target.value) || 0.01 })}
+                      style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '6px 10px', width: '100%' }}
                     />
                   </div>
                 </div>
 
-                {/* Upload custom vehicle image */}
-                <div className="control-section" style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '16px' }}>
-                  <p className="section-label">Auto Personalizado</p>
-                  
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(255, 255, 255, 0.02)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-glass)' }}>
-                    <div style={{ width: '48px', height: '32px', borderRadius: '4px', background: '#09090b', overflow: 'hidden', flexShrink: 0 }}>
-                      <img src={vehicleUrl} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Vehículo" referrerPolicy="no-referrer" />
-                    </div>
-                    <div style={{ flex: 1, overflow: 'hidden' }}>
-                      <p style={{ fontSize: '11px', color: 'var(--text-white)', fontWeight: 'bold', margin: 0, textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
-                        {isDefaultVehicle ? 'Plantilla Sedan 2D' : 'Imagen subida'}
-                      </p>
-                      <button 
-                        onClick={() => vehicleInputRef.current?.click()}
-                        style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer', padding: 0, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}
-                      >
-                        <Upload className="size-3" /> Subir foto de auto
-                      </button>
-                    </div>
+                {/* Rotation */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'var(--text-muted)' }}>
+                    <span>Rotación</span>
+                    <span style={{ color: 'var(--text-white)', fontWeight: 'bold' }}>{Math.round(activeLayer.rotate)}°</span>
                   </div>
-                  
-                  <p style={{ fontSize: '10px', color: 'var(--text-muted)', fontStyle: 'italic', margin: '4px 0 0 0', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <AlertCircle className="size-3" /> Sugerencia: Subir fotos en planos laterales, frontales o traseros limpios.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: LAYERS */}
-            {sidebarTab === 'layers' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div className="control-section">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                    <p className="section-label">Capas de Vinilo</p>
-                    <div style={{ display: 'flex', gap: '6px' }}>
-                      <button
-                        onClick={() => fileInputRef.current?.click()}
-                        className="btn-base"
-                        style={{ padding: '4px 10px', fontSize: '11px', background: 'rgba(255,255,255,0.06)', border: '1px solid var(--border-glass)', borderRadius: '6px', height: 'auto', cursor: 'pointer' }}
-                      >
-                        + Calcomanía
-                      </button>
-                      <button
-                        onClick={() => setShowAiModal(true)}
-                        className="btn-base"
-                        style={{
-                          padding: '4px 10px',
-                          fontSize: '11px',
-                          background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)',
-                          border: 'none',
-                          borderRadius: '6px',
-                          color: '#ffffff',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '4px',
-                          height: 'auto',
-                          cursor: 'pointer',
-                          boxShadow: '0 4px 12px rgba(99, 102, 241, 0.2)'
-                        }}
-                      >
-                        <Sparkles className="size-3" /> IA Gen
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Layers List */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '180px', overflowY: 'auto', paddingRight: '4px', marginBottom: '14px' }}>
-                    {layers.map(layer => {
-                      const isSel = activeLayerId === layer.id;
-                      return (
-                        <div
-                          key={layer.id}
-                          onClick={() => setActiveLayerId(layer.id)}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '10px',
-                            padding: '10px',
-                            borderRadius: '8px',
-                            cursor: 'pointer',
-                            background: isSel ? 'rgba(204, 255, 0, 0.08)' : 'rgba(255, 255, 255, 0.02)',
-                            border: isSel ? '1px solid rgba(204, 255, 0, 0.3)' : '1px solid var(--border-glass)',
-                            transition: 'all 0.2s'
-                          }}
-                        >
-                          <div style={{ width: '32px', height: '32px', borderRadius: '4px', background: '#09090b', border: '1px solid var(--border-glass)', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                            <img src={layer.url} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} alt="" />
-                          </div>
-                          <span style={{ fontSize: '12px', color: isSel ? 'var(--text-white)' : 'var(--text-body)', fontWeight: isSel ? 'bold' : 'normal', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {layer.name}
-                          </span>
-                          <button
-                            onClick={(e) => { e.stopPropagation(); deleteLayer(layer.id); }}
-                            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = '#ef4444'}
-                            onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
-                          >
-                            <Trash2 className="size-3.5" />
-                          </button>
-                        </div>
-                      );
-                    })}
-                    {layers.length === 0 && (
-                      <div style={{ textAlign: 'center', padding: '24px 0', fontSize: '11px', color: 'var(--text-muted)', fontStyle: 'italic', border: '1px dashed var(--border-glass)', borderRadius: '8px' }}>
-                        Sin capas agregadas aún.
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Selected Layer Properties */}
-                {activeLayer && (
-                  <div style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    <h5 style={{ fontSize: '10px', fontWeight: 'bold', color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0 }}>Propiedades de Capa</h5>
-
-                    {/* Background removal & Centering */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <button
-                        onClick={handleRemoveBackground}
-                        disabled={isProcessingBg}
-                        className="btn-base"
-                        style={{
-                          width: '100%',
-                          height: '32px',
-                          fontSize: '11px',
-                          background: 'rgba(255,255,255,0.03)',
-                          border: '1px solid var(--border-glass)',
-                          borderRadius: '6px',
-                          cursor: isProcessingBg ? 'not-allowed' : 'pointer',
-                          color: 'var(--text-body)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '6px'
-                        }}
-                      >
-                        {isProcessingBg ? <RefreshCw className="size-3 animate-spin" /> : '✂'}
-                        Remover Fondo (Auto-Trim)
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (!activeLayer) return;
-                          const renderedUnscaledWidth = (activeLayer.width / vehicleSize.width) * 800;
-                          const targetRenderedWidth = 240;
-                          const initialScale = Math.min(1.0, targetRenderedWidth / renderedUnscaledWidth);
-                          updateLayer(activeLayer.id, {
-                            x: 0,
-                            y: 0,
-                            scaleX: initialScale,
-                            scaleY: initialScale,
-                            rotate: 0
-                          });
-                        }}
-                        className="btn-base"
-                        style={{
-                          width: '100%',
-                          height: '32px',
-                          fontSize: '11px',
-                          background: 'rgba(255,255,255,0.03)',
-                          border: '1px solid var(--border-glass)',
-                          borderRadius: '6px',
-                          cursor: 'pointer',
-                          color: 'var(--text-body)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '6px'
-                        }}
-                      >
-                        🎯 Centrar en Lienzo
-                      </button>
-                    </div>
-
-                    {/* Opacity */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'var(--text-muted)' }}>
-                        <span>Opacidad</span>
-                        <span style={{ color: 'var(--text-white)', fontWeight: 'bold' }}>{Math.round(activeLayer.opacity)}%</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        step="1"
-                        value={activeLayer.opacity}
-                        onChange={(e) => updateLayer(activeLayer.id, { opacity: parseFloat(e.target.value) }, true)}
-                        onMouseUp={() => saveToHistory(layers)}
-                        style={{ width: '100%', accentColor: 'var(--accent)', cursor: 'pointer' }}
-                      />
-                    </div>
-
-                    {/* Position */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Posición X</span>
-                        <input
-                          type="number"
-                          value={Math.round(activeLayer.x)}
-                          onChange={(e) => updateLayer(activeLayer.id, { x: parseFloat(e.target.value) || 0 })}
-                          style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '6px 10px', width: '100%' }}
-                        />
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Posición Y</span>
-                        <input
-                          type="number"
-                          value={Math.round(activeLayer.y)}
-                          onChange={(e) => updateLayer(activeLayer.id, { y: parseFloat(e.target.value) || 0 })}
-                          style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '6px 10px', width: '100%' }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Scale */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Escala X</span>
-                        <input
-                          type="number"
-                          step="0.01"
-                          value={Math.round(activeLayer.scaleX * 100) / 100}
-                          onChange={(e) => updateLayer(activeLayer.id, { scaleX: parseFloat(e.target.value) || 0.01 })}
-                          style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '6px 10px', width: '100%' }}
-                        />
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Escala Y</span>
-                        <input
-                          type="number"
-                          step="0.01"
-                          value={Math.round(activeLayer.scaleY * 100) / 100}
-                          onChange={(e) => updateLayer(activeLayer.id, { scaleY: parseFloat(e.target.value) || 0.01 })}
-                          style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '6px 10px', width: '100%' }}
-                        />
-                      </div>
-                    </div>
-
-                    {/* Rotation */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'var(--text-muted)' }}>
-                        <span>Rotación</span>
-                        <span style={{ color: 'var(--text-white)', fontWeight: 'bold' }}>{Math.round(activeLayer.rotate)}°</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="-180"
-                        max="180"
-                        value={activeLayer.rotate}
-                        onChange={(e) => updateLayer(activeLayer.id, { rotate: parseFloat(e.target.value) }, true)}
-                        onMouseUp={() => saveToHistory(layers)}
-                        style={{ width: '100%', accentColor: 'var(--accent)', cursor: 'pointer' }}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* TAB: PANELS / SAFETY AREA */}
-            {sidebarTab === 'panels' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                
-                {/* Global Body Mask Info */}
-                <div className="control-section">
-                  <p className="section-label">Área Segura (Carrocería)</p>
-                  <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: '1.4', marginBottom: '12px' }}>
-                    Dibuja sobre el auto para definir la zona permitida para el wrap. Esto evita que los vinilos se superpongan en ventanas y neumáticos.
-                  </p>
-
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button
-                      onClick={() => {
-                        setActiveTool('bodyMask');
-                        setBrushMode('erase');
-                      }}
-                      className={`btn-base ${activeTool === 'bodyMask' && brushMode === 'erase' ? 'btn-control-active' : ''}`}
-                      style={{
-                        flex: 1,
-                        fontSize: '11px',
-                        padding: '8px 0',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        background: activeTool === 'bodyMask' && brushMode === 'erase' ? 'var(--accent)' : 'rgba(255,255,255,0.03)',
-                        color: activeTool === 'bodyMask' && brushMode === 'erase' ? '#09090b' : 'var(--text-body)',
-                        border: '1px solid var(--border-glass)'
-                      }}
-                    >
-                      🚫 Borrar Zonas (Vidrios)
-                    </button>
-                    <button
-                      onClick={() => {
-                        setActiveTool('bodyMask');
-                        setBrushMode('restore');
-                      }}
-                      className={`btn-base ${activeTool === 'bodyMask' && brushMode === 'restore' ? 'btn-control-active' : ''}`}
-                      style={{
-                        flex: 1,
-                        fontSize: '11px',
-                        padding: '8px 0',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        background: activeTool === 'bodyMask' && brushMode === 'restore' ? 'var(--accent)' : 'rgba(255,255,255,0.03)',
-                        color: activeTool === 'bodyMask' && brushMode === 'restore' ? '#09090b' : 'var(--text-body)',
-                        border: '1px solid var(--border-glass)'
-                      }}
-                    >
-                      ✏️ Pintar Chapa
-                    </button>
-                  </div>
-
-                  {globalBodyMaskUrl && (
-                    <button
-                      onClick={() => {
-                        setGlobalBodyMaskUrl(undefined);
-                        if (activeTool === 'bodyMask') setActiveTool('select');
-                      }}
-                      className="btn-base"
-                      style={{
-                        width: '100%',
-                        height: '30px',
-                        fontSize: '11px',
-                        background: 'rgba(239, 68, 68, 0.1)',
-                        border: '1px solid rgba(239, 68, 68, 0.3)',
-                        color: '#ef4444',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        marginTop: '10px'
-                      }}
-                    >
-                      Limpiar Máscara Global
-                    </button>
-                  )}
-                </div>
-
-                {/* Panel Selection for Default Sedan */}
-                {isDefaultVehicle && (
-                  <div className="control-section" style={{ borderTop: '1px solid var(--border-glass)', paddingTop: '16px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                      <p className="section-label">Paneles (Plantilla Sedan)</p>
-                      <button 
-                        onClick={() => setSelectedPanel(['Hood', 'Front Door', 'Rear Door', 'Trunk', 'Fender (Front)'])}
-                        style={{ background: 'none', border: 'none', color: 'var(--accent)', fontSize: '11px', fontWeight: 'bold', cursor: 'pointer' }}
-                      >
-                        Todos
-                      </button>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                      {['Hood', 'Front Door', 'Rear Door', 'Trunk', 'Fender (Front)'].map(panel => {
-                        const isChecked = selectedPanel.includes(panel);
-                        return (
-                          <label
-                            key={panel}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '10px',
-                              padding: '8px 12px',
-                              borderRadius: '8px',
-                              cursor: 'pointer',
-                              background: isChecked ? 'rgba(255,255,255,0.02)' : 'transparent',
-                              border: '1px solid var(--border-glass)',
-                              transition: 'background 0.2s'
-                            }}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={isChecked}
-                              onChange={() => togglePanel(panel)}
-                              style={{ accentColor: 'var(--accent)', cursor: 'pointer', width: '15px', height: '15px' }}
-                            />
-                            <span style={{ fontSize: '12px', color: isChecked ? 'var(--text-white)' : 'var(--text-muted)', fontWeight: isChecked ? 'bold' : 'normal' }}>
-                              {panel === 'Hood' ? 'Capó (Hood)' :
-                               panel === 'Front Door' ? 'Puerta Delantera' :
-                               panel === 'Rear Door' ? 'Puerta Trasera' :
-                               panel === 'Trunk' ? 'Maletero (Trunk)' :
-                               'Guardabarros Delantero'}
-                            </span>
-                          </label>
-                        );
-                      })}
-                    </div>
-                    <p style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: '1.4', marginTop: '12px', fontStyle: 'italic' }}>
-                      💡 Nota: Si desmarcas todos los paneles, el diseño se aplicará libremente sobre toda la silueta del coche detectada de forma general.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* TAB: AI RENDER */}
-            {sidebarTab === 'ai' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <div className="control-section">
-                  <p className="section-label">Fotorrealismo IA</p>
-                  <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: '1.4', marginBottom: '12px' }}>
-                    Describe el coche y la escena para generar una imagen fotorrealista del auto final con los vinilos aplicados.
-                  </p>
-
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    
-                    {/* Car Model Input */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                      <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase' }}>Modelo exacto del auto</span>
-                      <input
-                        type="text"
-                        value={aiCarModel}
-                        onChange={(e) => setAiCarModel(e.target.value)}
-                        placeholder="Ej: Sedan deportivo blanco de perfil"
-                        style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '8px 10px', width: '100%', outline: 'none' }}
-                      />
-                    </div>
-
-                    {/* Environment/Scene Input */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                      <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase' }}>Fondo o Escenario</span>
-                      <input
-                        type="text"
-                        value={aiEnvironment}
-                        onChange={(e) => setAiEnvironment(e.target.value)}
-                        placeholder="Ej: estacionado en una calle mojada de Nueva York bajo lluvia"
-                        style={{ background: '#121216', border: '1px solid var(--border-glass)', borderRadius: '6px', color: '#fff', fontSize: '12px', padding: '8px 10px', width: '100%', outline: 'none' }}
-                      />
-                    </div>
-                    
-                    <button
-                      onClick={generateAiRender}
-                      disabled={isGeneratingAi}
-                      className="btn-base"
-                      style={{
-                        width: '100%',
-                        height: '38px',
-                        background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)',
-                        border: 'none',
-                        color: '#fff',
-                        borderRadius: '8px',
-                        fontWeight: '800',
-                        fontSize: '12px',
-                        cursor: isGeneratingAi ? 'not-allowed' : 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        gap: '8px',
-                        boxShadow: '0 4px 14px rgba(99, 102, 241, 0.3)',
-                        marginTop: '8px'
-                      }}
-                    >
-                      {isGeneratingAi ? (
-                        <>
-                          <RefreshCw className="size-3.5 animate-spin" />
-                          Generando Render...
-                        </>
-                      ) : (
-                        <>
-                          <Sparkles className="size-3.5" />
-                          Renderizar con IA
-                        </>
-                      )}
-                    </button>
-                  </div>
+                  <input
+                    type="range"
+                    min="-180"
+                    max="180"
+                    value={activeLayer.rotate}
+                    onChange={(e) => updateLayer(activeLayer.id, { rotate: parseFloat(e.target.value) }, true)}
+                    onMouseUp={() => saveToHistory(layers)}
+                    style={{ width: '100%', accentColor: 'var(--accent)', cursor: 'pointer' }}
+                  />
                 </div>
               </div>
             )}
@@ -2332,29 +1865,6 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
             >
               <ZoomIn className="size-4.5" />
             </button>
-            <button
-              onClick={() => {
-                setActiveTool('brush');
-                setBrushMode('erase');
-              }}
-              style={{
-                background: activeTool === 'brush' ? 'var(--accent)' : 'transparent',
-                color: activeTool === 'brush' ? '#09090B' : 'var(--text-body)',
-                border: 'none',
-                borderRadius: '8px',
-                width: '36px',
-                height: '36px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
-              title="Pincel de máscara de capa (B)"
-            >
-              <Brush className="size-4.5" />
-            </button>
-            
             <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--border-glass)', margin: '0 4px' }}></div>
             
             <button
@@ -3070,7 +2580,6 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                       };
                       updateLayersWithHistory(prev => [...prev, newLayer]);
                       setActiveLayerId(newLayer.id);
-                      setSidebarTab('layers');
                       setActiveTool('select');
                       setShowAiModal(false);
                       setAiPrompt('');
@@ -3118,106 +2627,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
       </AnimatePresence>
 
       {/* AI Render Result Comparison Modal */}
-      <AnimatePresence>
-        {showAiResultModal && generatedAiImageUrl && (
-          <div style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.9)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            zIndex: 110,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px'
-          }}>
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              style={{
-                background: '#09090b',
-                border: '1px solid var(--border-glass)',
-                borderRadius: '16px',
-                padding: '24px',
-                maxWidth: '850px',
-                width: '100%',
-                boxShadow: '0 24px 64px rgba(0,0,0,0.8)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Sparkles className="size-5 text-purple-400" />
-                  <span style={{ fontSize: '16px', fontWeight: 'bold', color: '#fff' }}>Render Fotorrealista por IA (Finalizado)</span>
-                </div>
-                <button
-                  onClick={() => setShowAiResultModal(false)}
-                  style={{ background: 'none', border: 'none', color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', padding: '4px' }}
-                >
-                  ✕
-                </button>
-              </div>
 
-              {/* Result image container */}
-              <div style={{ width: '100%', aspectRatio: '16/9', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border-glass)', background: '#020203', position: 'relative' }}>
-                <img src={generatedAiImageUrl} style={{ width: '100%', height: '100%', objectFit: 'contain' }} alt="AI Render" />
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
-                <p style={{ fontSize: '11px', color: 'var(--text-muted)', maxWidth: '500px', margin: 0, lineHeight: '1.4' }}>
-                  Este render simula cómo luciría el vinilo en condiciones reales de iluminación, refracción y entorno en un modelo fotorrealista 3D.
-                </p>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <button
-                    onClick={() => setShowAiResultModal(false)}
-                    className="btn-base"
-                    style={{
-                      padding: '8px 16px',
-                      fontSize: '12px',
-                      background: 'rgba(255,255,255,0.04)',
-                      border: '1px solid var(--border-glass)',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      color: 'var(--text-body)',
-                      width: 'auto',
-                      height: '38px'
-                    }}
-                  >
-                    Cerrar
-                  </button>
-                  <a
-                    href={generatedAiImageUrl}
-                    download={`render-ia-auto-${Date.now()}.jpg`}
-                    className="btn-base btn-filled"
-                    style={{
-                      padding: '8px 20px',
-                      fontSize: '12px',
-                      background: 'var(--accent)',
-                      color: '#09090B',
-                      border: 'none',
-                      borderRadius: '8px',
-                      fontWeight: '800',
-                      cursor: 'pointer',
-                      boxShadow: '0 4px 12px var(--accent-glow)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      textDecoration: 'none',
-                      height: '38px'
-                    }}
-                  >
-                    <Download className="size-4" /> Descargar Render JPG
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
