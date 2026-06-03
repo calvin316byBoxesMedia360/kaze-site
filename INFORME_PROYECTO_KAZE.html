@@ -183,8 +183,8 @@
   <h1>Proyecto KAZE</h1>
   <p class="subtitle">Documentación de estado, decisiones técnicas, tecnologías implementadas y hoja de ruta del sitio web de KAZE Custom Apparel &amp; Signs, Watsonville, CA.</p>
   <div class="header-meta">
-    <span class="ver-badge">v5.0</span>
-    <span style="color:#d9dde5;font-size:13px;">Última actualización: 2 de Junio de 2026</span>
+    <span class="ver-badge">v6.0</span>
+    <span style="color:#d9dde5;font-size:13px;">Última actualización: 3 de Junio de 2026</span>
     <span style="color:rgba(255,255,255,.4);font-size:13px;">|</span>
     <span style="color:#d9dde5;font-size:13px;">831-319-1837 · 347 Main St, Watsonville CA · @kaze_designs</span>
   </div>
@@ -192,7 +192,8 @@
 
 <!-- Version selector -->
 <div class="version-bar">
-  <button class="vtab active" onclick="showV('v5')">v5.0 — Integración 3D (WrapStudio)</button>
+  <button class="vtab active" onclick="showV('v6')">v6.0 — Sincronización Estética & Producción</button>
+  <button class="vtab" onclick="showV('v5')">v5.0 — Integración 3D (WrapStudio)</button>
   <button class="vtab" onclick="showV('v4')">v4.0 — Railway & Kaze Studio</button>
   <button class="vtab" onclick="showV('v3')">v3.0 — Vercel & Glassmorphism</button>
   <button class="vtab" onclick="showV('v2')">v2.0 — Next.js</button>
@@ -200,9 +201,70 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 6.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v6" class="v-pane active">
+<main>
+  <p class="section-label">Estado actual — v6.0 (Completado y Desplegado)</p>
+  <section class="grid" aria-label="Estado GitHub y Railway">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> Integración 3D</span>
+      <strong>Sincronizada</strong>
+      <span>Temas y acentos dinámicos mediante localStorage</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Enrutamiento</span>
+      <strong>Corregido</strong>
+      <span>Redirección con trailing slash en server.js</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Video Hero</span>
+      <strong>Reparado</strong>
+      <span>Ajuste de stacking context CSS (z-index)</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip red"><span class="dot"></span> Editor 2D</span>
+      <strong>Retirado</strong>
+      <span>Enlaces obsoletos removidos del landing</span>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Refinamientos Visuales y Enrutamiento en Producción</h2>
+      <p>La fase v6.0 se enfoca en la <strong>estética premium y robustez de integración</strong> en producción para el sitio web de KAZE y su Estudio 3D (WrapStudio):</p>
+      <p>1. **Sincronización de Paleta Estética**: Conectamos el panel de ajustes de diseño (Design Tweaks) del sitio web con el visualizador en React. Al cambiar el tema (Paper, Industrial, Midnight) o el color de acento (Dorado, Carmesí, Cian), el visualizador 3D se ajusta inmediatamente leyendo del <code>localStorage</code> y actualizando variables CSS en el elemento raíz.</p>
+      <p>2. **Solución al Video del Hero**: Corregimos un problema de superposición (stacking context) en <code>index.html</code>. El video promocional tenía un <code>z-index: -1</code> y quedaba oculto detrás del color de fondo del propio contenedor <code>.hero</code>. Al reorganizar el apilamiento (video en z-index 1, gradiente oscuro en z-index 2 y contenido en z-index 3), el video ahora se reproduce correctamente.</p>
+      <p>3. **Mejora del Modo Oscuro e Interfaz**: Reemplazamos los iconos del alternador de tema por formas rellenas (solid) más profesionales y estéticas, añadiendo microinteracciones CSS de rotación y escalado dinámico al interactuar.</p>
+      <div class="concept gold">
+        <h3>Redirección automática de directorios</h3>
+        <p>Añadimos lógica en el servidor <code>server.js</code> para que las solicitudes a directorios sin barra diagonal final (ej. <code>/wrapstudio</code>) sean redirigidas con un código 301 a la URL con barra diagonal final (<code>/wrapstudio/</code>). Esto asegura que el navegador resuelva adecuadamente las rutas relativas del visor compilado <code>./assets/...</code>, solucionando la falla de carga reportada.</p>
+      </div>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Enlaces de Producción</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>Sitio Web Principal</td><td><code>/</code> (Video Hero Online)</td></tr>
+          <tr><td>Estudio 3D</td><td><code>/wrapstudio/</code> (Tema Sincronizado)</td></tr>
+          <tr><td>Editor 2D Anterior</td><td>Deshabilitado del menú principal</td></tr>
+          <tr><td>Servidor Local</td><td><a href="http://localhost:4177/" target="_blank">http://localhost:4177/</a></td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <footer>
+    Informe v6.0 · Estética e Integración de Producción · 3 de Junio de 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
 <!-- VERSION 5.0                                             -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<div id="v5" class="v-pane active">
+<div id="v5" class="v-pane">
 <main>
   <p class="section-label">Estado actual — v5.0 (Completado y Desplegado)</p>
   <section class="grid" aria-label="Estado GitHub y Railway">
@@ -937,12 +999,9 @@
     document.querySelectorAll('.v-pane').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.vtab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
-    const tabs = document.querySelectorAll('.vtab');
-    if (id === 'v5') tabs[0].classList.add('active');
-    else if (id === 'v4') tabs[1].classList.add('active');
-    else if (id === 'v3') tabs[2].classList.add('active');
-    else if (id === 'v2') tabs[3].classList.add('active');
-    else tabs[4].classList.add('active');
+    
+    const tabBtn = Array.from(document.querySelectorAll('.vtab')).find(b => b.getAttribute('onclick') === `showV('${id}')`);
+    if (tabBtn) tabBtn.classList.add('active');
   }
 </script>
 

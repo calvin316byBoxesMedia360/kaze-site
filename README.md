@@ -4,7 +4,7 @@ Repositorio y documentación oficial para el sitio web y la herramienta interact
 
 ## 🚀 Despliegue en Vivo
 * **Producción (Railway):** [https://kazedesignswtv1-production.up.railway.app](https://kazedesignswtv1-production.up.railway.app)
-* **Kaze Studio (Personalizador):** [https://kazedesignswtv1-production.up.railway.app/studio/](https://kazedesignswtv1-production.up.railway.app/studio/)
+* **Estudio 3D (WrapStudio):** [https://kazedesignswtv1-production.up.railway.app/wrapstudio/](https://kazedesignswtv1-production.up.railway.app/wrapstudio/)
 * **Destinatario de Cotizaciones:** `kazecustomdesign@yahoo.com`
 
 ---
@@ -21,7 +21,7 @@ cd kaze-site
 ### 2. Estructura del Proyecto
 * `kaze-site-local/`: Directorio raíz del backend y del MVP estático servido en producción.
   * `kaze-site-local/server.js`: Servidor Node.js (express) que maneja las cotizaciones a través de Resend y sirve las SPAs de Kaze Studio y WrapStudio.
-  * `kaze-site-local/studio/`: Archivos compilados en producción de Kaze Studio (el personalizador interactivo 2D).
+  * `kaze-site-local/studio/`: Archivos compilados en producción de Kaze Studio (el personalizador interactivo 2D, actualmente retirado del menú principal).
   * `kaze-site-local/wrapstudio/`: Archivos compilados en producción de WrapStudio (el estudio 3D y simulador de rotulado).
   * `kaze-site-local/assets/mockups/`: Prendas e imágenes base optimizadas por IA.
 * `kaze-studio/`: Código fuente de la aplicación interactiva de diseño 2D (React + Vite + TypeScript). Compila directamente hacia `kaze-site-local/studio/`.
@@ -51,7 +51,7 @@ cd ..
   $env:PORT="4178"
   node kaze-site-local/server.js
   ```
-  Abre [http://localhost:4178/](http://localhost:4178/), [http://localhost:4178/studio/](http://localhost:4178/studio/) y [http://localhost:4178/wrapstudio/](http://localhost:4178/wrapstudio/).
+  Abre [http://localhost:4178/](http://localhost:4178/) y [http://localhost:4178/wrapstudio/](http://localhost:4178/wrapstudio/).
 
 * **Desarrollo del Personalizador (Live Reload):**
   ```bash
@@ -95,5 +95,5 @@ Cualquier cambio empujado con `git push origin main` iniciará automáticamente 
 ## 📄 Documentación del Proyecto
 * `MEMORY.md`: Estado actual y bitácora operativa de la sesión.
 * `NEXT_SESSION.md`: Instrucciones paso a paso para retomar el desarrollo.
-* `INFORME_PROYECTO_KAZE.html`: Reporte interactivo con pestañas de versiones v1.0 a v4.0.
+* `INFORME_PROYECTO_KAZE.html`: Reporte interactivo con pestañas de versiones v1.0 a v6.0.
 * `preferencias-diseno.md`: Dirección visual, colores y tokens de marca oficiales de KAZE.

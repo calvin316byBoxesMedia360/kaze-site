@@ -467,7 +467,7 @@ export function ControlPanel({
                       background: 'rgba(255,255,255,0.03)',
                       border: '1px solid var(--border-glass)',
                       padding: '8px',
-                      color: 'white',
+                      color: 'var(--text-white)',
                       fontFamily: 'inherit',
                       textAlign: 'left',
                       borderRadius: 'var(--radius-md)'
@@ -483,10 +483,10 @@ export function ControlPanel({
                     className="slider-value"
                     style={{
                       width: '100%',
-                      background: 'rgba(20,20,25,0.95)',
+                      background: 'var(--bg-obsidian)',
                       border: '1px solid var(--border-glass)',
                       padding: '8px',
-                      color: 'white',
+                      color: 'var(--text-white)',
                       fontFamily: 'inherit',
                       borderRadius: 'var(--radius-md)',
                       outline: 'none',
@@ -559,10 +559,10 @@ export function ControlPanel({
                 className="slider-value"
                 style={{
                   width: '100%',
-                  background: 'rgba(20,20,25,0.95)',
+                  background: 'var(--bg-obsidian)',
                   border: '1px solid var(--border-glass)',
                   padding: '8px',
-                  color: 'white',
+                  color: 'var(--text-white)',
                   fontFamily: 'inherit',
                   borderRadius: 'var(--radius-md)',
                   outline: 'none',

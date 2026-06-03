@@ -89,6 +89,26 @@ export default function App() {
   const [exportFn, setExportFn] = useState<(() => void) | null>(null)
   const [tourStep, setTourStep] = useState<number | null>(null)
 
+  // Sync with website customizer theme & accent choices from localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const theme = localStorage.getItem('kaze-theme') || 'dark';
+      const accent = localStorage.getItem('kaze-accent') || 'gold';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.setAttribute('data-accent', accent);
+    };
+
+    handleStorageChange();
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('kaze-theme-update', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('kaze-theme-update', handleStorageChange);
+    };
+  }, []);
+
   useEffect(() => {
     const isCompleted = localStorage.getItem('mockup_tour_completed')
     if (!isCompleted) {
@@ -210,13 +230,13 @@ export default function App() {
     <div className="app-layout" style={{ height: '100vh', width: '100vw', overflow: 'hidden', flexDirection: 'column' }}>
       {state.mockupType === 'tshirt' ? (
         <>
-          {/* Main Top Header */}
+           {/* Main Top Header */}
           <header style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             borderBottom: '1px solid var(--border-glass)',
-            backgroundColor: '#0c0c0e',
+            backgroundColor: 'var(--bg-obsidian)',
             padding: '12px 24px',
             height: '56px',
             zIndex: 20,
@@ -225,7 +245,7 @@ export default function App() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div className="panel-logo" style={{ transform: 'none', margin: 0 }}>✦</div>
-                <span className="panel-title" style={{ fontSize: '18px', fontWeight: 'bold', color: '#fff' }}>MockupMKR</span>
+                <span className="panel-title" style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--text-white)' }}>MockupMKR</span>
               </div>
               <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--border-glass)' }}></div>
               <select
@@ -236,10 +256,10 @@ export default function App() {
                   }
                 }}
                 style={{
-                  background: '#18181c',
+                  background: 'var(--bg-darker)',
                   border: '1px solid var(--border-glass)',
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: 'var(--text-white)',
                   padding: '6px 12px',
                   fontSize: '12px',
                   fontWeight: '600',

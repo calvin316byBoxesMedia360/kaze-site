@@ -41,12 +41,14 @@ Al cerrar una iteración importante:
 ---
 
 ## Último Checkpoint
-Fecha local: 2 de Junio de 2026
+Fecha local: 3 de Junio de 2026
 
 **Resumen:**
-1. **Corrección e Integración 3D de wrapstudio-mockup:** Se integró la herramienta 3D de envoltura de vehículos y personalización de ropa bajo `/wrapstudio/`. Se solucionaron problemas del pincel de máscara (añadiendo opacidad), la manita de desplazamiento (desactivando pointer-events nativos en las imágenes), y la cuadrícula de contornos.
-2. **Ajustes de Interacción Avanzados (2D y 3D)**: Se implementó zoom con scroll de mouse (tecla Ctrl universal), cursor SVG personalizado de rotación interactiva en las esquinas de los vinilos, y se alineó la escala de los decales en el patrón 2D (escala 1.8x).
-3. **Alineación de Mangas y Rendimiento**: Se corrigieron las coordenadas de mangas en 3D (`x = 0.24`, offset `y = +0.10`), se ajustó su área de seguridad a `0.16` y se optimizó el rendimiento del render de texto a 60fps (evitando canvas redundantes).
+1. **Sincronización de Paleta Estética**: Se conectaron las elecciones de Tema (Paper, Industrial, Midnight) y Acento (Dorado, Carmesí, Cian) del sitio principal de KAZE con el visualizador 3D `wrapstudio` mediante sincronización de `localStorage` y variables CSS dinámicas en `:root` de React.
+2. **Correcciones del Hero y Video**: Se resolvió el problema del z-index del video de Hero (`Kaze_commercial_products.mp4`) en `index.html`, estableciendo el apilamiento correcto para que se reproduzca de fondo.
+3. **Remoción del Editor 2D**: Se eliminó por completo la ruta `/studio/` ("Diseña tu Prenda") del sitio en todos los botones y menús.
+4. **Resaltado y Toggle**: Se implementaron clases de botones dinámicos de alta visibilidad (`.btn-highlight` y `.btn-highlight-outline`) para "Estudio 3D" y "Cotizar", y se mejoró el toggle de modo oscuro con microanimaciones e iconos sólidos rellenados.
+5. **Redirección en Producción**: Se modificó `server.js` para añadir redirecciones de barra diagonal final en directorios, asegurando la carga correcta de dependencias en el visualizador 3D.
 
 ---
 
@@ -60,6 +62,14 @@ Fecha local: 2 de Junio de 2026
 ---
 
 ## Historial De Iteraciones
+
+### 2026-06-03 - v6.0: Sincronización Estética, Refinamientos de Diseño e Integración de Producción
+* **Sincronización Visual**: Se implementaron overrides de variables CSS para temas (Light/Paper, Dark/Industrial, Midnight) y acentos (Gold, Crimson, Neon) en `wrapstudio-mockup/src/index.css`. Se añadió un hook en `App.tsx` para sincronizar automáticamente el visor leyendo de `localStorage` en cada renderizado y mount.
+* **Refinamientos del Panel**: Se convirtieron los colores oscuros inline estáticos de selects e inputs en `ControlPanel.tsx` a variables CSS, garantizando perfecta adaptabilidad y contraste en tema claro.
+* **Hero y Video**: Se arregló el stacking context CSS en `index.html` (video en `z-index: 1`, overlay gradiente en `z-index: 2` y contenido de texto en `z-index: 3`), logrando que el video promocional se reproduzca en segundo plano en lugar de quedar oculto tras el fondo oscuro.
+* **Eliminación de la herramienta 2D**: Se quitaron todos los elementos, botones de acción y llaves de traducción i18n al editor de camiseta 2D `/studio/` (en el navbar, hero, y sección de apparel).
+* **Resaltado de Botones e Icono**: Se crearon las clases `.btn-highlight` y `.btn-highlight-outline` para destacar los botones principales de Estudio 3D y Cotización. Se reemplazó el icono outline del modo oscuro por SVGs sólidos de Lucide con transiciones de rotación al hacer clic.
+* **Corrección de Carga en Producción**: Se implementó una redirección 301 para peticiones a directorios sin barra diagonal final en `server.js` (como `/wrapstudio` redirigiendo a `/wrapstudio/`), garantizando que el navegador resuelva correctamente la ruta `./assets/...` de los recursos dinámicos compilados.
 
 ### 2026-06-02 - v5.0: Integración Avanzada de wrapstudio-mockup y Mejoras 3D
 * **Optimización de Rendimiento**: Se condicionó el cálculo del aspect ratio del texto en `App.tsx` para evitar que cree un canvas a 60fps durante pointer-move, y se simplificaron `DielineWorkspace.tsx` y `MockupViewer.tsx` para reutilizar el estado, logrando interacciones a 60fps fluidos.

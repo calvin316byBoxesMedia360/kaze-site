@@ -110,6 +110,11 @@ http.createServer((req, res) => {
     let finalStats = stats;
 
     if (stats.isDirectory()) {
+      if (!urlPath.endsWith("/")) {
+        res.writeHead(301, { "Location": urlPath + "/" });
+        res.end();
+        return;
+      }
       finalPath = path.join(filePath, "index.html");
       try {
         finalStats = fs.statSync(finalPath);

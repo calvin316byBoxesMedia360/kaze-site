@@ -147,6 +147,37 @@
     .btn.outline:hover { border-color: #fff; }
     .btn.outline-dark { border: 2px solid var(--ink); color: var(--ink); }
 
+    /* ── Highlight Buttons ─────────────────────────────── */
+    .btn-highlight {
+      background: linear-gradient(135deg, var(--gold) 0%, rgba(212, 168, 67, 0.85) 100%) !important;
+      color: #0a0f1c !important;
+      border: 1px solid var(--gold) !important;
+      box-shadow: 0 4px 16px rgba(212, 168, 67, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+      font-weight: 900 !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    .btn-highlight:hover {
+      background: linear-gradient(135deg, #ffffff 0%, var(--gold) 100%) !important;
+      color: #0a0f1c !important;
+      box-shadow: 0 6px 22px rgba(212, 168, 67, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+      transform: translateY(-2px) scale(1.02);
+    }
+    
+    .btn-highlight-outline {
+      background: rgba(255, 255, 255, 0.04) !important;
+      color: var(--gold) !important;
+      border: 2px solid var(--gold) !important;
+      box-shadow: 0 4px 16px rgba(212, 168, 67, 0.18) !important;
+      font-weight: 900 !important;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    .btn-highlight-outline:hover {
+      background: var(--gold) !important;
+      color: #0a0f1c !important;
+      box-shadow: 0 6px 22px rgba(212, 168, 67, 0.4) !important;
+      transform: translateY(-2px) scale(1.02);
+    }
+
     /* ── Navbar ───────────────────────────────────────────── */
     .nav {
       position: sticky;
@@ -189,9 +220,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background-color .2s, transform .2s;
+      transition: background-color .2s, transform .4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .control-btn:hover { background: var(--line); transform: scale(1.1); }
+    .control-btn:hover { background: var(--line); transform: scale(1.15) rotate(15deg); }
+    .control-btn:active { transform: scale(0.9) rotate(45deg); }
     
     .flag-btn {
       width: 28px;
@@ -221,11 +253,17 @@
     .hero {
       min-height: 760px;
       color: #fff;
-      background: linear-gradient(90deg, rgba(16,24,32,.97) 0%, rgba(16,24,32,.78) 55%, rgba(16,24,32,.32) 100%);
       display: grid;
       align-items: center;
       position: relative;
       overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(16,24,32,.97) 0%, rgba(16,24,32,.78) 55%, rgba(16,24,32,.32) 100%);
+      z-index: 2;
     }
     .hero-video {
       position: absolute;
@@ -234,7 +272,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      z-index: -1;
+      z-index: 1;
     }
     .hero::after {
       content: "";
@@ -242,8 +280,9 @@
       inset: auto 0 0;
       height: 5px;
       background: var(--grad);
+      z-index: 4;
     }
-    .hero-copy { position: relative; padding: 90px 0; }
+    .hero-copy { position: relative; z-index: 3; padding: 90px 0; }
     .hero .lead { color: rgba(255,255,255,.82); margin-top: 22px; max-width: 560px; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
     .trust-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
@@ -636,8 +675,8 @@
             </button>
           </div>
           <button class="control-btn" id="theme-toggle" aria-label="Cambiar tema">
-            <svg id="theme-icon" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            <svg id="theme-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="currentColor"></path>
             </svg>
           </button>
         </div>
@@ -656,9 +695,8 @@
         <a href="#about" data-i18n="nav-about">Quiénes somos</a>
         <a href="#letreros" data-i18n="nav-signs">Letreros</a>
         <a href="#apparel" data-i18n="nav-apparel">Apparel</a>
-        <a class="btn primary" href="/studio/" data-i18n="nav-editor" style="border-color: var(--gold); color: var(--gold);">Diseña tu Prenda</a>
-        <a class="btn primary" href="/wrapstudio/" data-i18n="nav-wrapstudio" style="border-color: var(--gold); color: var(--gold); background: transparent;">Estudio 3D</a>
-        <a class="btn primary" href="#cotizar" data-i18n="nav-quote">Cotizar</a>
+        <a class="btn btn-highlight-outline" href="/wrapstudio/" data-i18n="nav-wrapstudio">Estudio 3D</a>
+        <a class="btn btn-highlight" href="#cotizar" data-i18n="nav-quote">Cotizar</a>
       </div>
     </div>
   </nav>
@@ -674,9 +712,8 @@
       <h1 data-i18n="hero-title">Tu marca,<br>hecha realidad.</h1>
       <p class="lead" data-i18n="hero-lead">Letreros luminosos, uniformes personalizados y más — diseñados con precisión por un taller local que cuida cada detalle.</p>
       <div class="hero-actions">
-        <a class="btn grad" href="#cotizar" data-i18n="hero-cta-primary">Cotiza tu proyecto</a>
-        <a class="btn primary" href="/studio/" data-i18n="hero-cta-editor" style="border-color: var(--gold); color: var(--gold);">Diseña tu prenda</a>
-        <a class="btn primary" href="/wrapstudio/" data-i18n="hero-cta-wrapstudio" style="border-color: var(--gold); color: var(--gold); background: transparent;">Estudio 3D (Ropa & Autos)</a>
+        <a class="btn btn-highlight" href="#cotizar" data-i18n="hero-cta-primary">Cotiza tu proyecto</a>
+        <a class="btn btn-highlight-outline" href="/wrapstudio/" data-i18n="hero-cta-wrapstudio">Estudio 3D (Ropa & Autos)</a>
         <a class="btn outline" href="#trabajos" data-i18n="hero-cta-secondary">Ver nuestros trabajos</a>
       </div>
       <div class="trust-row">
@@ -885,8 +922,7 @@
           <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-end;">
             <p class="lead" data-i18n="apparel-lead">Bordado industrial, serigrafía, heat transfer and DTF: la técnica correcta para cada proyecto y cada presupuesto.</p>
             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-              <a class="btn primary" href="/studio/" data-i18n="apparel-editor-cta" style="border-color: var(--gold); color: var(--gold); font-size: 14px; min-height: 40px; padding: 8px 18px;">Probar Creador de Mockups →</a>
-              <a class="btn primary" href="/wrapstudio/" data-i18n="apparel-wrapstudio-cta" style="border-color: var(--gold); color: var(--gold); font-size: 14px; min-height: 40px; padding: 8px 18px; background: transparent;">Estudio 3D (Prendas & Vehículos) →</a>
+              <a class="btn btn-highlight" href="/wrapstudio/" data-i18n="apparel-wrapstudio-cta" style="font-size: 14px; min-height: 40px; padding: 8px 18px;">Estudio 3D (Prendas & Vehículos) →</a>
             </div>
           </div>
         </div>
@@ -968,7 +1004,7 @@
                 </label>
               </div>
             </fieldset>
-            <button class="btn grad" type="submit" style="width:100%" data-i18n="btn-submit">Enviar mi cotización</button>
+            <button class="btn btn-highlight" type="submit" style="width:100%" data-i18n="btn-submit">Enviar mi cotización</button>
             <p style="color:var(--muted);margin-top:14px;font-size:14px" data-i18n="form-footer">Te respondemos el mismo día en horario de atención. Sin spam, sin listas de correo.</p>
           </form>
           <aside class="contact-panel">
@@ -1387,9 +1423,9 @@
       
       if (themeIcon) {
         if (theme === 'dark' || theme === 'midnight') {
-          themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+          themeIcon.innerHTML = '<circle cx="12" cy="12" r="4" fill="currentColor"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>';
         } else {
-          themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+          themeIcon.innerHTML = '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linejoin="round"></path>';
         }
       }
     }
