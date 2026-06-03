@@ -5,7 +5,7 @@ Repositorio y documentación oficial para el sitio web y la herramienta interact
 ## 🚀 Despliegue en Vivo
 * **Producción (Railway):** [https://kazedesignswtv1-production.up.railway.app](https://kazedesignswtv1-production.up.railway.app)
 * **Estudio 3D (WrapStudio):** [https://kazedesignswtv1-production.up.railway.app/wrapstudio/](https://kazedesignswtv1-production.up.railway.app/wrapstudio/)
-* **Destinatario de Cotizaciones:** `kazecustomdesign@yahoo.com`
+* **Destinatario de Cotizaciones:** `calvin316@boxesmedia360.com` (temporal para pruebas en Resend Sandbox)
 
 ---
 
@@ -87,7 +87,7 @@ Cualquier cambio empujado con `git push origin main` iniciará automáticamente 
 
 ### Variables de Entorno Requeridas en Railway:
 * `PORT`: Puerto asignado automáticamente por Railway (ej. `8080`).
-* `NOTIFICATION_EMAIL`: Correo de destino para cotizaciones (por defecto `kazecustomdesign@yahoo.com`).
+* `NOTIFICATION_EMAIL`: Correo de destino para cotizaciones (por defecto `calvin316@boxesmedia360.com` en Sandbox).
 * `RESEND_API_KEY`: API Key oficial de Resend para el envío real de correos.
 
 ---

@@ -192,7 +192,8 @@
 
 <!-- Version selector -->
 <div class="version-bar">
-  <button class="vtab active" onclick="showV('v8')">v8.0 — Cotización con PNG</button>
+  <button class="vtab active" onclick="showV('v9')">v9.0 — Configuración Resend & Imágenes</button>
+  <button class="vtab" onclick="showV('v8')">v8.0 — Cotización con PNG</button>
   <button class="vtab" onclick="showV('v7')">v7.0 — Simplificación de Interfaz</button>
   <button class="vtab" onclick="showV('v6')">v6.0 — Sincronización Estética & Producción</button>
   <button class="vtab" onclick="showV('v5')">v5.0 — Integración 3D (WrapStudio)</button>
@@ -203,9 +204,70 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 9.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v9" class="v-pane active">
+<main>
+  <p class="section-label">Estado actual — v9.0 (Completado y Desplegado)</p>
+  <section class="grid" aria-label="Estado GitHub y Railway">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> Resend API</span>
+      <strong>Configurado</strong>
+      <span>Clave de API configurada en producción en Railway</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Destinatario</span>
+      <strong>calvin316@boxesmedia360.com</strong>
+      <span>Sandbox verificado para recibir las cotizaciones</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Plantilla de Correo</span>
+      <strong>Refactorizada</strong>
+      <span>Diseño Obsidian & Gold con imágenes incrustadas por CID</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip red"><span class="dot"></span> Sin Copyright</span>
+      <strong>Imágenes Reemplazadas</strong>
+      <span>Remoción de logos protegidos (Raiders y 49ers) por neones IA</span>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Configuración de Resend, Refactor de Plantilla de Correo y Reemplazo de Imágenes</h2>
+      <p>La fase v9.0 asegura que el sistema de cotizaciones y correo esté plenamente operativo en producción:</p>
+      <p>1. **Resolución de Bloqueos de Sandbox**: Las cuentas de prueba de Resend restringen los destinatarios a la dirección registrada de la cuenta (en este caso, <code>calvin316@boxesmedia360.com</code>). Ajustamos la variable <code>NOTIFICATION_EMAIL</code> en Railway para cumplir con esto y evitar errores 403.</p>
+      <p>2. **Diseño de Plantilla Premium**: Se implementó una plantilla elegante con colores Obsidian (<code>#0d0d11</code>) y Gold (<code>#ccff00</code>). Para evitar bloqueos de base64 en Gmail/Outlook, se utilizó Content-ID (CID) con disposición inline, permitiendo previsualizar el diseño del cliente en el cuerpo del correo.</p>
+      <p>3. **Imágenes Libres de Derechos de Autor**: Se sustituyeron los neones protegidos (Raiders en servicios y 49ers en catálogo) por diseños abstractos de alta calidad generados por IA (<code>kaze neon sign.png</code> y <code>kaze designs neon sign.png</code>).</p>
+      <div class="concept green">
+        <h3>Reversión de Video del Hero</h3>
+        <p>Se realizó una prueba re-renderizando el video promocional del Hero con Remotion, pero a solicitud del cliente se revirtió <code>Kaze_commercial_products.mp4</code> a su estado original.</p>
+      </div>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Métricas e Identidad</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>Destinatario final</td><td><code>calvin316@boxesmedia360.com</code></td></tr>
+          <tr><td>Formato del Mockup</td><td>CID inline (cid:mockup-image)</td></tr>
+          <tr><td>Imágenes Nuevas</td><td>kaze neon sign / kaze designs neon sign</td></tr>
+          <tr><td>Despliegue en Railway</td><td>Auto-deploy exitoso (SUCCESS)</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <footer>
+    Informe v9.0 · Configuración Resend & Reemplazo de Imágenes · 3 de Junio de 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
 <!-- VERSION 8.0                                             -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<div id="v8" class="v-pane active">
+<div id="v8" class="v-pane">
 <main>
   <p class="section-label">Estado actual — v8.0 (Completado y Desplegado)</p>
   <section class="grid" aria-label="Estado GitHub y Railway">

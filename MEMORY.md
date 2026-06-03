@@ -25,7 +25,7 @@ Al cerrar una iteración importante:
 * **Deploy Activo (Railway):** [https://kazedesignswtv1-production.up.railway.app](https://kazedesignswtv1-production.up.railway.app)
 * **Kaze Studio Activo:** [https://kazedesignswtv1-production.up.railway.app/studio/](https://kazedesignswtv1-production.up.railway.app/studio/)
 * **Dirección Local de Trabajo:** `http://127.0.0.1:4178/`.
-* **Correo de Recepción de Formularios:** `boxesmedia360@gmail.com` (temporal para pruebas con Resend)
+* **Correo de Recepción de Formularios:** `calvin316@boxesmedia360.com` (correo registrado en la cuenta de Resend para pruebas en Sandbox)
 
 ---
 
@@ -44,10 +44,10 @@ Al cerrar una iteración importante:
 Fecha local: 3 de Junio de 2026
 
 **Resumen:**
-1. **Formulario de Cotización con PNG Adjunto**: Se implementó una nueva funcionalidad en los editores de vehículos y prendas 3D que permite capturar el diseño en base64 y adjuntarlo a un formulario de cotización profesional de 3 pasos (`QuoteModal.tsx`) con previsualización lateral.
-2. **Envío de Correo con Adjunto Binario**: Se modificó `/api/quote` en `server.js` para recibir el mockup en base64, embeber la previsualización en el cuerpo HTML y adjuntarlo como archivo físico binario (`kaze-diseño.png`) para la API de Resend.
-3. **CTAs Duales**: Se rediseñaron las interfaces de usuario para incluir botones duales: `"Cotizar con este Diseño (Adjuntar PNG)"` (color de acento) y `"Descargar PNG"` (outline glassmorphic).
-4. **Limpieza e Integración de Producción**: Se simplificó la barra lateral del editor de vehículos (eliminando pestañas, pincel, renderizado IA y configuraciones complejas obsoletas) y se compiló el subproyecto con éxito en la ruta de producción.
+1. **Configuración de Resend en Producción**: Se configuraron las variables `RESEND_API_KEY` y `NOTIFICATION_EMAIL` en Railway con la nueva clave de API y el correo destinatario `calvin316@boxesmedia360.com` para cumplir con las políticas de Sandbox de Resend.
+2. **Reemplazo de Imágenes con Derechos de Autor**: Se eliminaron las imágenes de neón con logos de los Raiders y 49ers del catálogo y de la sección de servicios, reemplazándolas por diseños genéricos creados por IA (`kaze neon sign.png` y `kaze designs neon sign.png`) e integrándolos en `index.html`.
+3. **Refactor de Plantilla de Correo**: Se implementó el diseño de correo premium Obsidian & Gold con imágenes incrustadas usando Content-ID (`cid:mockup-image`).
+4. **Reversión de Video del Hero**: Se revirtió el video de fondo del Hero (`Kaze_commercial_products.mp4`) a su estado original a solicitud del usuario tras una prueba de re-renderizado con Remotion.
 
 ---
 
@@ -61,6 +61,12 @@ Fecha local: 3 de Junio de 2026
 ---
 
 ## Historial De Iteraciones
+
+### 2026-06-03 - v9.0: Configuración de Resend, Plantilla Profesional y Reemplazo de Imágenes con Derechos de Autor
+* **Resolución de Autenticación de Resend**: Se configuró la nueva API key de Resend en Railway y se actualizó el correo destinatario a `calvin316@boxesmedia360.com` (correo titular de la cuenta), solucionando el error 403 de bloqueo de destinatarios de Sandbox de Resend.
+* **Imágenes Libres de Derechos de Autor**: Se sustituyeron los neones protegidos (NFL Raiders y 49ers) en `index.html` por rótulos genéricos diseñados por IA (`kaze neon sign.png` y `kaze designs neon sign.png`).
+* **Plantilla de Correo Obsidian & Gold**: Se adaptó el cuerpo del correo en `server.js` a un formato premium y compatible con Gmail/Outlook mediante incrustación binaria con Content-ID (`cid:mockup-image`).
+* **Reversión de Video del Hero**: Se revirtió el video de fondo del Hero a su estado original a solicitud del usuario.
 
 ### 2026-06-03 - v8.0: Formulario de Cotización Profesional y PNG Adjunto
 * **Captura Silenciosa de Mockup**: Modificación de la función de exportación de canvas (en autos) y WebGL (en prendas 3D) para retornar la imagen base64 de manera asíncrona mediante callbacks, desactivando temporalmente los elementos guía y costuras de la previsualización.
