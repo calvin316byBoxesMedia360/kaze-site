@@ -183,8 +183,8 @@
   <h1>Proyecto KAZE</h1>
   <p class="subtitle">Documentación de estado, decisiones técnicas, tecnologías implementadas y hoja de ruta del sitio web de KAZE Custom Apparel &amp; Signs, Watsonville, CA.</p>
   <div class="header-meta">
-    <span class="ver-badge">v4.0</span>
-    <span style="color:#d9dde5;font-size:13px;">Última actualización: 21 mayo 2026</span>
+    <span class="ver-badge">v5.0</span>
+    <span style="color:#d9dde5;font-size:13px;">Última actualización: 2 de Junio de 2026</span>
     <span style="color:rgba(255,255,255,.4);font-size:13px;">|</span>
     <span style="color:#d9dde5;font-size:13px;">831-319-1837 · 347 Main St, Watsonville CA · @kaze_designs</span>
   </div>
@@ -192,16 +192,111 @@
 
 <!-- Version selector -->
 <div class="version-bar">
-  <button class="vtab active" onclick="showV('v4')">v4.0 — Railway & Kaze Studio</button>
+  <button class="vtab active" onclick="showV('v5')">v5.0 — Integración 3D (WrapStudio)</button>
+  <button class="vtab" onclick="showV('v4')">v4.0 — Railway & Kaze Studio</button>
   <button class="vtab" onclick="showV('v3')">v3.0 — Vercel & Glassmorphism</button>
   <button class="vtab" onclick="showV('v2')">v2.0 — Next.js</button>
   <button class="vtab" onclick="showV('v1')">v1.0 — HTML estático</button>
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 5.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v5" class="v-pane active">
+<main>
+  <p class="section-label">Estado actual — v5.0 (Completado y Desplegado)</p>
+  <section class="grid" aria-label="Estado GitHub y Railway">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> GitHub</span>
+      <strong>Push OK</strong>
+      <span>Repositorio privado unificado (Monorepo)</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Railway</span>
+      <strong>Online</strong>
+      <span>Servidor Node sirviendo `/` y `/wrapstudio/`</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> WrapStudio 3D</span>
+      <strong>Integrado</strong>
+      <span>Prendas 3D y envoltura de vehículos en `/wrapstudio/`</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip purple"><span class="dot"></span> Rendimiento</span>
+      <strong>60 FPS</strong>
+      <span>Cálculo de aspect ratio y canvas optimizados</span>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Resumen ejecutivo de la integración</h2>
+      <p>La fase v5.0 completa la <strong>integración definitiva de WrapStudio</strong> (la herramienta 3D avanzada de personalización de ropa y rotulación de vehículos) dentro del sitio web principal de KAZE en la ruta <code>/wrapstudio/</code>.</p>
+      <p>Se solucionaron múltiples problemas de usabilidad y rendimiento heredados del módulo externo: el control del pincel de máscara ahora cuenta con opacidad del 50%, la herramienta manita de paneo es completamente funcional en todo tipo de pantallas, la cuadrícula de contornos se proyecta sin interferencias y se implementó un control interactivo premium de rotación tipo Photoshop en las esquinas de los vinilos.</p>
+      <div class="concept green">
+        <h3>Alineación y Simulación Fiel</h3>
+        <p>Corregimos la visualización de calcomanías en el patrón 2D (aumentado a escala 1.8x) para reflejar fielmente la proporción real del mockup 3D. Además, posicionamos las calcomanías y el área de seguridad de las mangas directamente sobre la tela física 3D en <code>x = 0.24</code> con un offset vertical de <code>+0.10</code>.</p>
+      </div>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Enlaces de Integración</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>Sitio Web Principal</td><td><code>/</code></td></tr>
+          <tr><td>Kaze Studio (Ropa 2D)</td><td><code>/studio/</code></td></tr>
+          <tr><td>WrapStudio (3D & Autos)</td><td><code>/wrapstudio/</code></td></tr>
+          <tr><td>Dirección en Producción</td><td><a href="https://kazedesignswtv1-production.up.railway.app/wrapstudio/" target="_blank">Abrir en Railway</a></td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <p class="section-label">Mejoras técnicas implementadas</p>
+  <section class="grid">
+    <article class="panel span-6">
+      <h2>Optimizaciones e Interacción</h2>
+      <div class="timeline">
+        <div class="step">
+          <div class="step-num new">1</div>
+          <div><h3>Interacción de Zoom y Manita</h3><p>Habilitamos zoom directo con scroll de mouse (y atajo de Ctrl universal), cursor visual `zoom-in` y arrastre libre del lienzo desactivando pointer-events nativos.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">2</div>
+          <div><h3>Rotador interactivo de esquinas</h3><p>Tirador circular superior en las esquinas de los vinilos con cursor de rotación curvo en verde lima (#ccff00) y cálculo preciso mediante `atan2`.</p></div>
+        </div>
+        <div class="step">
+          <div class="step-num new">3</div>
+          <div><h3>Optimización a 60 FPS</h3><p>Evitamos la re-creación redundante de canvas para medir aspect ratio de textos durante pointer-move en React, resolviendo los congelamientos en el renderizador 3D.</p></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="panel span-6">
+      <h2>Límites de Mangas en 3D</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>Coordenadas Manga Izq</td><td><code>[0.24, offsetY + 0.10, offsetX]</code></td></tr>
+          <tr><td>Coordenadas Manga Der</td><td><code>[-0.24, offsetY + 0.10, -offsetX]</code></td></tr>
+          <tr><td>Clasificación de clics</td><td>Eje X con umbral <code>|x| > 0.17</code></td></tr>
+          <tr><td>Caja de seguridad 3D</td><td><code>z = [-0.08, 0.08]</code>, <code>y = [0.02, 0.18]</code></td></tr>
+          <tr><td>Clamping de decales</td><td>Sincronizado a límites reales de la manga</td></tr>
+          <tr><td>Escala máxima en manga</td><td>Bloqueado a <code>0.16</code> (proporcional al brazo)</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <footer>
+    Informe v5.0 · Integración de WrapStudio (Autos & 3D) · 2 de Junio de 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
 <!-- VERSION 4.0                                             -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<div id="v4" class="v-pane active">
+<div id="v4" class="v-pane">
 <main>
   <p class="section-label">Estado actual — v4.0 (Completado y Desplegado)</p>
   <section class="grid" aria-label="Estado GitHub y Railway">
@@ -843,10 +938,11 @@
     document.querySelectorAll('.vtab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     const tabs = document.querySelectorAll('.vtab');
-    if (id === 'v4') tabs[0].classList.add('active');
-    else if (id === 'v3') tabs[1].classList.add('active');
-    else if (id === 'v2') tabs[2].classList.add('active');
-    else tabs[3].classList.add('active');
+    if (id === 'v5') tabs[0].classList.add('active');
+    else if (id === 'v4') tabs[1].classList.add('active');
+    else if (id === 'v3') tabs[2].classList.add('active');
+    else if (id === 'v2') tabs[3].classList.add('active');
+    else tabs[4].classList.add('active');
   }
 </script>
 

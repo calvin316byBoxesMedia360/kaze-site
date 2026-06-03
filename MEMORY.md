@@ -41,11 +41,12 @@ Al cerrar una iteración importante:
 ---
 
 ## Último Checkpoint
-Fecha local: 1 de Junio de 2026
+Fecha local: 2 de Junio de 2026
 
 **Resumen:**
-1. **Creación del Proyecto de Video Remotion (`kaze-promo`):** Se inicializó el proyecto en una carpeta separada, se desarrollaron las 5 escenas claves y se renderizaron exitosamente las versiones horizontal (1920x1080) y vertical (1080x1920) en MP4.
-2. **Integración de `wrapstudio-mockup`**: Se descargó e integró la herramienta de envoltura 3D (`wrapstudio-mockup`) en la raíz del proyecto, se instalaron sus dependencias (incluyendo Three.js) y se actualizó el `.gitignore` del proyecto para ignorar sus carpetas de desarrollo locales.
+1. **Corrección e Integración 3D de wrapstudio-mockup:** Se integró la herramienta 3D de envoltura de vehículos y personalización de ropa bajo `/wrapstudio/`. Se solucionaron problemas del pincel de máscara (añadiendo opacidad), la manita de desplazamiento (desactivando pointer-events nativos en las imágenes), y la cuadrícula de contornos.
+2. **Ajustes de Interacción Avanzados (2D y 3D)**: Se implementó zoom con scroll de mouse (tecla Ctrl universal), cursor SVG personalizado de rotación interactiva en las esquinas de los vinilos, y se alineó la escala de los decales en el patrón 2D (escala 1.8x).
+3. **Alineación de Mangas y Rendimiento**: Se corrigieron las coordenadas de mangas en 3D (`x = 0.24`, offset `y = +0.10`), se ajustó su área de seguridad a `0.16` y se optimizó el rendimiento del render de texto a 60fps (evitando canvas redundantes).
 
 ---
 
@@ -54,6 +55,19 @@ Fecha local: 1 de Junio de 2026
 * Toda nueva modificación debe ser commiteada y pusheada a la rama `main` de GitHub para actualizar producción en Railway.
 * El destinatario de cotizaciones por defecto del backend es `kazecustomdesign@yahoo.com`, configurable por variable de entorno (`NOTIFICATION_EMAIL`).
 * Si se edita `kaze-studio`, se debe correr `npm run build` en su directorio para compilar la carpeta de producción en `/studio/` del servidor principal.
+* Si se edita `wrapstudio-mockup`, se debe correr `npm run build` en su directorio para compilar la carpeta de producción en `/wrapstudio/` del servidor principal.
+
+---
+
+## Historial De Iteraciones
+
+### 2026-06-02 - v5.0: Integración Avanzada de wrapstudio-mockup y Mejoras 3D
+* **Optimización de Rendimiento**: Se condicionó el cálculo del aspect ratio del texto en `App.tsx` para evitar que cree un canvas a 60fps durante pointer-move, y se simplificaron `DielineWorkspace.tsx` y `MockupViewer.tsx` para reutilizar el estado, logrando interacciones a 60fps fluidos.
+* **Alineación de Mangas**: Se corrigió el desfase vertical (+0.10) y lateral (se pasó de `0.34` a `0.24` en X) para centrar los diseños y el área de seguridad en las mangas físicas de la camiseta. Se limitó el clamping y la escala máxima a `0.16` (tamaño real de la manga).
+* **Escala en Patrones 2D**: Se multiplicó la escala visual de los decales en el patrón 2D por `1.8` (multiplicador `0.81`), logrando que la escala del diseño en las piezas 2D simule correctamente la proporción real de cobertura visible en 3D.
+* **Mejoras del Pincel y Desplazamiento**: Se solucionó la pantalla negra del pincel usando opacidad al 50%. Se reparó la herramienta de la manita aplicando `draggable={false}` y `pointer-events: none` a las imágenes base del carro para que el arrastre no se bloquee.
+* **Zoom y Rotación**: Se habilitó zoom con scroll de mouse (modalidad directa y atajo con tecla `Ctrl`). Se programó la rotación directa de vinilos en las 4 esquinas de la caja de selección con cursor SVG curvo verde lima.
+
 
 ---
 

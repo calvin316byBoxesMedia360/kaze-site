@@ -20,20 +20,27 @@ cd kaze-site
 
 ### 2. Estructura del Proyecto
 * `kaze-site-local/`: Directorio raíz del backend y del MVP estático servido en producción.
-  * `kaze-site-local/server.js`: Servidor Node.js (express) que maneja las cotizaciones a través de Resend y rutea el SPA del Studio.
-  * `kaze-site-local/studio/`: Archivos compilados en producción de Kaze Studio (el personalizador interactivo).
+  * `kaze-site-local/server.js`: Servidor Node.js (express) que maneja las cotizaciones a través de Resend y sirve las SPAs de Kaze Studio y WrapStudio.
+  * `kaze-site-local/studio/`: Archivos compilados en producción de Kaze Studio (el personalizador interactivo 2D).
+  * `kaze-site-local/wrapstudio/`: Archivos compilados en producción de WrapStudio (el estudio 3D y simulador de rotulado).
   * `kaze-site-local/assets/mockups/`: Prendas e imágenes base optimizadas por IA.
-* `kaze-studio/`: Código fuente de la aplicación interactiva de diseño (React + Vite + TypeScript). Compila directamente hacia `kaze-site-local/studio/`.
+* `kaze-studio/`: Código fuente de la aplicación interactiva de diseño 2D (React + Vite + TypeScript). Compila directamente hacia `kaze-site-local/studio/`.
+* `wrapstudio-mockup/`: Código fuente de la herramienta interactiva de diseño 3D y rotulación de vehículos (React + Vite + TypeScript). Compila directamente hacia `kaze-site-local/wrapstudio/`.
 * `kaze-web/`: Aplicación en Next.js (conservada para el roadmap de la versión 2.0).
 
 ### 3. Instalación de Dependencias
-Ejecuta la instalación en los dos entornos clave:
+Ejecuta la instalación en los entornos clave:
 ```bash
 # Servidor Principal
 npm install
 
-# Entorno de Desarrollo de Kaze Studio
+# Entorno de Desarrollo de Kaze Studio (2D)
 cd kaze-studio
+npm install
+cd ..
+
+# Entorno de Desarrollo de WrapStudio (3D & Autos)
+cd wrapstudio-mockup
 npm install
 cd ..
 ```
@@ -44,7 +51,7 @@ cd ..
   $env:PORT="4178"
   node kaze-site-local/server.js
   ```
-  Abre [http://localhost:4178/](http://localhost:4178/) y [http://localhost:4178/studio/](http://localhost:4178/studio/).
+  Abre [http://localhost:4178/](http://localhost:4178/), [http://localhost:4178/studio/](http://localhost:4178/studio/) y [http://localhost:4178/wrapstudio/](http://localhost:4178/wrapstudio/).
 
 * **Desarrollo del Personalizador (Live Reload):**
   ```bash
@@ -52,11 +59,24 @@ cd ..
   npm run dev
   ```
 
-### 5. Compilación del Studio
-Si realizas cambios en el personalizador (`kaze-studio/`), compila el proyecto para mover los archivos de producción al servidor de producción:
+* **Desarrollo de WrapStudio (Live Reload):**
+  ```bash
+  cd wrapstudio-mockup
+  npm run dev
+  ```
+
+### 5. Compilación del Studio y WrapStudio
+Si realizas cambios en los editores, compílalos para mover los archivos de producción al servidor de producción:
 ```bash
+# Compilar Kaze Studio (2D)
 cd kaze-studio
 npm run build
+cd ..
+
+# Compilar WrapStudio (3D & Autos)
+cd wrapstudio-mockup
+npm run build
+cd ..
 ```
 
 ---
