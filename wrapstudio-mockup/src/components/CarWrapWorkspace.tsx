@@ -19,10 +19,12 @@ import {
   Save,
   Trash2,
   FolderOpen,
-  AlertCircle
+  AlertCircle,
+  Send
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { GoogleGenAI } from "@google/genai";
+import { QuoteModal } from './QuoteModal';
 
 // Safe API key initialization
 const getApiKey = () => {
@@ -488,6 +490,10 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   const [aiPrompt, setAiPrompt] = useState('');
   const [isGeneratingAi, setIsGeneratingAi] = useState(false);
   const [isProcessingBg, setIsProcessingBg] = useState(false);
+  
+  // Quote Form Modal States
+  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  const [quoteImage, setQuoteImage] = useState('');
   
   // History for Undo/Redo
   const [history, setHistory] = useState<Layer[][]>([]);
@@ -961,10 +967,10 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   };
 
   // High-Res Export
-  const exportResult = async () => {
+  const exportResult = async (isDownload = true): Promise<string | null> => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) return null;
 
     const loadImgSafely = (img: HTMLImageElement, url: string): Promise<boolean> => {
       return new Promise((resolve) => {
@@ -1264,14 +1270,32 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
       }
     }
 
+    if (isDownload) {
+      try {
+        const link = document.createElement('a');
+        link.download = `rotulacion-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        console.error("Export failed due to tainted canvas / CORS constraints:", err);
+        alert("Error al exportar: Algunas imágenes cargadas tienen restricciones de seguridad (CORS) del navegador. Intenta usar imágenes locales o subirlas directamente desde tu dispositivo.");
+      }
+      return null;
+    } else {
+      return canvas.toDataURL('image/png');
+    }
+  };
+
+  const handleQuoteClick = async () => {
     try {
-      const link = document.createElement('a');
-      link.download = `rotulacion-${Date.now()}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+      const imgUrl = await exportResult(false);
+      if (imgUrl) {
+        setQuoteImage(imgUrl);
+        setIsQuoteOpen(true);
+      }
     } catch (err) {
-      console.error("Export failed due to tainted canvas / CORS constraints:", err);
-      alert("Error al exportar: Algunas imágenes cargadas tienen restricciones de seguridad (CORS) del navegador. Intenta usar imágenes locales o subirlas directamente desde tu dispositivo.");
+      console.error(err);
+      alert("Error al generar la imagen para la cotización.");
     }
   };
 
@@ -1396,7 +1420,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
             Guardar
           </button>
           <button 
-            onClick={exportResult}
+            onClick={handleQuoteClick}
             className="btn-base"
             style={{
               display: 'flex',
@@ -1415,8 +1439,38 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
               transition: 'all 0.2s'
             }}
           >
+            <Send className="size-3.5" />
+            Cotizar con este Diseño (Adjuntar PNG)
+          </button>
+          <button 
+            onClick={() => exportResult(true)}
+            className="btn-base"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 14px',
+              fontSize: '12px',
+              fontWeight: '600',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid var(--border-glass)',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              color: 'var(--text-body)',
+              height: '34px',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+              e.currentTarget.style.color = '#ffffff';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+              e.currentTarget.style.color = 'var(--text-body)';
+            }}
+          >
             <Download className="size-3.5" />
-            Exportar PNG
+            Descargar PNG
           </button>
         </div>
       </header>
@@ -1764,8 +1818,8 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
           {/* Sidebar Footer with Export */}
           <div style={{ borderTop: '1px solid var(--border-glass)', padding: '20px', display: 'flex', flexDirection: 'column', gap: '8px', flexShrink: 0 }}>
             <button
-              onClick={exportResult}
-              className="btn-base btn-export"
+              onClick={handleQuoteClick}
+              className="btn-base"
               style={{
                 width: '100%',
                 height: '38px',
@@ -1779,10 +1833,40 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                 borderRadius: '8px',
                 fontWeight: '800',
                 cursor: 'pointer',
-                boxShadow: '0 4px 14px var(--accent-glow)'
+                boxShadow: '0 4px 14px var(--accent-glow-strong)',
+                transition: 'all 0.2s'
               }}
             >
-              <Download className="size-4" /> Exportar Mockup PNG
+              <Send className="size-4" /> Cotizar con este Diseño (Adjuntar PNG)
+            </button>
+            <button
+              onClick={() => exportResult(true)}
+              className="btn-base"
+              style={{
+                width: '100%',
+                height: '38px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid var(--border-glass)',
+                color: 'var(--text-body)',
+                borderRadius: '8px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+                e.currentTarget.style.color = '#ffffff';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+                e.currentTarget.style.color = 'var(--text-body)';
+              }}
+            >
+              <Download className="size-4" /> Descargar PNG
             </button>
           </div>
         </aside>
@@ -2627,6 +2711,13 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
       </AnimatePresence>
 
       {/* AI Render Result Comparison Modal */}
+
+      <QuoteModal 
+        isOpen={isQuoteOpen} 
+        onClose={() => setIsQuoteOpen(false)} 
+        mockupImage={quoteImage} 
+        defaultService="vinil" 
+      />
 
     </div>
   );

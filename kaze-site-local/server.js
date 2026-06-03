@@ -44,6 +44,23 @@ http.createServer((req, res) => {
 
         if (apiKey) {
           const services = Array.isArray(formData.servicio) ? formData.servicio.join(", ") : (formData.servicio || "Ninguno");
+          let imgTag = "";
+          const attachments = [];
+          
+          if (formData.mockupImage) {
+            imgTag = `
+              <p><strong>Diseño Adjunto:</strong></p>
+              <div style="margin-top: 15px; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background: #fff; max-width: 600px;">
+                <img src="${formData.mockupImage}" style="max-width: 100%; height: auto; border-radius: 4px;" alt="Diseño Adjunto" />
+              </div>
+            `;
+            const base64Data = formData.mockupImage.split(";base64,").pop();
+            attachments.push({
+              filename: "kaze-diseño.png",
+              content: base64Data
+            });
+          }
+
           const htmlContent = `
             <h2>Nueva Cotización desde KAZE Website</h2>
             <p><strong>Nombre:</strong> ${formData.name || 'No proporcionado'}</p>
@@ -57,6 +74,7 @@ http.createServer((req, res) => {
             <blockquote style="background: #f4f4f4; padding: 10px; border-left: 3px solid #d4a843;">
               ${(formData.idea || '').replace(/\n/g, '<br>') || 'Sin descripción'}
             </blockquote>
+            ${imgTag}
           `;
 
           const resendResponse = await fetch("https://api.resend.com/emails", {
@@ -69,7 +87,8 @@ http.createServer((req, res) => {
               from: "KAZE Web <onboarding@resend.dev>",
               to: [toEmail],
               subject: `Nueva Cotización: ${formData.name || 'Sin nombre'}`,
-              html: htmlContent
+              html: htmlContent,
+              attachments: attachments.length > 0 ? attachments : undefined
             })
           });
 
@@ -81,7 +100,10 @@ http.createServer((req, res) => {
             throw new Error(`Resend error: ${errBody}`);
           }
         } else {
-          console.log(`[DEV MODE] Email to ${toEmail} simulated with payload:`, formData);
+          console.log(`[DEV MODE] Email to ${toEmail} simulated with payload:`, {
+            ...formData,
+            mockupImage: formData.mockupImage ? "[Base64 PNG Image]" : undefined
+          });
         }
 
         res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });

@@ -183,7 +183,7 @@
   <h1>Proyecto KAZE</h1>
   <p class="subtitle">Documentación de estado, decisiones técnicas, tecnologías implementadas y hoja de ruta del sitio web de KAZE Custom Apparel &amp; Signs, Watsonville, CA.</p>
   <div class="header-meta">
-    <span class="ver-badge">v6.0</span>
+    <span class="ver-badge">v8.0</span>
     <span style="color:#d9dde5;font-size:13px;">Última actualización: 3 de Junio de 2026</span>
     <span style="color:rgba(255,255,255,.4);font-size:13px;">|</span>
     <span style="color:#d9dde5;font-size:13px;">831-319-1837 · 347 Main St, Watsonville CA · @kaze_designs</span>
@@ -192,7 +192,9 @@
 
 <!-- Version selector -->
 <div class="version-bar">
-  <button class="vtab active" onclick="showV('v6')">v6.0 — Sincronización Estética & Producción</button>
+  <button class="vtab active" onclick="showV('v8')">v8.0 — Cotización con PNG</button>
+  <button class="vtab" onclick="showV('v7')">v7.0 — Simplificación de Interfaz</button>
+  <button class="vtab" onclick="showV('v6')">v6.0 — Sincronización Estética & Producción</button>
   <button class="vtab" onclick="showV('v5')">v5.0 — Integración 3D (WrapStudio)</button>
   <button class="vtab" onclick="showV('v4')">v4.0 — Railway & Kaze Studio</button>
   <button class="vtab" onclick="showV('v3')">v3.0 — Vercel & Glassmorphism</button>
@@ -201,9 +203,131 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 8.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v8" class="v-pane active">
+<main>
+  <p class="section-label">Estado actual — v8.0 (Completado y Desplegado)</p>
+  <section class="grid" aria-label="Estado GitHub y Railway">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> Captura PNG</span>
+      <strong>Integrada</strong>
+      <span>Extracción silenciosa de base64 de Canvas y WebGL</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Cotización</span>
+      <strong>QuoteModal</strong>
+      <span>Formulario intuitivo de 3 pasos con preview de diseño</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Envío de Email</span>
+      <strong>Resend API</strong>
+      <span>Correo con imagen HTML embebida y adjunto binario</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip purple"><span class="dot"></span> CTAs Duales</span>
+      <strong>Destacados</strong>
+      <span>Botón primario (Cotizar) y secundario (Descargar)</span>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Formulario de Cotización Profesional y PNG Adjunto</h2>
+      <p>La fase v8.0 se enfoca en <strong>mejorar la conversión y facilidad de cotización</strong> para los usuarios del Estudio 3D:</p>
+      <p>1. **Captura Silenciosa y Transparente**: Se acondicionaron las funciones de exportación de canvas (autos 2D) y de WebGL (camiseta 3D) para extraer la imagen en base64 de forma asíncrona. En 3D, se ocultan temporalmente guías y contornos para enviar una captura limpia al formulario.</p>
+      <p>2. **CTAs Duales Claros**: Reemplazamos el botón genérico de exportación por dos botones complementarios en las vistas de diseño: <code>"Cotizar con este Diseño (Adjuntar PNG)"</code> (destacado en color de acento) y <code>"Descargar PNG"</code> (sutil outline glassmorphic).</p>
+      <p>3. **QuoteModal de 3 Pasos**: Creamos un formulario bilingüe intuitivo (Servicios, Detalles y Contacto) en fondo obsidian (<code>#09090b</code>) con un panel izquierdo que muestra la miniatura del archivo adjunto (<code>kaze-diseño.png</code>).</p>
+      <div class="concept green">
+        <h3>Correo con previsualización y adjunto físico</h3>
+        <p>El backend en <code>server.js</code> procesa la cotización: embebe el mockup directamente en el cuerpo HTML para lectura rápida, y adjunta el archivo físico binario para que el equipo de KAZE lo descargue directamente desde su correo.</p>
+      </div>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Métricas e Identidad</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>Destinatario de cotizaciones</td><td><code>kazecustomdesign@yahoo.com</code></td></tr>
+          <tr><td>Firma de correo</td><td>kaze-diseño.png (adjunto binario)</td></tr>
+          <tr><td>Fondo del Modal</td><td>Obsidian (#09090b) y Blur de 12px</td></tr>
+          <tr><td>API de Envío</td><td>Resend API (REST endpoint)</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <footer>
+    Informe v8.0 · Formulario de Cotización Profesional · 3 de Junio de 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- VERSION 7.0                                             -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div id="v7" class="v-pane">
+<main>
+  <p class="section-label">Estado actual — v7.0 (Completado y Desplegado)</p>
+  <section class="grid" aria-label="Estado GitHub y Railway">
+    <article class="panel span-3 metric">
+      <span class="chip green"><span class="dot"></span> Lateral Panel</span>
+      <strong>Simplificado</strong>
+      <span>Barra lateral limpia, sin pestañas ni sliders innecesarios</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip blue"><span class="dot"></span> Coche Propio</span>
+      <strong>Auto Personalizado</strong>
+      <span>Cargador de imagen en la parte superior con reset de Sedan</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip gold"><span class="dot"></span> Limpieza IA</span>
+      <strong>Removida</strong>
+      <span>Se eliminó la sección compleja de fotorrealismo e IA Imagen</span>
+    </article>
+    <article class="panel span-3 metric">
+      <span class="chip red"><span class="dot"></span> Herramientas</span>
+      <strong>Depuradas</strong>
+      <span>Remoción del pincel de máscara e importaciones inactivas (TS6133)</span>
+    </article>
+  </section>
+
+  <section class="grid">
+    <article class="panel span-8">
+      <h2>Simplificación de la Interfaz del Editor de Vehículos 2D</h2>
+      <p>La fase v7.0 realiza una profunda depuración de usabilidad para enfocar la herramienta en el flujo principal:</p>
+      <p>1. **Eliminación de Pestañas**: Se removieron las pestañas superiores de la barra lateral ("Vehículo", "Capas", "Áreas", "IA Render"). Toda la barra lateral ahora es un único flujo continuo y limpio.</p>
+      <p>2. **Auto Personalizado Superior**: Se reposicionó el cargador de imágenes del usuario como la primera opción interactiva, facilitando que los clientes suban su propia foto e inicien el diseño inmediatamente, con un botón de "Restaurar" para volver al sedan base.</p>
+      <p>3. **Remoción de Funciones de Complejidad**: Eliminamos los deslizadores de opacidad de costuras, reflejos y filtros de pintura. Se quitó la sección de renderizado con IA y la lista de capas detallada que saturaban visualmente la barra.</p>
+      <div class="concept gold">
+        <h3>TypeScript Estricto</h3>
+        <p>Eliminamos todas las variables y estados sin usar (tales como `sidebarTab`, `aiCarModel`, `brushOpacity`, etc.) solucionando los lints de compilación de TypeScript para asegurar un build de producción estable.</p>
+      </div>
+    </article>
+
+    <article class="panel span-4">
+      <h2>Herramientas Activas</h2>
+      <table class="table">
+        <tbody>
+          <tr><td>Selección (Transformar)</td><td>Activo (Girar/Escalar)</td></tr>
+          <tr><td>Desplazamiento (Manita)</td><td>Activo (Arrastre de lienzo)</td></tr>
+          <tr><td>Lupa (Zoom)</td><td>Activo (Scroll de mouse)</td></tr>
+          <tr><td>Cuadrícula vectorial</td><td>Activa (Mostrar contornos)</td></tr>
+        </tbody>
+      </table>
+    </article>
+  </section>
+
+  <footer>
+    Informe v7.0 · Simplificación de Interfaz de Vehículos · 3 de Junio de 2026 · BoxesMedia360
+  </footer>
+</main>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ -->
 <!-- VERSION 6.0                                             -->
 <!-- ═══════════════════════════════════════════════════════ -->
-<div id="v6" class="v-pane active">
+<div id="v6" class="v-pane">
 <main>
   <p class="section-label">Estado actual — v6.0 (Completado y Desplegado)</p>
   <section class="grid" aria-label="Estado GitHub y Railway">

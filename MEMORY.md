@@ -44,11 +44,10 @@ Al cerrar una iteración importante:
 Fecha local: 3 de Junio de 2026
 
 **Resumen:**
-1. **Sincronización de Paleta Estética**: Se conectaron las elecciones de Tema (Paper, Industrial, Midnight) y Acento (Dorado, Carmesí, Cian) del sitio principal de KAZE con el visualizador 3D `wrapstudio` mediante sincronización de `localStorage` y variables CSS dinámicas en `:root` de React.
-2. **Correcciones del Hero y Video**: Se resolvió el problema del z-index del video de Hero (`Kaze_commercial_products.mp4`) en `index.html`, estableciendo el apilamiento correcto para que se reproduzca de fondo.
-3. **Remoción del Editor 2D**: Se eliminó por completo la ruta `/studio/` ("Diseña tu Prenda") del sitio en todos los botones y menús.
-4. **Resaltado y Toggle**: Se implementaron clases de botones dinámicos de alta visibilidad (`.btn-highlight` y `.btn-highlight-outline`) para "Estudio 3D" y "Cotizar", y se mejoró el toggle de modo oscuro con microanimaciones e iconos sólidos rellenados.
-5. **Redirección en Producción**: Se modificó `server.js` para añadir redirecciones de barra diagonal final en directorios, asegurando la carga correcta de dependencias en el visualizador 3D.
+1. **Formulario de Cotización con PNG Adjunto**: Se implementó una nueva funcionalidad en los editores de vehículos y prendas 3D que permite capturar el diseño en base64 y adjuntarlo a un formulario de cotización profesional de 3 pasos (`QuoteModal.tsx`) con previsualización lateral.
+2. **Envío de Correo con Adjunto Binario**: Se modificó `/api/quote` en `server.js` para recibir el mockup en base64, embeber la previsualización en el cuerpo HTML y adjuntarlo como archivo físico binario (`kaze-diseño.png`) para la API de Resend.
+3. **CTAs Duales**: Se rediseñaron las interfaces de usuario para incluir botones duales: `"Cotizar con este Diseño (Adjuntar PNG)"` (color de acento) y `"Descargar PNG"` (outline glassmorphic).
+4. **Limpieza e Integración de Producción**: Se simplificó la barra lateral del editor de vehículos (eliminando pestañas, pincel, renderizado IA y configuraciones complejas obsoletas) y se compiló el subproyecto con éxito en la ruta de producción.
 
 ---
 
@@ -62,6 +61,18 @@ Fecha local: 3 de Junio de 2026
 ---
 
 ## Historial De Iteraciones
+
+### 2026-06-03 - v8.0: Formulario de Cotización Profesional y PNG Adjunto
+* **Captura Silenciosa de Mockup**: Modificación de la función de exportación de canvas (en autos) y WebGL (en prendas 3D) para retornar la imagen base64 de manera asíncrona mediante callbacks, desactivando temporalmente los elementos guía y costuras de la previsualización.
+* **CTAs Duales e Intuitivos**: Sustitución de los botones individuales de descarga por botones duales ("Cotizar con este Diseño (Adjuntar PNG)" en oro de la marca y "Descargar PNG" en glassmorphism) en el header de vehículos, pie de panel de autos y pie de panel de camisetas.
+* **Componente de Cotización Profesional**: Creación de `QuoteModal.tsx` con un formulario intuitivo de 3 pasos (Servicios, Detalles del Proyecto, Datos de Contacto), adaptabilidad a variables CSS de temas/acentos del sitio principal, miniatura del diseño a la izquierda y microanimaciones de carga y confirmación de envío.
+* **Backend con Adjunto Binario**: Actualización del endpoint `/api/quote` en `server.js` para embeber la miniatura del diseño en el cuerpo HTML del correo y estructurar un adjunto físico binario para la llamada de Resend, enviando el correo final a `kazecustomdesign@yahoo.com`.
+
+### 2026-06-03 - v7.0: Simplificación de la Interfaz del Editor de Vehículos 2D
+* **Limpieza de Barra Lateral**: Remoción de las pestañas ("Vehículo", "Capas", "Áreas", "IA Render") convirtiendo la barra lateral en un panel único, estático y limpio.
+* **Reposicionamiento y Reset**: Colocación del cargador de auto personalizado al inicio del panel y adición de la función "Restaurar" para restablecer el coche sedan por defecto.
+* **Depuración de Funciones Obsoletas**: Eliminación de opciones de ángulo de plantilla, fotorrealismo (sombras/reflejos/desaturación de chapa), lista de capas, dibujo de máscaras, y renderizado IA con Gemini.
+* **Reducción de Controles**: Eliminación del pincel de la barra de herramientas flotante y depuración de estados sin usar para asegurar compilación estricta de TypeScript.
 
 ### 2026-06-03 - v6.0: Sincronización Estética, Refinamientos de Diseño e Integración de Producción
 * **Sincronización Visual**: Se implementaron overrides de variables CSS para temas (Light/Paper, Dark/Industrial, Midnight) y acentos (Gold, Crimson, Neon) en `wrapstudio-mockup/src/index.css`. Se añadió un hook en `App.tsx` para sincronizar automáticamente el visor leyendo de `localStorage` en cada renderizado y mount.

@@ -765,11 +765,11 @@ function ExportHelper({
   bgColor: string
   bgColor2: string
   isGradient: boolean
-  onReady: (fn: () => void) => void 
+  onReady: (fn: (callback?: (dataUrl: string) => void) => void) => void 
 }) {
   const { gl, scene, camera } = useThree()
 
-  const doExport = useCallback(() => {
+  const doExport = useCallback((callback?: (dataUrl: string) => void) => {
     const hiddenObjects: THREE.Object3D[] = []
     
     // Synchronously hide UI helper lines and handles in the Three.js scene graph
@@ -805,12 +805,16 @@ function ExportHelper({
       ctx.drawImage(webglCanvas, 0, 0)
       
       const dataUrl = tempCanvas.toDataURL('image/png', 1.0)
-      const a = document.createElement('a')
-      a.href = dataUrl
-      a.download = 'mockup-mkr.png'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
+      if (callback) {
+        callback(dataUrl)
+      } else {
+        const a = document.createElement('a')
+        a.href = dataUrl
+        a.download = 'mockup-mkr.png'
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+      }
     }
 
     // Restore UI elements visibility synchronously
@@ -842,7 +846,7 @@ interface Props {
   state: MockupState
   onUpdate: (patch: Partial<MockupState>) => void
   onUpdateLayer: (id: string, patch: Partial<DecalLayer>) => void
-  onExportReady?: (fn: (() => void) | null) => void
+  onExportReady?: (fn: ((callback?: (dataUrl: string) => void) => void) | null) => void
   isMini?: boolean
 }
 

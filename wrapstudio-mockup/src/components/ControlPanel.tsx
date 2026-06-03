@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react'
 import type { MockupState, DecalLayer } from '../App'
+import { Send, Download } from 'lucide-react'
 
 function trimCanvas(canvas: HTMLCanvasElement): {
   trimmedCanvas: HTMLCanvasElement
@@ -159,6 +160,7 @@ interface Props {
   onRemoveLayer: (id: string) => void
   onUpdateLayer: (id: string, patch: Partial<DecalLayer>) => void
   onExport: () => void
+  onQuote: () => void
 }
 
 
@@ -189,7 +191,8 @@ export function ControlPanel({
   onAddLayer,
   onRemoveLayer,
   onUpdateLayer,
-  onExport
+  onExport,
+  onQuote
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [isProcessingBg, setIsProcessingBg] = useState(false)
@@ -707,9 +710,59 @@ export function ControlPanel({
       </div>
 
       {/* Export Button */}
-      <div className="panel-footer">
-        <button onClick={onExport} className="btn-base btn-export">
-          ↓ Export High-Res PNG
+      <div className="panel-footer" style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '16px 20px', borderTop: '1px solid var(--border-glass)' }}>
+        <button 
+          onClick={onQuote} 
+          className="btn-base btn-export" 
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            background: 'var(--accent)',
+            color: '#09090B',
+            border: 'none',
+            borderRadius: '8px',
+            fontWeight: '800',
+            height: '38px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 14px var(--accent-glow-strong)',
+            transition: 'all 0.2s',
+            fontSize: '12px',
+            width: '100%'
+          }}
+        >
+          <Send className="size-4" /> Cotizar con este Diseño (Adjuntar PNG)
+        </button>
+        <button 
+          onClick={onExport} 
+          className="btn-base"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            background: 'rgba(255, 255, 255, 0.04)',
+            border: '1px solid var(--border-glass)',
+            color: 'var(--text-body)',
+            borderRadius: '8px',
+            fontWeight: '600',
+            height: '38px',
+            cursor: 'pointer',
+            transition: 'all 0.2s',
+            fontSize: '12px',
+            width: '100%'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)';
+            e.currentTarget.style.color = '#ffffff';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)';
+            e.currentTarget.style.color = 'var(--text-body)';
+          }}
+        >
+          <Download className="size-4" /> Descargar PNG
         </button>
       </div>
     </aside>

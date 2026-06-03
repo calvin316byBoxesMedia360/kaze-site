@@ -3,6 +3,7 @@ import { ControlPanel } from './components/ControlPanel'
 import { MockupViewer } from './components/MockupViewer'
 import { DielineWorkspace } from './components/DielineWorkspace'
 import { CarWrapWorkspace } from './components/CarWrapWorkspace'
+import { QuoteModal } from './components/QuoteModal'
 
 export interface DecalLayer {
   id: string
@@ -86,8 +87,23 @@ export function clampDecalPosition(
 
 export default function App() {
   const [state, setState] = useState<MockupState>(DEFAULT_STATE)
-  const [exportFn, setExportFn] = useState<(() => void) | null>(null)
+  const [exportFn, setExportFn] = useState<((callback?: (dataUrl: string) => void) => void) | null>(null)
+  const [isQuoteOpen, setIsQuoteOpen] = useState(false)
+  const [quoteImage, setQuoteImage] = useState('')
   const [tourStep, setTourStep] = useState<number | null>(null)
+
+  const handleQuoteClick = () => {
+    if (exportFn) {
+      exportFn((imgUrl) => {
+        if (imgUrl) {
+          setQuoteImage(imgUrl);
+          setIsQuoteOpen(true);
+        }
+      });
+    } else {
+      alert("El visualizador 3D aún se está cargando. Inténtalo de nuevo en unos segundos.");
+    }
+  };
 
   // Sync with website customizer theme & accent choices from localStorage
   useEffect(() => {
@@ -286,6 +302,7 @@ export default function App() {
               onRemoveLayer={removeLayer}
               onUpdateLayer={updateLayer}
               onExport={() => exportFn?.()}
+              onQuote={handleQuoteClick}
             />
 
             {/* Main Viewport Workspace: 3D Studio or 2D Pattern Canvas */}
@@ -362,6 +379,13 @@ export default function App() {
           </div>
         </div>
       )}
+
+      <QuoteModal 
+        isOpen={isQuoteOpen} 
+        onClose={() => setIsQuoteOpen(false)} 
+        mockupImage={quoteImage} 
+        defaultService="apparel" 
+      />
     </div>
   )
 }
