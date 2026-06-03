@@ -183,7 +183,7 @@
   <h1>Proyecto KAZE</h1>
   <p class="subtitle">Documentación de estado, decisiones técnicas, tecnologías implementadas y hoja de ruta del sitio web de KAZE Custom Apparel &amp; Signs, Watsonville, CA.</p>
   <div class="header-meta">
-    <span class="ver-badge">v8.0</span>
+    <span class="ver-badge">v10.0</span>
     <span style="color:#d9dde5;font-size:13px;">Última actualización: 3 de Junio de 2026</span>
     <span style="color:rgba(255,255,255,.4);font-size:13px;">|</span>
     <span style="color:#d9dde5;font-size:13px;">831-319-1837 · 347 Main St, Watsonville CA · @kaze_designs</span>
@@ -192,14 +192,14 @@
 
 <!-- Version selector -->
 <div class="version-bar">
-  <button class="vtab active" onclick="showV('v10')">v10.0 — Responsividad Móvil (Sandwich)</button>
-  <button class="vtab" onclick="showV('v9')">v9.0 — Configuración Resend & Imágenes</button>
+  <button class="vtab active" onclick="showV('v10')">v10.0 — Responsividad Móvil &amp; Orientación</button>
+  <button class="vtab" onclick="showV('v9')">v9.0 — Configuración Resend &amp; Imágenes</button>
   <button class="vtab" onclick="showV('v8')">v8.0 — Cotización con PNG</button>
   <button class="vtab" onclick="showV('v7')">v7.0 — Simplificación de Interfaz</button>
-  <button class="vtab" onclick="showV('v6')">v6.0 — Sincronización Estética & Producción</button>
+  <button class="vtab" onclick="showV('v6')">v6.0 — Sincronización Estética &amp; Producción</button>
   <button class="vtab" onclick="showV('v5')">v5.0 — Integración 3D (WrapStudio)</button>
-  <button class="vtab" onclick="showV('v4')">v4.0 — Railway & Kaze Studio</button>
-  <button class="vtab" onclick="showV('v3')">v3.0 — Vercel & Glassmorphism</button>
+  <button class="vtab" onclick="showV('v4')">v4.0 — Railway &amp; Kaze Studio</button>
+  <button class="vtab" onclick="showV('v3')">v3.0 — Vercel &amp; Glassmorphism</button>
   <button class="vtab" onclick="showV('v2')">v2.0 — Next.js</button>
   <button class="vtab" onclick="showV('v1')">v1.0 — HTML estático</button>
 </div>
@@ -210,55 +210,55 @@
 <div id="v10" class="v-pane active">
 <main>
   <p class="section-label">Estado actual — v10.0 (Completado y Desplegado)</p>
-  <section class="grid" aria-label="Responsividad Móvil">
+  <section class="grid" aria-label="Responsividad Móvil y Usabilidad">
     <article class="panel span-3 metric">
-      <span class="chip green"><span class="dot"></span> Diseño Sandwich</span>
-      <strong>Optimizado</strong>
-      <span>Inversión de flujo (column-reverse) y scroll interno e independiente.</span>
+      <span class="chip gold"><span class="dot"></span> Modo Landscape</span>
+      <strong>Split Layout</strong>
+      <span>Paneles izquierdo/derecho y centro libre de interacción</span>
     </article>
     <article class="panel span-3 metric">
-      <span class="chip blue"><span class="dot"></span> Zoom Adaptativo</span>
-      <strong>40% inicial</strong>
-      <span>Auto-escala del auto en dispositivos móviles para evitar desbordes.</span>
+      <span class="chip blue"><span class="dot"></span> Altura Dinámica</span>
+      <strong>100dvh</strong>
+      <span>Sin cortes bajo barras del navegador móvil (Safari/Chrome)</span>
     </article>
     <article class="panel span-3 metric">
-      <span class="chip purple"><span class="dot"></span> Acciones Sticky</span>
-      <strong>Footer Fijo</strong>
-      <span>Botones de Cotización y Descarga fijos al alcance del pulgar.</span>
+      <span class="chip green"><span class="dot"></span> CORS Solucionado</span>
+      <strong>Recursos Locales</strong>
+      <span>Plantilla y vectores locales previenen contaminación del canvas</span>
     </article>
     <article class="panel span-3 metric">
-      <span class="chip orange"><span class="dot"></span> Editor 2D</span>
-      <strong>Limpio</strong>
-      <span>PiP 3D oculto y título fluido evitando la compresión en móvil.</span>
+      <span class="chip red"><span class="dot"></span> Controles Táctiles</span>
+      <strong>Área Ampliada (3x)</strong>
+      <span>Tiradores de 40px/44px y touchAction: none para arrastre fluido</span>
     </article>
   </section>
 
   <section class="grid">
     <article class="panel span-8">
-      <h2>Mejoras en Usabilidad y Responsividad Móvil</h2>
-      <p>La fase v10.0 completa una reestructuración de diseño crítica para que los editores de camisetas 3D y rotulación de autos 2D funcionen de manera fluida y nativa en teléfonos móviles, solucionando la compresión de controles hacia el margen izquierdo.</p>
-      <p>1. **Diseño Sandwich Estilo Canva/Figma**: En móviles, desactivamos el scroll global del sitio y dividimos la pantalla: el visor del diseño se fija en la mitad superior (42vh de alto) para que el arrastre o rotación táctil del mockup no mueva la página web. Las herramientas se sitúan abajo (45vh) con su propio scroll de navegación independiente.</p>
-      <p>2. **CTAs e Iconos Distribuidos**: Ocultamos la barra de botones del header que causaba desbordamientos. Reposicionamos los botones secundarios ("Proyectos" y "Guardar") en una barra interna del panel deslizable, y los botones primarios ("Cotizar" y "Descargar PNG") en un footer sticky fijado en la base inferior de la pantalla.</p>
-      <p>3. **Zoom de Autos Adaptativo**: El lienzo de WrapStudio se inicia automáticamente con un zoom del 40% en pantallas móviles para ajustar el sedan completo dentro del área visible sin cortarse.</p>
-      <p>4. **Higiene Visual en Patrones 2D**: Ocultamos la vista previa PiP 3D para despejar el espacio interactivo del plano de costuras, y convertimos el título a una clase CSS fluida que impide su compresión horizontal.</p>
+      <h2>Responsividad Horizontal/Vertical, Interacción Táctil y Solución de Exportación CORS</h2>
+      <p>La fase v10.0 realiza una optimización crítica en dispositivos móviles para el Estudio 3D y WrapStudio:</p>
+      <p>1. **Modo Landscape Girado**: Cuando el usuario gira el teléfono a horizontal, los controles se distribuyen de forma lateral (izquierda: herramientas de color/diseño, derecha: cotización/descarga) sobre un visor central interactivo. Usando <code>pointer-events: none</code> en la máscara del panel, los eventos táctiles se transmiten directamente al visor 3D/2D subyacente.</p>
+      <p>2. **Solución a Taint de Canvas (CORS)**: Descargamos las imágenes remotas de la plantilla sedan y vectores de contorno directamente en la carpeta pública del proyecto. Al servirlas como recursos locales en el mismo origen, el canvas de exportación no se contamina y se elimina el error de seguridad (SecurityError) al generar el PNG de cotización en móviles.</p>
+      <p>3. **Área de Control Táctil Mejorada**: Rediseñamos los tiradores de escala y rotación 2D/3D con áreas invisibles ampliadas de <code>40px</code> y <code>44px</code> respectivamente. Configurando <code>touchAction: 'none'</code>, se eliminan los conflictos con los gestos de scroll del navegador móvil.</p>
+      <p>4. **Modo Vertical Compacto**: Empleamos <code>100dvh</code> para forzar el ajuste exacto del alto visible a la pantalla móvil y adaptamos el viewport a <code>38dvh</code>, asegurando que todos los botones queden accesibles sin deslizarse bajo la barra dinámica de URL.</p>
     </article>
 
     <article class="panel span-4">
-      <h2>Resumen Técnico</h2>
+      <h2>Características y Usabilidad</h2>
       <table class="table">
         <tbody>
-          <tr><td>Layout General</td><td>Sandwich (Fijo + Scroll interno)</td></tr>
-          <tr><td>Zoom Inicial Móvil</td><td>40% (Sedan completo en pantalla)</td></tr>
-          <tr><td>Botones Primarios</td><td>Sticky Footer inferior fijo</td></tr>
-          <tr><td>PiP 3D (2D Editor)</td><td>Oculto en móvil (display: none)</td></tr>
-          <tr><td>Compilación Vite</td><td>Estricta y exitosa en 4.60s (Vite + TS)</td></tr>
+          <tr><td>Ancho Panel Izq/Der</td><td><code>220px</code> (Glassmorphism)</td></tr>
+          <tr><td>Target Tirador Escala</td><td><code>40px x 40px</code></td></tr>
+          <tr><td>Target Tirador Rotar</td><td><code>44px x 44px</code></td></tr>
+          <tr><td>Tamaño Mínimo Selección Decal</td><td><code>0.08 unidades</code></td></tr>
+          <tr><td>Prevención de Scroll</td><td><code>touchAction: 'none'</code></td></tr>
         </tbody>
       </table>
     </article>
   </section>
 
   <footer>
-    Informe v10.0 · Diseño Sandwich & Responsividad Móvil · 3 de Junio de 2026 · BoxesMedia360
+    Informe v10.0 · Responsividad Móvil &amp; Usabilidad · 3 de Junio de 2026 · BoxesMedia360
   </footer>
 </main>
 </div>

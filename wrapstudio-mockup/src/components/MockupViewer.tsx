@@ -201,6 +201,10 @@ function Decal3DHandles({ layer, onUpdateLayer, setIsDragging, shirtMesh }: Deca
 
   const handlePointerDown = useCallback((e: any, type: 'scale' | 'rotate') => {
     e.stopPropagation()
+    if (e.nativeEvent) {
+      e.nativeEvent.preventDefault?.()
+      e.nativeEvent.stopPropagation?.()
+    }
     if (e.target && typeof e.target.setPointerCapture === 'function') {
       e.target.setPointerCapture(e.pointerId)
     }
@@ -224,6 +228,10 @@ function Decal3DHandles({ layer, onUpdateLayer, setIsDragging, shirtMesh }: Deca
 
   const handlePositionDragStart = useCallback((e: any) => {
     e.stopPropagation()
+    if (e.nativeEvent) {
+      e.nativeEvent.preventDefault?.()
+      e.nativeEvent.stopPropagation?.()
+    }
     if (e.target && typeof e.target.setPointerCapture === 'function') {
       e.target.setPointerCapture(e.pointerId)
     }
@@ -388,8 +396,12 @@ function Decal3DHandles({ layer, onUpdateLayer, setIsDragging, shirtMesh }: Deca
         onPointerOver={(e) => { e.stopPropagation(); setHovered('scale') }}
         onPointerOut={(e) => { e.stopPropagation(); setHovered(null) }}
       >
-        <boxGeometry args={[0.02, 0.02, 0.005]} />
-        <meshBasicMaterial color="#CCFF00" />
+        <boxGeometry args={[0.06, 0.06, 0.015]} />
+        <meshBasicMaterial color="#CCFF00" transparent opacity={0.0} depthWrite={false} />
+        <mesh>
+          <boxGeometry args={[0.022, 0.022, 0.005]} />
+          <meshBasicMaterial color="#CCFF00" />
+        </mesh>
       </mesh>
       <mesh
         position={[halfX, halfY, 0.003]}
@@ -399,8 +411,12 @@ function Decal3DHandles({ layer, onUpdateLayer, setIsDragging, shirtMesh }: Deca
         onPointerOver={(e) => { e.stopPropagation(); setHovered('scale') }}
         onPointerOut={(e) => { e.stopPropagation(); setHovered(null) }}
       >
-        <boxGeometry args={[0.02, 0.02, 0.005]} />
-        <meshBasicMaterial color="#CCFF00" />
+        <boxGeometry args={[0.06, 0.06, 0.015]} />
+        <meshBasicMaterial color="#CCFF00" transparent opacity={0.0} depthWrite={false} />
+        <mesh>
+          <boxGeometry args={[0.022, 0.022, 0.005]} />
+          <meshBasicMaterial color="#CCFF00" />
+        </mesh>
       </mesh>
       <mesh
         position={[-halfX, -halfY, 0.003]}
@@ -410,8 +426,12 @@ function Decal3DHandles({ layer, onUpdateLayer, setIsDragging, shirtMesh }: Deca
         onPointerOver={(e) => { e.stopPropagation(); setHovered('scale') }}
         onPointerOut={(e) => { e.stopPropagation(); setHovered(null) }}
       >
-        <boxGeometry args={[0.02, 0.02, 0.005]} />
-        <meshBasicMaterial color="#CCFF00" />
+        <boxGeometry args={[0.06, 0.06, 0.015]} />
+        <meshBasicMaterial color="#CCFF00" transparent opacity={0.0} depthWrite={false} />
+        <mesh>
+          <boxGeometry args={[0.022, 0.022, 0.005]} />
+          <meshBasicMaterial color="#CCFF00" />
+        </mesh>
       </mesh>
       <mesh
         position={[halfX, -halfY, 0.003]}
@@ -421,8 +441,12 @@ function Decal3DHandles({ layer, onUpdateLayer, setIsDragging, shirtMesh }: Deca
         onPointerOver={(e) => { e.stopPropagation(); setHovered('scale') }}
         onPointerOut={(e) => { e.stopPropagation(); setHovered(null) }}
       >
-        <boxGeometry args={[0.02, 0.02, 0.005]} />
-        <meshBasicMaterial color="#CCFF00" />
+        <boxGeometry args={[0.06, 0.06, 0.015]} />
+        <meshBasicMaterial color="#CCFF00" transparent opacity={0.0} depthWrite={false} />
+        <mesh>
+          <boxGeometry args={[0.022, 0.022, 0.005]} />
+          <meshBasicMaterial color="#CCFF00" />
+        </mesh>
       </mesh>
 
       {/* Rotation Handle */}
@@ -442,8 +466,12 @@ function Decal3DHandles({ layer, onUpdateLayer, setIsDragging, shirtMesh }: Deca
         onPointerOver={(e) => { e.stopPropagation(); setHovered('rotate') }}
         onPointerOut={(e) => { e.stopPropagation(); setHovered(null) }}
       >
-        <sphereGeometry args={[0.012, 16, 16]} />
-        <meshBasicMaterial color="#FFFFFF" />
+        <sphereGeometry args={[0.035, 16, 16]} />
+        <meshBasicMaterial color="#FFFFFF" transparent opacity={0.0} depthWrite={false} />
+        <mesh>
+          <sphereGeometry args={[0.012, 16, 16]} />
+          <meshBasicMaterial color="#FFFFFF" />
+        </mesh>
       </mesh>
     </group>
   )
@@ -628,9 +656,12 @@ function ShirtMesh({
       if (layer.visible && layer.region === region) {
         const dx = clickOffsetX - layer.offsetX
         const dy = clickOffsetY - layer.offsetY
-        const halfSize = (layer.scale * 0.45) / 2
-        // Simple bounding box check
-        if (Math.abs(dx) <= halfSize && Math.abs(dy) <= halfSize) {
+        const scaleW = layer.scale * 0.45 * (layer.aspect || 1.0)
+        const scaleH = layer.scale * 0.45
+        // Minimum size of 0.08 units for selection hit box on mobile
+        const hitWidth = Math.max(scaleW, 0.08)
+        const hitHeight = Math.max(scaleH, 0.08)
+        if (Math.abs(dx) <= hitWidth / 2 && Math.abs(dy) <= hitHeight / 2) {
           hitLayerId = layer.id
           break
         }

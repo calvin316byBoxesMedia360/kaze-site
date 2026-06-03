@@ -62,10 +62,10 @@ Fecha local: 3 de Junio de 2026
 
 ## Historial De Iteraciones
 
-### 2026-06-03 - v10.0: Diseño Sandwich y Optimización de Responsividad Móvil
-* **Estructura Sandwich Estilo App Nativa**: Migración de estilos inline a clases responsivas CSS (`.app-layout-root`, `.app-body`, `.car-layout-root`, `.car-body`) en `App.tsx` y `CarWrapWorkspace.tsx`. Desactivado el scroll global en móvil (`overflow: hidden`) y habilitado scroll interno e independiente únicamente para el panel inferior.
-* **Redistribución de CTAs y Toolbar**: Ocultamiento de los botones superiores que desbordaban en la barra del móvil. Enrutado de "Proyectos" y "Guardar" a un toolbar móvil superior en el panel, e integración de "Cotizar" y "Descargar" en un footer sticky fijo a la base (`.panel-footer`).
-* **Zoom Inicial de Vehículo**: Inicialización adaptativa del zoom del lienzo 2D en `CarWrapWorkspace.tsx` para cargar en 40% en anchos menores de 768px (en lugar del 85% por defecto de desktop).
+### 2026-06-03 - v10.0: Responsividad Horizontal/Vertical, Interacción Táctil y Solución CORS
+* **Estructura Split Landscape & Altura Dinámica**: Modo horizontal con paneles laterales izquierdo/derecho (`220px` de ancho con `pointer-events: auto`) y visor central libre para interactuar (`pointer-events: none` en el overlay del panel). Altura dinámica con `100dvh` para evitar cortes de botones bajo la barra dinámica de URL en vertical, reduciendo el viewport vertical a `38dvh`.
+* **Tiradores Táctiles de Fácil Manipulación**: Ampliación de las zonas de contacto interactivas de los tiradores de redimensión (a `40px`) y rotación (a `44px` con icono SVG premium de flecha curvada) usando `touchAction: 'none'` para eliminar conflictos con los gestos de scroll nativos del navegador móvil. Selección táctil mejorada de decals pequeños imponiendo un tamaño de colisión mínimo de `0.08` unidades en 3D.
+* **Resolución de Error CORS (Canvas Taint)**: Hospedaje local de la plantilla de auto sedan (`sedan_template.png`) y vector de contornos (`sedan_contours.png`) en el directorio público. Esto elimina la contaminación de origen cruzado (CORS) del canvas y soluciona de forma definitiva el error `SecurityError` al exportar imágenes base64 para cotizaciones en teléfonos móviles.
 * **Editor 2D Dieline Limpio**: Ocultamiento de la miniatura 3D PiP en móvil para liberar el área interactiva y re-posicionamiento relativo del título de la dieline para evitar la compresión horizontal a 12px de ancho.
 
 ### 2026-06-03 - v9.0: Configuración de Resend, Plantilla Profesional y Reemplazo de Imágenes con Derechos de Autor

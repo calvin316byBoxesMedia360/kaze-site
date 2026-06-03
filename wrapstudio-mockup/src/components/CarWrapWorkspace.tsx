@@ -457,7 +457,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   const [projects, setProjects] = useState<Project[]>([]);
   
   // Base vehicles and templates
-  const [vehicleUrl, setVehicleUrl] = useState("https://lh3.googleusercontent.com/aida-public/AB6AXuBMTNrnvHRPw1Lv_R4s9Ba1R2xeofOUWtsGf9NtDhdsm5454Yjgdb0pW_v4bwikhcPNSGeJJ7dTlQ_maLNUbVvBLlO8n_hBJD5sLuMnAqCS4BSm6pxylcitbUOvDdP0GxeYxDMRMTiUcnZzoRQCROAUCaPRXH62QVuuTgg1dFVABZGytgIrFxPeMy60hQe2abNMW1mSiZgxCK4MMrEzrZQJ6UDavrFT5jkqBk5qrkDWfgIBuU5hB8CZIBI2-dCxN3toYhjt-jzGihc");
+  const [vehicleUrl, setVehicleUrl] = useState("sedan_template.png");
   const [isDefaultVehicle, setIsDefaultVehicle] = useState(true);
   const [vehicleSize, setVehicleSize] = useState({ width: 1920, height: 1080 });
   const [selectedPanel, setSelectedPanel] = useState<string[]>([]);
@@ -1024,7 +1024,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
     // Draw Contours (Vector Lines)
     if (showContours && isDefaultVehicle) {
       const contourImg = new Image();
-      await loadImgSafely(contourImg, "https://lh3.googleusercontent.com/aida-public/AB6AXuBt6QOLKQlyHHtFmo9MYTBlUutvMGoxxWsPja_pmUMQjulR5ud8QJ87D619oWEHTQzxhMU01SE63CDFZnsjX7qqXT5bvBHU7dhtebVWlKKhDdNAaX5wWg7r0HDX03UYLdb9eQTXLEid8CmMxl55Fgz1ZTCPrtYJygd5BNUjpYmi_jG5E_f26qimOJ9IQjRG46x7hE7lVkpr504mfeyEOOO0OXiVMyT-dAvpzCbd7omojH4k9tmVL3pQUsa_rHoyhMulE5aC6H_YJHg");
+      await loadImgSafely(contourImg, "sedan_contours.png");
       ctx.globalAlpha = 0.4;
       ctx.drawImage(contourImg, 0, 0, canvas.width, canvas.height);
       ctx.globalAlpha = 1.0;
@@ -1571,7 +1571,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
             style={{ display: 'none' }}
           />
 
-          <div className="panel-content" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          <div className="panel-content">
             {/* Mobile Only: Proyectos & Guardar */}
             <div className="mobile-only-flex" style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
               <button 
@@ -1615,7 +1615,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                     {!isDefaultVehicle && (
                       <button 
                         onClick={() => {
-                          setVehicleUrl("https://lh3.googleusercontent.com/aida-public/AB6AXuBMTNrnvHRPw1Lv_R4s9Ba1R2xeofOUWtsGf9NtDhdsm5454Yjgdb0pW_v4bwikhcPNSGeJJ7dTlQ_maLNUbVvBLlO8n_hBJD5sLuMnAqCS4BSm6pxylcitbUOvDdP0GxeYxDMRMTiUcnZzoRQCROAUCaPRXH62QVuuTgg1dFVABZGytgIrFxPeMy60hQe2abNMW1mSiZgxCK4MMrEzrZQJ6UDavrFT5jkqBk5qrkDWfgIBuU5hB8CZIBI2-dCxN3toYhjt-jzGihc");
+                          setVehicleUrl("sedan_template.png");
                           setIsDefaultVehicle(true);
                           setGlobalBodyMaskUrl(undefined);
                         }}
@@ -2163,7 +2163,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                   >
                     <img 
                       draggable={false}
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt6QOLKQlyHHtFmo9MYTBlUutvMGoxxWsPja_pmUMQjulR5ud8QJ87D619oWEHTQzxhMU01SE63CDFZnsjX7qqXT5bvBHU7dhtebVWlKKhDdNAaX5wWg7r0HDX03UYLdb9eQTXLEid8CmMxl55Fgz1ZTCPrtYJygd5BNUjpYmi_jG5E_f26qimOJ9IQjRG46x7hE7lVkpr504mfeyEOOO0OXiVMyT-dAvpzCbd7omojH4k9tmVL3pQUsa_rHoyhMulE5aC6H_YJHg" 
+                      src="sedan_contours.png" 
                       alt="Contours"
                       style={{ width: '100%', height: 'auto', filter: 'grayscale(1) invert(1)' }}
                       referrerPolicy="no-referrer"
@@ -2236,9 +2236,9 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
                         marginTop: `-${((layer.height / vehicleSize.width) * 800) / 2}px`,
                         pointerEvents: activeTool === 'select' ? 'auto' : 'none',
                         cursor: 'move',
-                        mixBlendMode: 'normal'
-                      }}
-                    >
+                        mixBlendMode: 'normal',
+                        touchAction: 'none'
+                      }}>
                       <div 
                         style={{ 
                           width: '100%',
@@ -2804,23 +2804,36 @@ function ResizeHandle({ position, onDrag, onDragEnd, scaleX = 1, scaleY = 1 }: {
         ...getPositionStyles()
       }}
     >
+      {/* Outer touch container: 40px x 40px for easy finger grabbing */}
       <div
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         style={{ 
           position: 'absolute',
-          width: '12px',
-          height: '12px',
-          left: '-6px',
-          top: '-6px',
+          width: '40px',
+          height: '40px',
+          left: '-20px',
+          top: '-20px',
+          backgroundColor: 'transparent',
+          pointerEvents: 'auto',
+          cursor: getCursor(),
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          touchAction: 'none'
+        }}
+      >
+        {/* Inner visual dot */}
+        <div style={{
+          width: '14px',
+          height: '14px',
           backgroundColor: '#FFFFFF',
           border: '2px solid var(--accent)',
           borderRadius: '50%',
-          pointerEvents: 'auto',
-          cursor: getCursor()
-        }}
-      />
+          boxShadow: '0 2px 6px rgba(0,0,0,0.4)'
+        }} />
+      </div>
     </div>
   );
 }
@@ -2919,37 +2932,44 @@ function RotateHandle({
         ...getPositionStyles()
       }}
     >
+      {/* Outer touch container: 44px x 44px for easy finger grabbing */}
       <div
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         style={{ 
           position: 'absolute',
-          width: '16px',
-          height: '16px',
-          left: '-8px',
-          top: '-8px',
+          width: '44px',
+          height: '44px',
+          left: '-22px',
+          top: '-22px',
           backgroundColor: 'transparent',
-          border: '1.5px solid transparent',
-          borderRadius: '50%',
           pointerEvents: 'auto',
           cursor: rotateCursor,
-          transition: 'all 0.15s ease',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          touchAction: 'none'
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = 'var(--accent)';
-          e.currentTarget.style.borderColor = '#FFFFFF';
-          e.currentTarget.style.transform = 'scale(1.2)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = 'transparent';
-          e.currentTarget.style.borderColor = 'transparent';
-          e.currentTarget.style.transform = 'scale(1)';
-        }}
-      />
+      >
+        {/* Inner visual handle */}
+        <div style={{
+          width: '18px',
+          height: '18px',
+          backgroundColor: 'var(--bg-obsidian)',
+          border: '1.5px solid var(--accent)',
+          borderRadius: '50%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
+          transition: 'all 0.15s ease'
+        }}>
+          <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='var(--accent)' strokeWidth='3' strokeLinecap='round' strokeLinejoin='round'>
+            <path d='M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67'/>
+          </svg>
+        </div>
+      </div>
     </div>
   );
 }
