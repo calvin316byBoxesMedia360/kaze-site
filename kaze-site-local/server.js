@@ -2,6 +2,26 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 
+// Load local environment variables from .env if present
+try {
+  const envPath = path.join(__dirname, ".env");
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, "utf8");
+    envContent.split(/\r?\n/).forEach(line => {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith("#")) {
+        const [key, ...valueParts] = trimmed.split("=");
+        if (key && valueParts.length > 0) {
+          process.env[key.trim()] = valueParts.join("=").trim();
+        }
+      }
+    });
+    console.log("Local .env file loaded successfully");
+  }
+} catch (e) {
+  console.error("Failed to load local .env file:", e);
+}
+
 const root = __dirname;
 const port = Number(process.env.PORT || 4177);
 
@@ -43,38 +63,90 @@ http.createServer((req, res) => {
         let responseDetail = "Simulated quote reception in development mode.";
 
         if (apiKey) {
-          const services = Array.isArray(formData.servicio) ? formData.servicio.join(", ") : (formData.servicio || "Ninguno");
+          const servicesHtml = Array.isArray(formData.servicio) 
+            ? formData.servicio.map(s => `<span style="background: rgba(204, 255, 0, 0.1); border: 1px solid rgba(204, 255, 0, 0.3); color: #ccff00; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; margin-right: 4px; display: inline-block; text-transform: uppercase;">${s}</span>`).join("")
+            : `<span style="background: rgba(204, 255, 0, 0.1); border: 1px solid rgba(204, 255, 0, 0.3); color: #ccff00; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; display: inline-block; text-transform: uppercase;">${formData.servicio || 'Otro'}</span>`;
+
           let imgTag = "";
           const attachments = [];
           
           if (formData.mockupImage) {
             imgTag = `
-              <p><strong>Diseño Adjunto:</strong></p>
-              <div style="margin-top: 15px; border: 1px solid #ddd; padding: 10px; border-radius: 8px; background: #fff; max-width: 600px;">
-                <img src="${formData.mockupImage}" style="max-width: 100%; height: auto; border-radius: 4px;" alt="Diseño Adjunto" />
+              <div style="background-color: #18181b; border-radius: 12px; padding: 20px; border: 1px solid #27272a; margin-bottom: 16px;">
+                <h3 style="color: #ffffff; font-size: 14px; margin-top: 0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #27272a; padding-bottom: 8px;">Diseño Adjunto</h3>
+                <div style="border: 1px solid #27272a; border-radius: 8px; background: #09090b; padding: 10px; text-align: center;">
+                  <img src="cid:mockup-image" style="max-width: 100%; height: auto; border-radius: 6px;" alt="Diseño Adjunto" />
+                  <p style="color: #a1a1aa; font-size: 11px; margin: 8px 0 0 0;">kaze-diseño.png (adjuntado al correo)</p>
+                </div>
               </div>
             `;
             const base64Data = formData.mockupImage.split(";base64,").pop();
             attachments.push({
               filename: "kaze-diseño.png",
-              content: base64Data
+              content: base64Data,
+              content_id: "mockup-image",
+              disposition: "inline"
             });
           }
 
           const htmlContent = `
-            <h2>Nueva Cotización desde KAZE Website</h2>
-            <p><strong>Nombre:</strong> ${formData.name || 'No proporcionado'}</p>
-            <p><strong>Email:</strong> ${formData.email || 'No proporcionado'}</p>
-            <p><strong>Teléfono:</strong> ${formData.phone || 'No proporcionado'}</p>
-            <p><strong>Preferencia de Contacto:</strong> ${formData.contactPref || 'No especificada'}</p>
-            <p><strong>Servicios requeridos:</strong> ${services}</p>
-            <p><strong>Cantidad aproximada de piezas:</strong> ${formData.pieces || 'No especificada'}</p>
-            <p><strong>Estado del Logo:</strong> ${formData.logoStatus || 'No especificado'}</p>
-            <p><strong>Detalle de la Idea/Proyecto:</strong></p>
-            <blockquote style="background: #f4f4f4; padding: 10px; border-left: 3px solid #d4a843;">
-              ${(formData.idea || '').replace(/\n/g, '<br>') || 'Sin descripción'}
-            </blockquote>
-            ${imgTag}
+            <div style="background-color: #0d0d11; padding: 30px 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #e4e4e7; max-width: 600px; margin: 0 auto; border-radius: 16px; border: 1px solid #27272a; border-top: 4px solid #ccff00;">
+              <div style="text-align: center; margin-bottom: 24px;">
+                <span style="font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">KAZE <span style="color: #ccff00;">DESIGNS</span></span>
+                <p style="color: #a1a1aa; font-size: 13px; margin: 4px 0 0 0;">Nueva solicitud de cotización recibida</p>
+              </div>
+              
+              <div style="background-color: #18181b; border-radius: 12px; padding: 20px; border: 1px solid #27272a; margin-bottom: 24px;">
+                <h3 style="color: #ffffff; font-size: 14px; margin-top: 0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #27272a; padding-bottom: 8px;">Información del Cliente</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                  <tr>
+                    <td style="padding: 6px 0; color: #a1a1aa; width: 140px; font-weight: 500;">Nombre:</td>
+                    <td style="padding: 6px 0; color: #ffffff; font-weight: 600;">${formData.name || 'No proporcionado'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; color: #a1a1aa;">Email:</td>
+                    <td style="padding: 6px 0; color: #ccff00; font-weight: 600;"><a href="mailto:${formData.email}" style="color: #ccff00; text-decoration: none;">${formData.email || 'No proporcionado'}</a></td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; color: #a1a1aa;">Teléfono / WhatsApp:</td>
+                    <td style="padding: 6px 0; color: #ffffff; font-weight: 600;">${formData.phone || 'No proporcionado'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; color: #a1a1aa;">Preferencia de Contacto:</td>
+                    <td style="padding: 6px 0;"><span style="background-color: #27272a; color: #ffffff; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold;">${formData.contactPref || 'No especificada'}</span></td>
+                  </tr>
+                </table>
+              </div>
+
+              <div style="background-color: #18181b; border-radius: 12px; padding: 20px; border: 1px solid #27272a; margin-bottom: 24px;">
+                <h3 style="color: #ffffff; font-size: 14px; margin-top: 0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #27272a; padding-bottom: 8px;">Detalles del Proyecto</h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px;">
+                  <tr>
+                    <td style="padding: 6px 0; color: #a1a1aa; width: 140px; font-weight: 500;">Servicios:</td>
+                    <td style="padding: 6px 0;">${servicesHtml}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; color: #a1a1aa;">Piezas solicitadas:</td>
+                    <td style="padding: 6px 0; color: #ffffff; font-weight: 600;">${formData.pieces || 'No especificada'}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 6px 0; color: #a1a1aa;">Estado del Logo:</td>
+                    <td style="padding: 6px 0; color: #ffffff; font-weight: 600;">${formData.logoStatus || 'No especificado'}</td>
+                  </tr>
+                </table>
+                
+                <p style="color: #a1a1aa; font-size: 13px; font-weight: 500; margin-bottom: 8px; margin-top: 0;">Descripción de la Idea:</p>
+                <div style="background: #09090b; padding: 12px 15px; border-left: 3px solid #ccff00; border-radius: 0 8px 8px 0; font-size: 13px; color: #e4e4e7; line-height: 1.5; border: 1px solid #27272a;">
+                  ${(formData.idea || '').replace(/\n/g, '<br>') || 'Sin descripción'}
+                </div>
+              </div>
+
+              ${imgTag}
+              
+              <div style="text-align: center; font-size: 11px; color: #71717a; margin-top: 30px; border-top: 1px solid #27272a; padding-top: 15px;">
+                Mensaje automático enviado desde el cotizador web de KAZE Designs.
+              </div>
+            </div>
           `;
 
           const resendResponse = await fetch("https://api.resend.com/emails", {
