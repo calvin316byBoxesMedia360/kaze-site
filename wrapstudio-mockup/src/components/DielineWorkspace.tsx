@@ -265,7 +265,6 @@ export function DielineWorkspace({ state, onUpdate, onUpdateLayer }: Props) {
       </div>
     )
   }
-
   return (
     <div className="dieline-workspace-main" style={{
       position: 'relative',
@@ -274,21 +273,11 @@ export function DielineWorkspace({ state, onUpdate, onUpdateLayer }: Props) {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      justifyContent: 'center',
       padding: '24px',
-      overflow: 'hidden',
       background: '#09090B'
     }}>
       {/* Title Header */}
-      <div style={{
-        position: 'absolute',
-        top: '24px',
-        left: '24px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '4px',
-        zIndex: 5
-      }}>
+      <div className="dieline-header">
         <h2 style={{ margin: 0, fontSize: '18px', fontWeight: '700', color: '#fff' }}>Editor de Patrones 2D</h2>
         <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.4)' }}>
           Arrastra, escala y rota los diseños directamente en las piezas. Haz clic en una pieza para seleccionarla.
@@ -296,14 +285,8 @@ export function DielineWorkspace({ state, onUpdate, onUpdateLayer }: Props) {
       </div>
 
       {/* Grid of Large Dielines */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '32px',
-        width: '100%',
-        maxWidth: '1200px',
-        marginTop: '40px'
+      <div className="dieline-pieces-container" style={{
+        maxWidth: '1200px'
       }}>
         {/* LEFT SLEEVE (width: 180, height: 126) */}
         <div

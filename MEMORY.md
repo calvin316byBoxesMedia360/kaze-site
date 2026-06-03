@@ -44,10 +44,10 @@ Al cerrar una iteración importante:
 Fecha local: 3 de Junio de 2026
 
 **Resumen:**
-1. **Configuración de Resend en Producción**: Se configuraron las variables `RESEND_API_KEY` y `NOTIFICATION_EMAIL` en Railway con la nueva clave de API y el correo destinatario `calvin316@boxesmedia360.com` para cumplir con las políticas de Sandbox de Resend.
-2. **Reemplazo de Imágenes con Derechos de Autor**: Se eliminaron las imágenes de neón con logos de los Raiders y 49ers del catálogo y de la sección de servicios, reemplazándolas por diseños genéricos creados por IA (`kaze neon sign.png` y `kaze designs neon sign.png`) e integrándolos en `index.html`.
-3. **Refactor de Plantilla de Correo**: Se implementó el diseño de correo premium Obsidian & Gold con imágenes incrustadas usando Content-ID (`cid:mockup-image`).
-4. **Reversión de Video del Hero**: Se revirtió el video de fondo del Hero (`Kaze_commercial_products.mp4`) a su estado original a solicitud del usuario tras una prueba de re-renderizado con Remotion.
+1. **Diseño Sandwich Responsivo**: Implementación de una estructura fluida y fija para dispositivos móviles (Sandwich layout), bloqueando el scroll de la página principal para evitar conflictos con el arrastre y rotación del modelo 3D/2D, permitiendo desplazamiento independiente del panel de herramientas inferior.
+2. **Acciones Sticky e Iconografía Móvil**: Ocultamiento de la barra de botones del header en móvil para evitar amontonamiento. Redistribución de las acciones: "Proyectos" y "Guardar" en la barra de herramientas del panel lateral y creación de un footer sticky fijo a la base inferior con los botones "Cotizar con este Diseño" y "Descargar PNG" para mejor usabilidad con el pulgar.
+3. **Escala y Zoom Automático**: Programación de una inicialización responsiva en el visor de rotulación de autos para arrancar con un zoom adaptativo del 40% en pantallas móviles, asegurando que el vehículo quepa entero y no se corte.
+4. **Ocultamiento de PiP 3D y Scroll en Dieline**: Desactivación del visor flotante 3D (PiP) en el editor de planos 2D para móviles, y flexibilización de los contenedores SVG para alinearse verticalmente de forma scrollable.
 
 ---
 
@@ -61,6 +61,12 @@ Fecha local: 3 de Junio de 2026
 ---
 
 ## Historial De Iteraciones
+
+### 2026-06-03 - v10.0: Diseño Sandwich y Optimización de Responsividad Móvil
+* **Estructura Sandwich Estilo App Nativa**: Migración de estilos inline a clases responsivas CSS (`.app-layout-root`, `.app-body`, `.car-layout-root`, `.car-body`) en `App.tsx` y `CarWrapWorkspace.tsx`. Desactivado el scroll global en móvil (`overflow: hidden`) y habilitado scroll interno e independiente únicamente para el panel inferior.
+* **Redistribución de CTAs y Toolbar**: Ocultamiento de los botones superiores que desbordaban en la barra del móvil. Enrutado de "Proyectos" y "Guardar" a un toolbar móvil superior en el panel, e integración de "Cotizar" y "Descargar" en un footer sticky fijo a la base (`.panel-footer`).
+* **Zoom Inicial de Vehículo**: Inicialización adaptativa del zoom del lienzo 2D en `CarWrapWorkspace.tsx` para cargar en 40% en anchos menores de 768px (en lugar del 85% por defecto de desktop).
+* **Editor 2D Dieline Limpio**: Ocultamiento de la miniatura 3D PiP en móvil para liberar el área interactiva y re-posicionamiento relativo del título de la dieline para evitar la compresión horizontal a 12px de ancho.
 
 ### 2026-06-03 - v9.0: Configuración de Resend, Plantilla Profesional y Reemplazo de Imágenes con Derechos de Autor
 * **Resolución de Autenticación de Resend**: Se configuró la nueva API key de Resend en Railway y se actualizó el correo destinatario a `calvin316@boxesmedia360.com` (correo titular de la cuenta), solucionando el error 403 de bloqueo de destinatarios de Sandbox de Resend.

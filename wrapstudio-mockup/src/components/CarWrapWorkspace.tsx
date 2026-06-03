@@ -452,7 +452,7 @@ function scanVehicleSilhouette(imageUrl: string, threshold = 35): Promise<string
 
 export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   // Navigation & Tabs
-  const [zoom, setZoom] = useState(85);
+  const [zoom, setZoom] = useState(() => (typeof window !== 'undefined' && window.innerWidth < 768) ? 40 : 85);
   const [showProjects, setShowProjects] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   
@@ -1306,20 +1306,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
   const clipPathId = `active-panels-clip-${selectedPanel.map(p => p.replace(/\s+/g, '')).join('-')}`;
 
   return (
-    <div style={{
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      backgroundColor: 'var(--bg-darker)',
-      color: 'var(--text-body)',
-      fontFamily: 'var(--font-sans)',
-      overflow: 'hidden',
-      zIndex: 100
-    }}>
+    <div className="car-layout-root">
       {/* Top Header Selector */}
       <header style={{
         display: 'flex',
@@ -1363,7 +1350,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
           </select>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className="desktop-only-flex" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button 
             onClick={() => {
               fetchProjects();
@@ -1476,7 +1463,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
       </header>
 
       {/* Main workspace area */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative', width: '100%' }}>
+      <div className="car-body">
         
         {/* Projects Drawer */}
         <AnimatePresence>
@@ -1567,7 +1554,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
         </AnimatePresence>
 
         {/* Left Sidebar control panel */}
-        <aside className="control-panel" style={{ width: '320px', borderRight: '1px solid var(--border-glass)', display: 'flex', flexDirection: 'column', height: '100%', flexShrink: 0, zIndex: 10 }}>
+        <aside className="control-panel">
           {/* Hidden uploader inputs */}
           <input 
             type="file" 
@@ -1584,8 +1571,28 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
             style={{ display: 'none' }}
           />
 
-          <div className="panel-content" style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            
+          <div className="panel-content" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {/* Mobile Only: Proyectos & Guardar */}
+            <div className="mobile-only-flex" style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+              <button 
+                onClick={() => {
+                  fetchProjects();
+                  setShowProjects(!showProjects);
+                }}
+                className="btn-base btn-upload"
+                style={{ flex: 1, padding: '8px 12px', fontSize: '11px', height: '36px' }}
+              >
+                <FolderOpen className="size-3.5" /> Proyectos ({projects.length})
+              </button>
+              <button 
+                onClick={saveProject}
+                className="btn-base btn-upload"
+                style={{ flex: 1, padding: '8px 12px', fontSize: '11px', height: '36px' }}
+              >
+                <Save className="size-3.5" /> Guardar
+              </button>
+            </div>
+
             {/* Auto Personalizado (Custom Vehicle Upload) */}
             <div className="control-section">
               <p className="section-label">Auto Personalizado</p>
@@ -1816,7 +1823,7 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
           </div>
 
           {/* Sidebar Footer with Export */}
-          <div style={{ borderTop: '1px solid var(--border-glass)', padding: '20px', display: 'flex', flexDirection: 'column', gap: '8px', flexShrink: 0 }}>
+          <div className="panel-footer">
             <button
               onClick={handleQuoteClick}
               className="btn-base"
@@ -2074,7 +2081,8 @@ export function CarWrapWorkspace({ onBackToTshirt }: Props) {
           {/* Canvas Wrapper */}
           <div 
             ref={viewportRef}
-            style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}
+            className="viewer-container"
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}
           >
             <div 
               style={{ 

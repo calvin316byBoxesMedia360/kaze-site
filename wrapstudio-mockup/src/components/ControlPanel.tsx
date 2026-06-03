@@ -710,7 +710,7 @@ export function ControlPanel({
       </div>
 
       {/* Export Button */}
-      <div className="panel-footer" style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '16px 20px', borderTop: '1px solid var(--border-glass)' }}>
+      <div className="panel-footer">
         <button 
           onClick={onQuote} 
           className="btn-base btn-export" 

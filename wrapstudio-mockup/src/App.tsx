@@ -241,12 +241,11 @@ export default function App() {
       }
     })
   }, [])
-
   return (
-    <div className="app-layout" style={{ height: '100vh', width: '100vw', overflow: 'hidden', flexDirection: 'column' }}>
+    <div className="app-layout-root">
       {state.mockupType === 'tshirt' ? (
         <>
-           {/* Main Top Header */}
+          {/* Main Top Header */}
           <header style={{
             display: 'flex',
             alignItems: 'center',
@@ -288,12 +287,12 @@ export default function App() {
               </select>
             </div>
             
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '12px', color: 'var(--text-muted)' }}>
+            <div className="desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '16px', fontSize: '12px', color: 'var(--text-muted)' }}>
               <span>Local Dev Mode (v1.2.0)</span>
             </div>
           </header>
 
-          <div style={{ display: 'flex', flex: 1, overflow: 'hidden', width: '100%' }}>
+          <div className="app-body">
             {/* Left panel */}
             <ControlPanel
               state={state}
